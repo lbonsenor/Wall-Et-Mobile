@@ -1,6 +1,65 @@
 <resources>
-    <string name="app_name">Wall-Et</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="app_name" translatable="false">Wall-Et</string>
+    <!--    Home    -->
+    <string name="title_home">Inicio</string>
+    <string name="action_send">Transferir</string>
+    <string name="action_add_fund">Ingresar</string>
+    <string name="subtitle_recent_activities">Actividades Recientes</string>
+    <string name="see_more">Ver Más</string>
+    <string name="greeting">Hola, </string>
+
+
+    <!--    Cards    -->
+    <string name="title_cards">Tarjetas</string>
+    <string name="debit">Débito</string>
+    <string name="credit">Crédito</string>
+    <string name="remove">Quitar</string>
+    <string name="pause">Pausar</string>
+    <string name="edit">Editar</string>
+
+    <!--    Activities    -->
+    <string name="title_activities">Actividades</string>
+    <string name="search_activities">Buscá por tienda, nombre y más</string>
+    <string name="today">Hoy</string>
+    <string name="this_week">Esta semana</string>
+    <string name="this_month">Este mes</string>
+    <string name="choose_dates">Elegir fecha/s</string>
+        <!--    Payment form    -->
+    <string name="online_payment">Pago online</string>
+    <string name="offline_payment">Saldo en Wall-Et</string>
+    <string name="transfer_received">Transferencia Recibida</string>
+    <string name="transfer_sent">Transferencia Enviada</string>
+        <!--    Payment type    -->
+    <string name="available_money">Dinero disponible</string>
+    <string name="card">Tarjeta</string>
+
+
+
+
+    <!--    Transfer    -->
+    <string name="title_transfer">Transferir</string>
+    <string name="who_to_transfer">¿A quién le vas a transferir?</string>
+    <string name="transfer_to_1">A un CBU / CVU / Alias</string>
+    <string name="transfer_to_2">A un contacto / e-mail</string>
+
+    <string name="recent_contacts">Recientes</string>
+    <string name="favorite_contacts">Favoritos</string>
+
+
+    <!--    Profile    -->
+    <string name="title_profile">Perfil</string>
+    <string name="update_profile">Actualizar Datos</string>
+    <string name="notifications">Notificaciones</string>
+    <string name="language">Idioma</string>
+    <string name="faq">Preguntas Frecuentes</string>
+    <string name="dark_mode">Modo Oscuro</string>
+    <string name="light_mode">Modo Claro</string>
+
+    <!--    Common    -->
+    <string name="exit">Salir</string>
+    <string name="add">Agregar</string>
+    <string name="delete">Borrar</string>
+    <string name="available_amount">Disponible</string>
+    <string name="change">Cambiar</string>
+
 </resources>

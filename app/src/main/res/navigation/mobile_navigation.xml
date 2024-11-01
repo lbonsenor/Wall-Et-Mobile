@@ -14,12 +14,19 @@
     <fragment
         android:id="@+id/navigation_dashboard"
         android:name="com.example.wall_et.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:label="@string/title_activities"
+        tools:layout="@layout/fragment_activities" />
 
     <fragment
         android:id="@+id/navigation_notifications"
         android:name="com.example.wall_et.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:label="@string/title_cards"
+        tools:layout="@layout/fragment_cards" />
+
+    <fragment
+        android:id="@+id/navigation_cards"
+        android:name="com.example.wall_et.ui.dashboard.DashboardFragment"
+        android:label="@string/title_cards"
+        tools:layout="@layout/fragment_activities"
+        />
 </navigation>
