@@ -1,7 +1,10 @@
 package com.example.wall_et_mobile
 
 import android.content.res.Configuration
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -15,15 +18,21 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemColors
+import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.wall_et_mobile.ui.theme.Purple
 import com.example.wall_et_mobile.ui.theme.WallEtTheme
 
 @Composable
@@ -48,18 +57,48 @@ fun AppBarPreview() {
 fun CustomAppBar(){
     BottomAppBar (
         cutoutShape = CircleShape,
-        contentPadding = PaddingValues(horizontal = 50.dp),
-        backgroundColor = MaterialTheme.colorScheme.surface,
+        backgroundColor = MaterialTheme.colorScheme.primary,
         modifier = Modifier
             .height(65.dp)
             .clip(RoundedCornerShape(15.dp, 15.dp))
 
         ) {
-        Icon(
-            Icons.Filled.Home,
-            contentDescription = "Home",
-            tint = MaterialTheme.colorScheme.onSurface
-        )
+            NavigationBarItem(
+                onClick = {},
+                selected = false,
+                icon = {
+                    Icon(imageVector = Icons.Filled.Home, contentDescription = "QR", tint = MaterialTheme.colorScheme.onPrimary)
+                }
+            )
+            NavigationBarItem(
+                onClick = {},
+                selected = false,
+                icon = {
+                    Icon(imageVector = Icons.Filled.Home, contentDescription = "QR", tint = MaterialTheme.colorScheme.onPrimary)
+                }
+            )
+            NavigationBarItem(
+                onClick = {},
+                selected = false,
+                enabled = false,
+                icon = {
+                    Icon(imageVector = Icons.Filled.Home, contentDescription = "QR", tint = Transparent)
+                }
+            )
+            NavigationBarItem(
+                onClick = {},
+                selected = false,
+                icon = {
+                    Icon(imageVector = Icons.Filled.Home, contentDescription = "QR", tint = MaterialTheme.colorScheme.onPrimary)
+                }
+            )
+            NavigationBarItem(
+                onClick = {},
+                selected = false,
+                icon = {
+                    Icon(imageVector = Icons.Filled.Home, contentDescription = "QR", tint = MaterialTheme.colorScheme.onPrimary)
+                }
+            )
 
     }
 }
