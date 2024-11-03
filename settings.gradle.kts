@@ -19,5 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Wall-Et"
+rootProject.name = "Wall-Et-Mobile"
 include(":app")
+ 

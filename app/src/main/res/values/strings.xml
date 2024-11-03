@@ -24,17 +24,14 @@
     <string name="this_week">Esta semana</string>
     <string name="this_month">Este mes</string>
     <string name="choose_dates">Elegir fecha/s</string>
-        <!--    Payment form    -->
+    <!--    Payment form    -->
     <string name="online_payment">Pago online</string>
     <string name="offline_payment">Saldo en Wall-Et</string>
     <string name="transfer_received">Transferencia Recibida</string>
     <string name="transfer_sent">Transferencia Enviada</string>
-        <!--    Payment type    -->
+    <!--    Payment type    -->
     <string name="available_money">Dinero disponible</string>
     <string name="card">Tarjeta</string>
-
-
-
 
     <!--    Transfer    -->
     <string name="title_transfer">Transferir</string>
