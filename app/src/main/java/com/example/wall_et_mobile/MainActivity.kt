@@ -4,22 +4,21 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.example.wall_et_mobile.ui.theme.WallEtTheme
-//noinspection UsingMaterialAndMaterial3Libraries
-import androidx.compose.material.BottomAppBar
 //noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.FabPosition
 //noinspection UsingMaterialAndMaterial3Libraries
-import androidx.compose.material.FloatingActionButton
-//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Scaffold
+import androidx.compose.material3.MaterialTheme
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.wall_et_mobile.screens.ActivitiesScreen
+import com.example.wall_et_mobile.screens.HomeScreen
+import com.example.wall_et_mobile.screens.Screen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,14 +26,25 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             WallEtTheme {
+                val navController = rememberNavController()
                 Scaffold (
-                    bottomBar = { CustomAppBar() },
+                    bottomBar = { CustomAppBar(navController) },
                     floatingActionButtonPosition = FabPosition.Center,
                     isFloatingActionButtonDocked = true,
-                    floatingActionButton = { QRFab() }
+                    floatingActionButton = { QRFab() },
+                    backgroundColor = MaterialTheme.colorScheme.background
 
                 ) { innerPadding ->
-                    Greeting("Android", modifier = Modifier.padding(innerPadding))
+                    NavHost(
+                        navController = navController,
+                        startDestination = Screen.Home.route,
+                        builder = {
+                            composable(Screen.Home.route){ HomeScreen(innerPadding) }
+                            composable(Screen.Cards.route){}
+                            composable(Screen.Activities.route){ ActivitiesScreen(innerPadding) }
+                            composable(Screen.SeeMore.route){}
+                        }
+                    )
 
                 }
 
@@ -51,22 +61,6 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
     )
 }
 
-@Composable
-@Preview(device = "id:pixel_5", showBackground = true, backgroundColor = 0xff0000)
-fun GreetingPreview() {
-    WallEtTheme {
-        Scaffold (
-            bottomBar = { CustomAppBar() },
-            floatingActionButtonPosition = FabPosition.Center,
-            isFloatingActionButtonDocked = true,
-            floatingActionButton = { QRFab() }
-
-        ) { innerPadding ->
-            Greeting("Android", modifier = Modifier.padding(innerPadding))
-
-        }
-    }
-}
 
 
 
