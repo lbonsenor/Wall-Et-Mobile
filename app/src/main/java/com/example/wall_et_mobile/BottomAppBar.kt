@@ -27,6 +27,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.rememberNavController
 import com.example.wall_et_mobile.screens.Screen.*
 import com.example.wall_et_mobile.ui.theme.WallEtTheme
@@ -50,11 +51,6 @@ fun AppBarPreview() {
 }
 
 @Composable
-fun AppNavigation(){
-
-}
-
-@Composable
 fun CustomAppBar(navController: NavController){
     val screens = listOf(Home, Cards, Empty, Activities, SeeMore)
 
@@ -68,7 +64,11 @@ fun CustomAppBar(navController: NavController){
         ) {
             screens.forEach{ screen ->
                 NavigationBarItem(
-                    onClick = { navController.navigate(screen.route) },
+                    onClick = { navController.navigate(screen.route){
+                        popUpTo(navController.graph.findStartDestination().id) {saveState = true}
+                        launchSingleTop = true
+                        restoreState = true
+                    } },
                     selected = false,
                     icon = { if (screen.isEnabled) Icon(imageVector = screen.icon, contentDescription = "App Button", tint = MaterialTheme.colorScheme.onPrimary) },
                     enabled = screen.isEnabled,
