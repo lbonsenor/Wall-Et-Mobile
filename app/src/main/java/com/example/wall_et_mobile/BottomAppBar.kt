@@ -1,8 +1,8 @@
 package com.example.wall_et_mobile
 
 import android.content.res.Configuration
+import android.util.Log
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -35,9 +35,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.wall_et_mobile.screens.Screen.*
 import com.example.wall_et_mobile.ui.theme.WallEtTheme
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.navigationBars
-import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.runtime.rememberCoroutineScope
+import kotlinx.coroutines.launch
 
 @Composable
 @Preview(device = "id:pixel_5", showBackground = true, name = "LightMode")
@@ -74,9 +73,8 @@ fun CustomAppBar(navController: NavController){
         cutoutShape = CircleShape,
         backgroundColor = MaterialTheme.colorScheme.primary,
         modifier = Modifier
-            .height(WindowInsets.navigationBars.getBottom(LocalDensity.current).dp)
+            .height(80.dp)
             .clip(RoundedCornerShape(15.dp, 15.dp))
-            .navigationBarsPadding()
         ) {
             screens.forEach{ screen ->
                 NavigationBarItem(
@@ -108,7 +106,6 @@ fun CustomAppBar(navController: NavController){
                     enabled = screen.isEnabled,
                     label = { if (screen.isEnabled) Text(text = stringResource(screen.labelInt), color = MaterialTheme.colorScheme.onPrimary)},
                     alwaysShowLabel = false,
-                    modifier = Modifier.navigationBarsPadding()
                 )
             }
 
@@ -120,6 +117,32 @@ fun CustomAppBar(navController: NavController){
 fun QRFab(){
     FloatingActionButton(
         onClick = {},
+        backgroundColor = MaterialTheme.colorScheme.primary,
+        modifier = Modifier
+            .size(60.dp)
+    )
+    {
+        Icon(imageVector = ImageVector.vectorResource(R.drawable.qrcode_scan), contentDescription = "QR", tint = MaterialTheme.colorScheme.onPrimary)
+    }
+}
+
+@Composable
+fun QRFab(
+    onScanBarcode: suspend () -> Unit
+){
+    val scope = rememberCoroutineScope()
+
+    FloatingActionButton(
+        onClick = {
+            scope.launch{
+                try {
+                    onScanBarcode()
+                }catch (e: Exception) {
+                    // Handle the exception, e.g., display an error message
+                    Log.e("QRFab2", "Error scanning barcode", e)
+                }
+            }
+        },
         backgroundColor = MaterialTheme.colorScheme.primary,
         modifier = Modifier
             .size(60.dp)
