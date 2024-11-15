@@ -35,6 +35,9 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.wall_et_mobile.screens.Screen.*
 import com.example.wall_et_mobile.ui.theme.WallEtTheme
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.ui.platform.LocalDensity
 
 @Composable
 @Preview(device = "id:pixel_5", showBackground = true, name = "LightMode")
@@ -71,9 +74,9 @@ fun CustomAppBar(navController: NavController){
         cutoutShape = CircleShape,
         backgroundColor = MaterialTheme.colorScheme.primary,
         modifier = Modifier
-            .height(80.dp)
+            .height(WindowInsets.navigationBars.getBottom(LocalDensity.current).dp)
             .clip(RoundedCornerShape(15.dp, 15.dp))
-
+            .navigationBarsPadding()
         ) {
             screens.forEach{ screen ->
                 NavigationBarItem(
