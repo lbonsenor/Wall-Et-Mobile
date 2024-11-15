@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -40,21 +41,49 @@ enum class PaymentType (val stringInt: Int){
     AVAILABLE(R.string.available_balance)
 }
 
-sealed class Activity (
+data class Activity(
     val amount: CurrencyAmount,
     val transactionTime: Timestamp,
     val name: String,
     val transactionType: TransactionType,
     val paymentType: PaymentType = PaymentType.AVAILABLE,
 ) {
-    object Test : Activity(
-        name = "Farmacity",
-        transactionType = TransactionType.ONLINE_PAYMENT,
-        amount = CurrencyAmount(100.0, Currency.getInstance("ARS")),
-        transactionTime = Timestamp(System.currentTimeMillis())
-    )
-}
+    companion object {
+        val sampleTransactions = listOf(
+            Activity(
+                name = "Farmacity",
+                transactionType = TransactionType.ONLINE_PAYMENT,
+                amount = CurrencyAmount(100.0, Currency.getInstance("ARS")),
+                transactionTime = Timestamp(System.currentTimeMillis())
+            ),
+            Activity(
+                name = "Juan",
+                transactionType = TransactionType.TRANSFER_RECEIVED,
+                amount = CurrencyAmount(500.0, Currency.getInstance("ARS")),
+                transactionTime = Timestamp(System.currentTimeMillis() - 3600000)
+            ),
+            Activity(
+                name = "McDonald's",
+                transactionType = TransactionType.LOCAL_STORE,
+                amount = CurrencyAmount(250.0, Currency.getInstance("ARS")),
+                transactionTime = Timestamp(System.currentTimeMillis() - 7200000)
+            ),
+            Activity(
+                name = "Noah Cefalta",
+                transactionType = TransactionType.TRANSFER_SENT,
+                amount = CurrencyAmount(1000.0, Currency.getInstance("ARS")),
+                transactionTime = Timestamp(System.currentTimeMillis() - 86400000)
+            )
+        )
 
+        val Test = Activity(
+            name = "Farmacity",
+            transactionType = TransactionType.ONLINE_PAYMENT,
+            amount = CurrencyAmount(100.0, Currency.getInstance("ARS")),
+            transactionTime = Timestamp(System.currentTimeMillis())
+        )
+    }
+}
 
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "DarkMode")
 @Preview(name = "LightMode")
@@ -78,20 +107,27 @@ fun ActivityItem(activity: Activity = Activity.Test){
 
     Box(
         modifier = Modifier
+            .fillMaxWidth()
             .background(MaterialTheme.colorScheme.surface)
-            .padding(10.dp)
-
-
+            .padding(horizontal = 16.dp, vertical = 8.dp)
     ){
-        Row (verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceAround) {
-            Row (verticalAlignment = Alignment.CenterVertically) {
+        Row (
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Row (
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.weight(1f)
+            ) {
                 Icon(
                     painter = painterResource(activity.transactionType.iconInt),
                     contentDescription = "ActivityImage",
                     tint = MaterialTheme.colorScheme.secondary,
                 )
                 Column (modifier = Modifier.padding(start = 10.dp)) {
-                    Text(text = activity.name,
+                    Text(
+                        text = activity.name,
                         style = MaterialTheme.typography.titleMedium,
                         color = titleColor
                     )
@@ -107,19 +143,21 @@ fun ActivityItem(activity: Activity = Activity.Test){
                     )
                 }
             }
-            Column (horizontalAlignment = Alignment.End) {
+            Column (
+                horizontalAlignment = Alignment.End,
+                modifier = Modifier.padding(start = 16.dp)
+            ) {
                 if (activity.transactionType == TransactionType.TRANSFER_RECEIVED){
                     Text(text = "+$formattedCurrency", color = Green, style = MaterialTheme.typography.labelLarge)
-                } else
+                } else {
                     Text(text = "-$formattedCurrency", style = MaterialTheme.typography.labelLarge, color = titleColor)
-
+                }
                 Text(
                     text = formattedTime,
                     style = MaterialTheme.typography.labelSmall,
                     color = subtitleColor
                 )
             }
-
         }
     }
 }
