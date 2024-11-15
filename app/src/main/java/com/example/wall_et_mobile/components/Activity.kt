@@ -28,14 +28,14 @@ import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-enum class TransactionType (val stringInt: Int, val iconInt: Int){
+enum class TransactionType(val stringInt: Int, val iconInt: Int) {
     ONLINE_PAYMENT(R.string.online_payment, R.drawable.qrcode_scan),
-    TRANSFER_RECEIVED(R.string.transfer_received , R.drawable.payments),
+    TRANSFER_RECEIVED(R.string.transfer_received, R.drawable.payments),
     TRANSFER_SENT(R.string.transfer_sent, R.drawable.payments),
     LOCAL_STORE(R.string.offline_payment, R.drawable.local_mall),
 }
 
-enum class PaymentType (val stringInt: Int){
+enum class PaymentType(val stringInt: Int) {
     CREDIT_CARD(R.string.credit),
     DEBIT_CARD(R.string.debit),
     AVAILABLE(R.string.available_balance)
@@ -88,14 +88,14 @@ data class Activity(
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "DarkMode")
 @Preview(name = "LightMode")
 @Composable
-fun Preview(){
+fun Preview() {
     WallEtTheme {
         ActivityItem()
     }
 }
 
 @Composable
-fun ActivityItem(activity: Activity = Activity.Test){
+fun ActivityItem(activity: Activity = Activity.Test) {
     val timeFormatter = SimpleDateFormat("HH:MM", Locale.getDefault())
     val currencyFormatter = NumberFormat.getCurrencyInstance(Locale.US)
 
@@ -110,13 +110,13 @@ fun ActivityItem(activity: Activity = Activity.Test){
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.surface)
             .padding(horizontal = 16.dp, vertical = 8.dp)
-    ){
-        Row (
+    ) {
+        Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Row (
+            Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.weight(1f)
             ) {
@@ -125,7 +125,7 @@ fun ActivityItem(activity: Activity = Activity.Test){
                     contentDescription = "ActivityImage",
                     tint = MaterialTheme.colorScheme.secondary,
                 )
-                Column (modifier = Modifier.padding(start = 10.dp)) {
+                Column(modifier = Modifier.padding(start = 10.dp)) {
                     Text(
                         text = activity.name,
                         style = MaterialTheme.typography.titleMedium,
@@ -143,14 +143,22 @@ fun ActivityItem(activity: Activity = Activity.Test){
                     )
                 }
             }
-            Column (
+            Column(
                 horizontalAlignment = Alignment.End,
                 modifier = Modifier.padding(start = 16.dp)
             ) {
-                if (activity.transactionType == TransactionType.TRANSFER_RECEIVED){
-                    Text(text = "+$formattedCurrency", color = Green, style = MaterialTheme.typography.labelLarge)
+                if (activity.transactionType == TransactionType.TRANSFER_RECEIVED) {
+                    Text(
+                        text = "+$formattedCurrency",
+                        color = Green,
+                        style = MaterialTheme.typography.labelLarge
+                    )
                 } else {
-                    Text(text = "-$formattedCurrency", style = MaterialTheme.typography.labelLarge, color = titleColor)
+                    Text(
+                        text = "-$formattedCurrency",
+                        style = MaterialTheme.typography.labelLarge,
+                        color = titleColor
+                    )
                 }
                 Text(
                     text = formattedTime,

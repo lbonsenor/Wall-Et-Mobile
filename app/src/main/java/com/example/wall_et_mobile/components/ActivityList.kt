@@ -6,17 +6,14 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun ActivityList(activities: List<Activity>, searchQuery: String = "") {
-    val filteredActivities = activities
-        .filter { activity ->
-            searchQuery.isEmpty() || activity.name.contains(searchQuery, ignoreCase = true)
-        }
+fun ActivityList(activities: List<Activity>) {
+    val groupedActivities = activities
         .groupBy { activity ->
             activity.transactionTime.toString().split(" ")[0]
         }
         .toSortedMap(compareByDescending { it })
 
-    filteredActivities.forEach { (dateStr, activities) ->
+    groupedActivities.forEach { (dateStr, activities) ->
         val date = LocalDate.parse(dateStr)
         val formattedDate = date.format(DateTimeFormatter.ofPattern("MMMM d, yyyy"))
             .replaceFirstChar { it.uppercase() }

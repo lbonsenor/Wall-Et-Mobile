@@ -26,6 +26,11 @@ import com.example.wall_et_mobile.components.ActivityList
 fun ActivitiesScreen(innerPadding: PaddingValues) {
     var searchQuery by remember { mutableStateOf("") }
 
+    val filteredActivities = Activity.sampleTransactions
+        .filter { activity ->
+            searchQuery.isEmpty() || activity.name.contains(searchQuery, ignoreCase = true)
+        }
+
     Column(
         modifier = Modifier
             .padding(innerPadding)
@@ -39,7 +44,7 @@ fun ActivitiesScreen(innerPadding: PaddingValues) {
                 .padding(16.dp)
         )
 
-        ActivityList(Activity.sampleTransactions, searchQuery)
+        ActivityList(activities = filteredActivities)
     }
 }
 
