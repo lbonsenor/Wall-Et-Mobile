@@ -9,7 +9,7 @@
     <string name="debit">Debit</string>
     <string name="credit">Credit</string>
     <string name="edit">Edit</string>
-    <string name="title_activities">Activities</string>
+    <string name="title_activity">Activity</string>
     <string name="choose_dates">Choose date/s</string>
     <string name="offline_payment">On-Site payment</string>
     <string name="transfer_received">Transfer received</string>

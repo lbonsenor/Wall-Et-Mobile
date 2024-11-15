@@ -18,7 +18,7 @@
     <string name="edit">Editar</string>
 
     <!--    Activities    -->
-    <string name="title_activities">Actividades</string>
+    <string name="title_activity">Actividad</string>
     <string name="search_activities">Buscá por tienda, nombre y más</string>
     <string name="today">Hoy</string>
     <string name="this_week">Esta semana</string>
