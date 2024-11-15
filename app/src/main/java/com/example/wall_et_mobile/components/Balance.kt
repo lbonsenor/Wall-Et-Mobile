@@ -19,14 +19,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import java.text.NumberFormat
 import com.example.wall_et_mobile.R
 import com.example.wall_et_mobile.ui.theme.DarkerGrotesque
 
 @Composable
-@Preview
 fun Balance(balance: CurrencyAmount = CurrencyAmount(123000.0, Currency.getInstance("ARS"))){
     val whole = NumberFormat.getCurrencyInstance().format(balance.number).split(".")[0]
     val decimal = NumberFormat.getCurrencyInstance().format(balance.number).split(".")[1]

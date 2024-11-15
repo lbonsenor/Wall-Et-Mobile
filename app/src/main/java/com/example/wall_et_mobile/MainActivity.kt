@@ -11,6 +11,7 @@ import com.example.wall_et_mobile.ui.theme.WallEtTheme
 //noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.FabPosition
 //noinspection UsingMaterialAndMaterial3Libraries
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Scaffold
 import androidx.compose.material3.MaterialTheme
 import androidx.navigation.compose.NavHost
@@ -25,13 +26,14 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            var qrScanner = QRScanner(appContext = applicationContext)
             WallEtTheme {
                 val navController = rememberNavController()
                 Scaffold (
                     bottomBar = { CustomAppBar(navController) },
                     floatingActionButtonPosition = FabPosition.Center,
                     isFloatingActionButtonDocked = true,
-                    floatingActionButton = { QRFab() },
+                    floatingActionButton = { QRFab(qrScanner::startScan) },
                     backgroundColor = MaterialTheme.colorScheme.background
 
                 ) { innerPadding ->
@@ -60,6 +62,11 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
         modifier = modifier
     )
 }
+
+
+
+
+
 
 
 
