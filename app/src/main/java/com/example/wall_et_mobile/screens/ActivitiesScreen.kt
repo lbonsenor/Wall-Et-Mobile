@@ -19,10 +19,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.wall_et_mobile.components.Activity
-import com.example.wall_et_mobile.components.ActivityItem
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
+import com.example.wall_et_mobile.components.ActivityList
 
 @Composable
 fun ActivitiesScreen(innerPadding: PaddingValues) {
@@ -42,29 +39,6 @@ fun ActivitiesScreen(innerPadding: PaddingValues) {
         )
 
         ActivityList(searchQuery)
-    }
-}
-
-@Composable
-fun ActivityList(searchQuery: String = "") {
-    val filteredActivities = Activity.sampleTransactions
-        .filter { activity ->
-            searchQuery.isEmpty() || activity.name.contains(searchQuery, ignoreCase = true)
-        }
-        .groupBy { activity ->
-            activity.transactionTime.toString().split(" ")[0]
-        }
-        .toSortedMap(compareByDescending { it })
-
-    filteredActivities.forEach { (dateStr, activities) ->
-        val date = LocalDate.parse(dateStr)
-        val formattedDate = date.format(DateTimeFormatter.ofPattern("MMMM d, yyyy")).replaceFirstChar { it.uppercase() }
-
-        DateSeparator(formattedDate)
-
-        activities.forEach { activity ->
-            ActivityItem(activity = activity)
-        }
     }
 }
 
