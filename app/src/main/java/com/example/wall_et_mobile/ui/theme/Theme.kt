@@ -10,22 +10,40 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 
+/*
+    Primary: For buttons / Bottom bar
+    Secondary: For purely purple
+    Tertiary: For subtitles
+    Surface: For background of components
+
+ */
+
 private val DarkColorScheme = darkColorScheme(
     primary = Black,
     onPrimary = White,
-    onTertiary = DarkerGray,
+
+
     background = Gray,
-    secondary = Gray,
+    onBackground = White,
+
+    secondary = Purple,
     onSecondary = White,
-    onSurface = White
+
+    onSurface = White,
+    onTertiary = DarkerGray,
+
 )
 
 private val LightColorScheme = lightColorScheme(
     primary = Purple,
     onPrimary = White,
+
     background = White,
+    onBackground = Black,
+
     secondary = Purple,
     onSecondary = White,
+
     onTertiary = DarkerGray
 
     /* Other default colors to override

@@ -38,8 +38,9 @@
     <string name="this_week">This week</string>
     <string name="this_month">This month</string>
     <string name="online_payment">Online payment</string>
-    <string name="available_money">Wall-Et balance</string>
+    <string name="available_balance">Wall-Et balance</string>
     <string name="remove">Remove</string>
     <string name="pause">Pause</string>
     <string name="action_send">Send</string>
+    <string name="balance">Balance</string>
 </resources>

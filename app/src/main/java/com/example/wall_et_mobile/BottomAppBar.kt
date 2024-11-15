@@ -17,17 +17,21 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemColors
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.wall_et_mobile.screens.Screen.*
 import com.example.wall_et_mobile.ui.theme.WallEtTheme
@@ -53,8 +57,15 @@ fun AppBarPreview() {
 }
 
 @Composable
+fun currentRoute(navController: NavController): String? {
+    val navBackStackEntry = navController.currentBackStackEntryAsState().value // Access value directly
+    return navBackStackEntry?.destination?.route
+}
+
+@Composable
 fun CustomAppBar(navController: NavController){
     val screens = listOf(Home, Cards, Empty, Activities, SeeMore)
+    val currentRoute = currentRoute(navController)
 
     BottomAppBar (
         cutoutShape = CircleShape,
@@ -71,10 +82,29 @@ fun CustomAppBar(navController: NavController){
                         launchSingleTop = true
                         restoreState = true
                     } },
-                    selected = false,
-                    icon = { if (screen.isEnabled) Icon(imageVector = screen.icon, contentDescription = "App Button", tint = MaterialTheme.colorScheme.onPrimary) },
+                    selected = currentRoute == screen.route,
+                    colors = NavigationBarItemColors(
+                        selectedIconColor = MaterialTheme.colorScheme.primary,
+                        unselectedIconColor = MaterialTheme.colorScheme.onPrimary,
+
+                        selectedTextColor = MaterialTheme.colorScheme.onPrimary,
+                        unselectedTextColor = MaterialTheme.colorScheme.onPrimary,
+
+                        selectedIndicatorColor = MaterialTheme.colorScheme.onPrimary,
+
+                        disabledIconColor = Color.Transparent,
+                        disabledTextColor = Color.Transparent,
+                    ),
+                    icon = {
+                        if (screen.isEnabled)
+                            if (screen.iconInt == -1)
+                                Icon(imageVector = screen.icon, contentDescription = "App Button")
+                            else
+                                Icon(painter = painterResource(screen.iconInt), contentDescription = "App Button")
+                           },
                     enabled = screen.isEnabled,
                     label = { if (screen.isEnabled) Text(text = stringResource(screen.labelInt), color = MaterialTheme.colorScheme.onPrimary)},
+                    alwaysShowLabel = false,
                     modifier = Modifier.navigationBarsPadding()
                 )
             }

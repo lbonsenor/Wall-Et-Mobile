@@ -8,13 +8,14 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -26,16 +27,17 @@ import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-enum class TransactionType (val stringInt: Int){
-    ONLINE_PAYMENT(R.string.online_payment),
-    TRANSFER_RECEIVED(R.string.transfer_received),
-    TRANSFER_SENT(R.string.transfer_sent)
+enum class TransactionType (val stringInt: Int, val iconInt: Int){
+    ONLINE_PAYMENT(R.string.online_payment, R.drawable.qrcode_scan),
+    TRANSFER_RECEIVED(R.string.transfer_received , R.drawable.payments),
+    TRANSFER_SENT(R.string.transfer_sent, R.drawable.payments),
+    LOCAL_STORE(R.string.offline_payment, R.drawable.local_mall),
 }
 
 enum class PaymentType (val stringInt: Int){
     CREDIT_CARD(R.string.credit),
     DEBIT_CARD(R.string.debit),
-    AVAILABLE(R.string.available_money)
+    AVAILABLE(R.string.available_balance)
 }
 
 sealed class Activity (
@@ -46,8 +48,8 @@ sealed class Activity (
     val paymentType: PaymentType = PaymentType.AVAILABLE,
 ) {
     object Test : Activity(
-        name = "PedidosYa",
-        transactionType = TransactionType.TRANSFER_RECEIVED,
+        name = "Farmacity",
+        transactionType = TransactionType.ONLINE_PAYMENT,
         amount = CurrencyAmount(100.0, Currency.getInstance("ARS")),
         transactionTime = Timestamp(System.currentTimeMillis())
     )
@@ -82,28 +84,34 @@ fun ActivityItem(activity: Activity = Activity.Test){
 
     ){
         Row (verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceAround) {
-            Column {
-                Text(text = activity.name,
-                    style = MaterialTheme.typography.titleMedium,
-                    color = titleColor
+            Row (verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    painter = painterResource(activity.transactionType.iconInt),
+                    contentDescription = "ActivityImage",
+                    tint = MaterialTheme.colorScheme.secondary,
                 )
-                Text(
-                    text = stringResource(activity.transactionType.stringInt),
-                    style = MaterialTheme.typography.labelSmall,
-                    color = subtitleColor
-                )
-                Text(
-                    text = stringResource(activity.paymentType.stringInt),
-                    style = MaterialTheme.typography.labelSmall,
-                    color = subtitleColor
-                )
+                Column (modifier = Modifier.padding(start = 10.dp)) {
+                    Text(text = activity.name,
+                        style = MaterialTheme.typography.titleMedium,
+                        color = titleColor
+                    )
+                    Text(
+                        text = stringResource(activity.transactionType.stringInt),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = subtitleColor
+                    )
+                    Text(
+                        text = stringResource(activity.paymentType.stringInt),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = subtitleColor
+                    )
+                }
             }
-            Spacer(modifier = Modifier.weight(1f))
             Column (horizontalAlignment = Alignment.End) {
                 if (activity.transactionType == TransactionType.TRANSFER_RECEIVED){
                     Text(text = "+$formattedCurrency", color = Green, style = MaterialTheme.typography.labelLarge)
                 } else
-                    Text(text = "-$formattedCurrency", style = MaterialTheme.typography.labelLarge)
+                    Text(text = "-$formattedCurrency", style = MaterialTheme.typography.labelLarge, color = titleColor)
 
                 Text(
                     text = formattedTime,

@@ -26,11 +26,11 @@
     <string name="choose_dates">Elegir fecha/s</string>
     <!--    Payment form    -->
     <string name="online_payment">Pago online</string>
-    <string name="offline_payment">Saldo en Wall-Et</string>
+    <string name="offline_payment">Pago en tienda física</string>
     <string name="transfer_received">Transferencia Recibida</string>
     <string name="transfer_sent">Transferencia Enviada</string>
     <!--    Payment type    -->
-    <string name="available_money">Dinero disponible</string>
+    <string name="available_balance">Dinero disponible</string>
     <string name="card">Tarjeta</string>
 
     <!--    Transfer    -->
@@ -58,5 +58,6 @@
     <string name="delete">Borrar</string>
     <string name="available_amount">Disponible</string>
     <string name="change">Cambiar</string>
+    <string name="balance">Saldo Disponible</string>
 
 </resources>
