@@ -33,8 +33,10 @@ import com.example.wall_et_mobile.screens.Screen.*
 import com.example.wall_et_mobile.ui.theme.WallEtTheme
 
 @Composable
-@Preview(device = "id:pixel_5", showBackground = true)
-@Preview(device = "id:pixel_5", showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview(device = "id:pixel_5", showBackground = true, name = "LightMode")
+@Preview(device = "id:pixel_5", showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES,
+    name = "DarkMode"
+)
 fun AppBarPreview() {
     WallEtTheme {
         Scaffold (
