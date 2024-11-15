@@ -6,12 +6,11 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun ActivityList(searchQuery: String = "", limit: Int = Int.MAX_VALUE) {
-    val filteredActivities = Activity.sampleTransactions
+fun ActivityList(activities: List<Activity>, searchQuery: String = "") {
+    val filteredActivities = activities
         .filter { activity ->
             searchQuery.isEmpty() || activity.name.contains(searchQuery, ignoreCase = true)
         }
-        .take(limit)
         .groupBy { activity ->
             activity.transactionTime.toString().split(" ")[0]
         }
