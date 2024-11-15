@@ -15,12 +15,15 @@ import androidx.compose.material.FabPosition
 //noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Scaffold
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.SideEffect
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.wall_et_mobile.screens.ActivitiesScreen
 import com.example.wall_et_mobile.screens.HomeScreen
 import com.example.wall_et_mobile.screens.Screen
+import com.example.wall_et_mobile.ui.theme.Purple
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,6 +33,16 @@ class MainActivity : ComponentActivity() {
             var qrScanner = QRScanner(appContext = applicationContext)
             WallEtTheme {
                 val navController = rememberNavController()
+                val systemUiController = rememberSystemUiController()
+
+                val statusBarColor = MaterialTheme.colorScheme.background
+                val systemNavColor = MaterialTheme.colorScheme.primary
+
+                SideEffect {
+                    systemUiController.setStatusBarColor(statusBarColor)
+                    systemUiController.setNavigationBarColor(systemNavColor)
+                }
+
                 Scaffold (
                     bottomBar = { CustomAppBar(navController) },
                     floatingActionButtonPosition = FabPosition.Center,

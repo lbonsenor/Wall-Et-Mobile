@@ -22,6 +22,8 @@ private val DarkColorScheme = darkColorScheme(
     primary = Black,
     onPrimary = White,
 
+    primaryContainer = Purple,
+    onPrimaryContainer = White,
 
     background = Gray,
     onBackground = White,
@@ -40,6 +42,9 @@ private val LightColorScheme = lightColorScheme(
 
     background = White,
     onBackground = Black,
+
+    primaryContainer = White,
+    onPrimaryContainer = Purple,
 
     secondary = Purple,
     onSecondary = White,

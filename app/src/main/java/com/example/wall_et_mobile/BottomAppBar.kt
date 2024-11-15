@@ -36,6 +36,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.wall_et_mobile.screens.Screen.*
 import com.example.wall_et_mobile.ui.theme.WallEtTheme
 import androidx.compose.runtime.rememberCoroutineScope
+import com.example.wall_et_mobile.ui.theme.White
 import kotlinx.coroutines.launch
 
 @Composable
@@ -85,13 +86,15 @@ fun CustomAppBar(navController: NavController){
                     } },
                     selected = currentRoute == screen.route,
                     colors = NavigationBarItemColors(
-                        selectedIconColor = MaterialTheme.colorScheme.primary,
+                        // LightMode: White, DarkMode: White
+                        selectedIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
                         unselectedIconColor = MaterialTheme.colorScheme.onPrimary,
 
                         selectedTextColor = MaterialTheme.colorScheme.onPrimary,
                         unselectedTextColor = MaterialTheme.colorScheme.onPrimary,
 
-                        selectedIndicatorColor = MaterialTheme.colorScheme.onPrimary,
+                        // LightMode: White, DarkMode: Purple
+                        selectedIndicatorColor = MaterialTheme.colorScheme.primaryContainer,
 
                         disabledIconColor = Color.Transparent,
                         disabledTextColor = Color.Transparent,

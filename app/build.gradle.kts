@@ -62,4 +62,6 @@ dependencies {
     implementation(libs.play.services.code.scanner)
     implementation(libs.jetbrains.kotlinx.coroutines.play.services)
 
+    implementation(libs.accompanist.systemuicontroller)
+
 }
