@@ -18,7 +18,7 @@ sealed class Screen(
     object Home : Screen(route = "home", icon = Icons.Outlined.Home, labelInt = R.string.title_home)
     object Cards : Screen(route = "cards", iconInt = R.drawable.credit_card, labelInt = R.string.title_cards)
     object Empty : Screen(isEnabled = false)
-    object Activities : Screen(route = "activities", iconInt = R.drawable.history, labelInt = R.string.title_activities)
+    object Activities : Screen(route = "activities", iconInt = R.drawable.history, labelInt = R.string.title_activity)
     object SeeMore: Screen(route = "see_more", icon = Icons.Outlined.Menu, labelInt = R.string.see_more)
 }
 
