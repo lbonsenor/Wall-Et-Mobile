@@ -11,12 +11,14 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import com.example.wall_et_mobile.R
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.wall_et_mobile.components.Activity
 import com.example.wall_et_mobile.components.ActivityList
@@ -52,7 +54,7 @@ fun SearchBar(query: String, onQueryChange: (String) -> Unit, modifier: Modifier
     OutlinedTextField(
         value = query,
         onValueChange = onQueryChange,
-        placeholder = { Text("Buscar transacciones...") },                                  // TODO Localización
+        placeholder = { Text(stringResource(R.string.search_activities)) },
         leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Search") },
         modifier = modifier,
         singleLine = true,

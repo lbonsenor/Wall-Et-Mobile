@@ -27,8 +27,8 @@
     <!--    Payment form    -->
     <string name="online_payment">Pago online</string>
     <string name="offline_payment">Pago en tienda física</string>
-    <string name="transfer_received">Transferencia Recibida</string>
-    <string name="transfer_sent">Transferencia Enviada</string>
+    <string name="transfer_received">Transferencia recibida</string>
+    <string name="transfer_sent">Transferencia enviada</string>
     <!--    Payment type    -->
     <string name="available_balance">Dinero disponible</string>
     <string name="card">Tarjeta</string>
