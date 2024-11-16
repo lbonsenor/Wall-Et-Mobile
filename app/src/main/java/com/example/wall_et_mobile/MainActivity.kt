@@ -20,6 +20,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.wall_et_mobile.screens.ActivitiesScreen
+import com.example.wall_et_mobile.screens.CardsScreen
 import com.example.wall_et_mobile.screens.HomeScreen
 import com.example.wall_et_mobile.screens.Screen
 import com.example.wall_et_mobile.ui.theme.Purple
@@ -57,7 +58,7 @@ class MainActivity : ComponentActivity() {
                         startDestination = Screen.Home.route,
                         builder = {
                             composable(Screen.Home.route){ HomeScreen(innerPadding) }
-                            composable(Screen.Cards.route){}
+                            composable(Screen.Cards.route){ CardsScreen(innerPadding) }
                             composable(Screen.Activities.route){ ActivitiesScreen(innerPadding) }
                             composable(Screen.SeeMore.route){}
                         }
