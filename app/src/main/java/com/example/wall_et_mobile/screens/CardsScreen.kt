@@ -9,7 +9,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.example.wall_et_mobile.components.Card
-import com.example.wall_et_mobile.components.CardItem
 import com.example.wall_et_mobile.components.CardList
 
 @Composable
