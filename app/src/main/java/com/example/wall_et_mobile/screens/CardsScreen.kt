@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.example.wall_et_mobile.components.Card
 import com.example.wall_et_mobile.components.CardItem
+import com.example.wall_et_mobile.components.CardList
 
 @Composable
 fun CardsScreen(innerPadding: PaddingValues) {
@@ -21,8 +22,6 @@ fun CardsScreen(innerPadding: PaddingValues) {
             .fillMaxSize()
             .verticalScroll(scrollState)
     ) {
-        Card.sampleCards.forEach { card ->
-            CardItem(card = card)
-        }
+        CardList(Card.sampleCards)
     }
 }
