@@ -19,13 +19,13 @@ import androidx.compose.ui.platform.LocalContext
  */
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Black,
+    primary = Purple,
     onPrimary = White,
 
     primaryContainer = Purple,
     onPrimaryContainer = White,
 
-    background = Gray,
+    background = Black,
     onBackground = White,
 
     secondary = Purple,
@@ -33,6 +33,11 @@ private val DarkColorScheme = darkColorScheme(
 
     onSurface = White,
     onTertiary = DarkerGray,
+
+    surfaceVariant = TransparentPurple,
+    onSurfaceVariant = Purple,
+
+    surfaceContainer = DarkPurple,
 
 )
 
@@ -49,7 +54,15 @@ private val LightColorScheme = lightColorScheme(
     secondary = Purple,
     onSecondary = White,
 
-    onTertiary = DarkerGray
+    onTertiary = DarkerGray,
+
+    surface = White,
+    onSurface = Black,
+
+    surfaceVariant = TransparentPurple,
+    onSurfaceVariant = Purple,
+
+    surfaceContainer = DarkPurple,
 
     /* Other default colors to override
     onPrimary = Color.White,

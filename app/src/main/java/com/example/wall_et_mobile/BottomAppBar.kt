@@ -53,7 +53,7 @@ fun AppBarPreview() {
             floatingActionButton = { QRFab() },
             backgroundColor = MaterialTheme.colorScheme.background
 
-        ) { innerPadding ->
+        ) {
 
         }
     }
@@ -107,7 +107,7 @@ fun CustomAppBar(navController: NavController){
                                 Icon(painter = painterResource(screen.iconInt), contentDescription = "App Button")
                            },
                     enabled = screen.isEnabled,
-                    label = { if (screen.isEnabled) Text(text = stringResource(screen.labelInt), color = MaterialTheme.colorScheme.onPrimary)},
+                    label = { if (screen.isEnabled) Text(text = stringResource(screen.labelInt), color = MaterialTheme.colorScheme.onPrimary, style = MaterialTheme.typography.labelSmall)},
                     alwaysShowLabel = false,
                 )
             }
