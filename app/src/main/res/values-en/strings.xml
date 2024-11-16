@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="title_home">Home</string>
-    <string name="title_add_fund">Add Funds</string>
+    <string name="title_add_fund">Deposit</string>
     <string name="subtitle_recent_activities">Recent Activities</string>
     <string name="see_more">See More</string>
     <string name="greeting">"Hello, "</string>
