@@ -4,8 +4,10 @@ import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -13,6 +15,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.TileMode
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -91,6 +94,14 @@ data class Card(
 
 @Composable
 fun CardItem(card: Card) {
+    var isNumberVisible by remember { mutableStateOf(false) }
+
+    val maskedNumber = if (isNumberVisible) {
+        card.cardNumber
+    } else {
+        card.cardNumber.replace(Regex(".{14}(.{4})"), "**** **** **** $1")
+    }
+
     Box(
         modifier = Modifier
             .padding(16.dp)
@@ -111,17 +122,36 @@ fun CardItem(card: Card) {
                 .padding(24.dp)
                 .fillMaxSize()
         ) {
-            Text(
-                text = card.cardBrand.name,
-                color = White,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = card.cardBrand.name,
+                    color = White,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold
+                )
+
+                IconButton(
+                    onClick = { isNumberVisible = !isNumberVisible }
+                ) {
+                    Icon(
+                        painter = painterResource(
+                            if (isNumberVisible) R.drawable.visibility
+                            else R.drawable.visibility_off
+                        ),
+                        contentDescription = if (isNumberVisible) "Hide card number" else "Show card number",
+                        tint = White
+                    )
+                }
+            }
 
             Spacer(modifier = Modifier.weight(1f))
 
             Text(
-                text = card.cardNumber,
+                text = maskedNumber,
                 color = White,
                 fontSize = 22.sp,
                 fontWeight = FontWeight.Medium
