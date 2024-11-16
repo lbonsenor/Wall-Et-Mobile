@@ -1,5 +1,6 @@
 package com.example.wall_et_mobile.screens
 
+import MockTransactions
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,14 +21,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.example.wall_et_mobile.components.Activity
 import com.example.wall_et_mobile.components.ActivityList
 
 @Composable
 fun ActivitiesScreen(innerPadding: PaddingValues) {
     var searchQuery by remember { mutableStateOf("") }
 
-    val filteredActivities = Activity.sampleTransactions
+    val filteredActivities = MockTransactions.sampleTransactions
         .filter { activity ->
             searchQuery.isEmpty() || activity.name.contains(searchQuery, ignoreCase = true)
         }

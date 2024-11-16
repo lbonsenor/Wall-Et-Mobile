@@ -40,8 +40,8 @@ private val LightColorScheme = lightColorScheme(
     primary = Purple,
     onPrimary = White,
 
-    background = White,
-    onBackground = Black,
+    background = Purple,
+    onBackground = White,
 
     primaryContainer = White,
     onPrimaryContainer = Purple,
@@ -49,7 +49,10 @@ private val LightColorScheme = lightColorScheme(
     secondary = Purple,
     onSecondary = White,
 
-    onTertiary = DarkerGray
+    onTertiary = DarkerGray,
+
+    surface = White,
+    onSurface = Black,
 
     /* Other default colors to override
     onPrimary = Color.White,
