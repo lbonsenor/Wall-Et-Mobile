@@ -3,7 +3,7 @@
     <!--    Home    -->
     <string name="title_home">Inicio</string>
     <string name="action_send">Transferir</string>
-    <string name="action_add_fund">Ingresar</string>
+    <string name="title_add_fund">Ingresar</string>
     <string name="subtitle_recent_activities">Actividades Recientes</string>
     <string name="see_more">Ver Más</string>
     <string name="greeting">Hola, </string>

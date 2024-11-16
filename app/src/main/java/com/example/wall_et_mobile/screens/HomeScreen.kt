@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import com.example.wall_et_mobile.R
 import com.example.wall_et_mobile.components.ActivityList
 import com.example.wall_et_mobile.components.Balance
+import com.example.wall_et_mobile.components.CustomButton
 
 @Composable
 fun HomeScreen(innerPadding : PaddingValues){
@@ -32,17 +33,41 @@ fun HomeScreen(innerPadding : PaddingValues){
         verticalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier
             .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
     ){
-        Balance()
+        Column(
+            modifier = Modifier
+                .padding(5.dp, 0.dp)
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(0.dp, 0.dp, 30.dp, 30.dp))
+                .background(MaterialTheme.colorScheme.primary)
 
+        ) {
+            Balance()
+
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            ) {
+                Box(modifier = Modifier.weight(1f)) {
+                    CustomButton(stringResource(R.string.title_transfer), R.drawable.payments, onClick = {})
+                }
+                Box(modifier = Modifier.weight(1f)) {
+                    CustomButton(stringResource(R.string.title_add_fund), R.drawable.payments, onClick = {})
+                }
+            }
+        }
         // botones de transferencia e ingresar
+
 
         Column (
             modifier = Modifier
                 .weight(1f)
                 .fillMaxWidth()
-                .clip(RoundedCornerShape(15.dp, 15.dp))
-                .background(MaterialTheme.colorScheme.surface)
+//                .clip(RoundedCornerShape(20.dp, 20.dp))
+//                .background(MaterialTheme.colorScheme.surface)
         ) {
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -53,7 +78,8 @@ fun HomeScreen(innerPadding : PaddingValues){
                 ) {
                 Text(
                     text = stringResource(R.string.subtitle_recent_activities),
-                    style = MaterialTheme.typography.titleMedium
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onBackground
                 )
 
                 Text(
