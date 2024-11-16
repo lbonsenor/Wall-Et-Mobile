@@ -30,6 +30,18 @@ enum class CardBrand {
     AMEX,
 }
 
+enum class CardGradient(val colors: List<Long>) {
+    PURPLE_INDIGO(listOf(0xFF4A0E4E, 0xFF3F51B5)),
+    MIDNIGHT_BLUE(listOf(0xFF1A237E, 0xFF0288D1)),
+    DARK_TEAL(listOf(0xFF00695C, 0xFF00BCD4)),
+    DEEP_MAGENTA(listOf(0xFF880E4F, 0xFF9C27B0)),
+    NAVY_CERULEAN(listOf(0xFF0D47A1, 0xFF03A9F4));
+
+    companion object {
+        fun random(): CardGradient = CardGradient.entries.toTypedArray().random()
+    }
+}
+
 data class Card(
     val cardNumber: String,
     val cardType: CardType,
@@ -37,8 +49,11 @@ data class Card(
     val cardExpiration: String,
     val cardCvv: String,
     val cardBrand: CardBrand,
-    val backgroundColor: List<Long> = listOf(0xFF8B62E9, 0xFF3C0F8A),
+    val gradient: CardGradient = CardGradient.random(),
 ) {
+    val backgroundColor: List<Long>
+        get() = gradient.colors
+    
     companion object {
         val sampleCards = listOf(
             Card(
@@ -48,7 +63,7 @@ data class Card(
                 cardExpiration = "01/25",
                 cardCvv = "123",
                 cardBrand = CardBrand.MASTERCARD,
-                backgroundColor = listOf(0xFF8B62E9, 0xFF3C0F8A)
+                gradient = CardGradient.PURPLE_INDIGO
             ),
             Card(
                 cardNumber = "9876 5432 1098 7654",
@@ -57,7 +72,16 @@ data class Card(
                 cardExpiration = "03/29",
                 cardCvv = "456",
                 cardBrand = CardBrand.AMEX,
-                backgroundColor = listOf(0xFF4CAF50, 0xFF2E7D32)
+                gradient = CardGradient.NAVY_CERULEAN
+            ),
+            Card(
+                cardNumber = "2131 5234 6213 1231",
+                cardType = CardType.DEBIT_CARD,
+                cardHolder = "Juan José",
+                cardExpiration = "12/31",
+                cardCvv = "442",
+                cardBrand = CardBrand.VISA,
+                gradient = CardGradient.MIDNIGHT_BLUE
             )
         )
     }
