@@ -9,8 +9,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -30,15 +32,15 @@ enum class CardBrand {
     AMEX,
 }
 
-enum class CardGradient(val colors: List<Long>) {
-    PURPLE_INDIGO(listOf(0xFF4A0E4E, 0xFF3F51B5)),
-    MIDNIGHT_BLUE(listOf(0xFF1A237E, 0xFF0288D1)),
-    DARK_TEAL(listOf(0xFF00695C, 0xFF00BCD4)),
-    DEEP_MAGENTA(listOf(0xFF880E4F, 0xFF9C27B0)),
-    NAVY_CERULEAN(listOf(0xFF0D47A1, 0xFF03A9F4));
+enum class CardGradient(val colors: List<Color>) {
+    PURPLE_INDIGO(listOf(Color(0xFF4A0E4E), Color(0xFF3F51B5))),
+    MIDNIGHT_BLUE(listOf(Color(0xFF1A237E), Color(0xFF0288D1))),
+    DARK_TEAL(listOf(Color(0xFF00695C), Color(0xFF00BCD4))),
+    DEEP_MAGENTA(listOf(Color(0xFF880E4F), Color(0xFF9C27B0))),
+    NAVY_CERULEAN(listOf(Color(0xFF0D47A1), Color(0xFF03A9F4)));
 
     companion object {
-        fun random(): CardGradient = CardGradient.entries.toTypedArray().random()
+        fun random(): CardGradient = entries.random()
     }
 }
 
@@ -51,9 +53,9 @@ data class Card(
     val cardBrand: CardBrand,
     val gradient: CardGradient = CardGradient.random(),
 ) {
-    val backgroundColor: List<Long>
+    val backgroundColors: List<Color>
         get() = gradient.colors
-    
+
     companion object {
         val sampleCards = listOf(
             Card(
@@ -72,7 +74,7 @@ data class Card(
                 cardExpiration = "03/29",
                 cardCvv = "456",
                 cardBrand = CardBrand.AMEX,
-                gradient = CardGradient.NAVY_CERULEAN
+                gradient = CardGradient.DARK_TEAL
             ),
             Card(
                 cardNumber = "2131 5234 6213 1231",
@@ -96,8 +98,11 @@ fun CardItem(card: Card) {
             .height(200.dp)
             .clip(RoundedCornerShape(16.dp))
             .background(
-                brush = Brush.verticalGradient(
-                    colors = card.backgroundColor.map { Color(it) }
+                brush = Brush.linearGradient(
+                    colors = card.backgroundColors,
+                    start = Offset(0f, 0f),
+                    end = Offset(Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY),
+                    tileMode = TileMode.Clamp
                 )
             )
     ) {
