@@ -10,6 +10,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -24,7 +25,7 @@ import com.example.wall_et_mobile.ui.theme.WallEtTheme
 
 @Composable
 fun CustomButton(text: String, icon: Int, onClick: () -> Unit) {
-    Button(
+    Button (
         onClick = { onClick() },
         colors = ButtonColors(
             containerColor = MaterialTheme.colorScheme.surfaceContainer,

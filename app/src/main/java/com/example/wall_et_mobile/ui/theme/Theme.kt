@@ -37,7 +37,7 @@ private val DarkColorScheme = darkColorScheme(
     surfaceVariant = TransparentPurple,
     onSurfaceVariant = LightPurple,
 
-    surfaceContainer = LightPurple,
+    surfaceContainer = Purple,
 
 )
 
