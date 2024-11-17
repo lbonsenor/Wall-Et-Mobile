@@ -1,5 +1,6 @@
 package com.example.wall_et_mobile
 
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -14,7 +15,12 @@ import androidx.compose.material.FabPosition
 //noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Scaffold
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshotFlow
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -31,6 +37,15 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            val (orientation, setOrientation) = remember { mutableIntStateOf(Configuration.ORIENTATION_PORTRAIT) }
+
+            val configuration = LocalConfiguration.current
+
+            LaunchedEffect(configuration) {
+                snapshotFlow { configuration.orientation }
+                    .collect { setOrientation(it) }
+            }
+
             var qrScanner = QRScanner(appContext = applicationContext)
             WallEtTheme {
                 val navController = rememberNavController()
@@ -58,7 +73,7 @@ class MainActivity : ComponentActivity() {
                         navController = navController,
                         startDestination = BottomAppBarScreen.Home.route,
                         builder = {
-                            composable(BottomAppBarScreen.Home.route){ HomeScreen(innerPadding, navController) }
+                            composable(BottomAppBarScreen.Home.route){ HomeScreen(innerPadding, navController, orientation) }
                             composable(BottomAppBarScreen.Cards.route){ CardsScreen(innerPadding) }
                             composable(BottomAppBarScreen.Activities.route){ ActivitiesScreen(innerPadding) }
                             composable(BottomAppBarScreen.SeeMore.route){}
