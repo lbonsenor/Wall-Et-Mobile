@@ -35,12 +35,14 @@
     <string name="change">Change</string>
     <string name="search_activities">Search by shop, name or more</string>
     <string name="today">Today</string>
-    <string name="this_week">This week</string>
-    <string name="this_month">This month</string>
+    <string name="last_week">Last week</string>
+    <string name="last_month">Last month</string>
     <string name="online_payment">Online payment</string>
     <string name="available_balance">Wall-Et balance</string>
     <string name="remove">Remove</string>
     <string name="pause">Pause</string>
     <string name="action_send">Send</string>
     <string name="balance">Balance</string>
+    <string name="last_year">Last year</string>
+    <string name="max">Max.</string>
 </resources>
