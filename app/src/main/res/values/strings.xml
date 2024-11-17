@@ -61,5 +61,6 @@
     <string name="balance">Saldo Disponible</string>
     <string name="last_year">Último año</string>
     <string name="max">Max.</string>
+    <string name="valid_thru">Válido Hasta</string>
 
 </resources>

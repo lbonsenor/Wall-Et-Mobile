@@ -45,4 +45,5 @@
     <string name="balance">Balance</string>
     <string name="last_year">Last year</string>
     <string name="max">Max.</string>
+    <string name="valid_thru">Valid Thru</string>
 </resources>
