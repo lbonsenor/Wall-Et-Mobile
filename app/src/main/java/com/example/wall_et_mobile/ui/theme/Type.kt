@@ -15,9 +15,12 @@ val provider = GoogleFont.Provider(
     certificates = R.array.com_google_android_gms_fonts_certs
 )
 
-val fontName = GoogleFont("Darker Grotesque")
 val DarkerGrotesque = FontFamily(
-    Font(googleFont = fontName, fontProvider = provider)
+    Font(googleFont = GoogleFont("Darker Grotesque"), fontProvider = provider)
+)
+
+val FiraCode = FontFamily(
+    Font(googleFont = GoogleFont("Fira Code"), fontProvider = provider)
 )
 
 // Set of Material typography styles to start with

@@ -32,7 +32,7 @@ private val DarkColorScheme = darkColorScheme(
     onSecondary = White,
 
     onSurface = White,
-    onTertiary = Gray,
+    onTertiary = LightGray,
 
     surfaceVariant = TransparentPurple,
     onSurfaceVariant = LightPurple,

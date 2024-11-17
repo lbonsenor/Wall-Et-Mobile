@@ -33,14 +33,19 @@
     <string name="delete">Delete</string>
     <string name="available_amount">Available</string>
     <string name="change">Change</string>
-    <string name="search_activities">Search by shop, name or more</string>
+    <string name="search_activities">Search by store or contact</string>
     <string name="today">Today</string>
-    <string name="this_week">This week</string>
-    <string name="this_month">This month</string>
+    <string name="last_week">Last week</string>
+    <string name="last_month">Last month</string>
     <string name="online_payment">Online payment</string>
     <string name="available_balance">Wall-Et balance</string>
     <string name="remove">Remove</string>
     <string name="pause">Pause</string>
     <string name="action_send">Send</string>
     <string name="balance">Balance</string>
+    <string name="last_year">Last year</string>
+    <string name="max">Max.</string>
+    <string name="valid_thru">Valid Thru</string>
+    <string name="add_card">Add new card</string>
+    <string name="invest">Invest</string>
 </resources>

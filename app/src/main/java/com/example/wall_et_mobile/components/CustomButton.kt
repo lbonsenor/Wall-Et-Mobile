@@ -2,9 +2,10 @@ package com.example.wall_et_mobile.components
 
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
@@ -17,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.wall_et_mobile.R
@@ -34,17 +36,16 @@ fun CustomButton(text: String, icon: Int, onClick: () -> Unit) {
         ),
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(20.dp)),
-//            .background(color = MaterialTheme.colorScheme.surfaceVariant),
+            .clip(RoundedCornerShape(20.dp))
+            .aspectRatio(1f),
         shape = RectangleShape,
         ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(10.dp),
-            modifier = Modifier.padding(10.dp)
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceEvenly,
         ) {
             Icon(painter = painterResource(icon), contentDescription = null)
-            Text(text = text)
+            Text(text = text, softWrap = false, textAlign = TextAlign.Center)
         }
 
     }
