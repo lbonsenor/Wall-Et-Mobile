@@ -19,7 +19,7 @@
 
     <!--    Activities    -->
     <string name="title_activity">Actividad</string>
-    <string name="search_activities">Buscá por tienda, nombre y más</string>
+    <string name="search_activities">Buscá por tienda o contacto</string>
     <string name="today">Hoy</string>
     <string name="last_week">Última semana</string>
     <string name="last_month">Último mes</string>

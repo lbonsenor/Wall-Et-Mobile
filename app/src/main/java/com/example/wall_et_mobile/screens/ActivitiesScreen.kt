@@ -52,6 +52,7 @@ fun ActivitiesScreen(innerPadding: PaddingValues) {
         }
 
     Column(
+        verticalArrangement = Arrangement.spacedBy(10.dp),
         modifier = Modifier
             .padding(innerPadding)
             .fillMaxSize()
@@ -80,12 +81,15 @@ fun ActivityChipGroup(value: Int, onValueChange: (Int) -> Unit){
                 onClick = {
                     onValueChange(index)
                 },
-                label = { Text(stringResource(entry.labelInt)) },
+                label = {
+                    Text(
+                        text = stringResource(entry.labelInt),
+                    )},
                 shape = CircleShape,
                 colors = FilterChipDefaults.filterChipColors().copy(
-                    selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
-                    selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                    labelColor = MaterialTheme.colorScheme.onPrimary,
+                    selectedContainerColor = MaterialTheme.colorScheme.secondary,
+                    selectedLabelColor = MaterialTheme.colorScheme.onPrimary,
+                    labelColor = MaterialTheme.colorScheme.onPrimaryContainer,
                 )
             )
         }
