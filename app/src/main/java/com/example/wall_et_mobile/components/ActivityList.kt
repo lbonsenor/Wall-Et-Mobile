@@ -10,22 +10,22 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.wall_et_mobile.model.Activity
+import com.example.wall_et_mobile.model.Transaction
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun ActivityList(activities: List<Activity>) {
+fun ActivityList(activities: List<Transaction>) {
     Column() {
         activities.forEach { activity ->
-            ActivityItem(activity = activity)
+            ActivityItem(transaction = activity)
         }
     }
 
 }
 
 @Composable
-fun ActivityListWithDates(activities: List<Activity>){
+fun ActivityListWithDates(activities: List<Transaction>){
     val groupedActivities = activities
         .groupBy { activity ->
             activity.transactionTime.toString().split(" ")[0]
@@ -43,7 +43,7 @@ fun ActivityListWithDates(activities: List<Activity>){
             DateSeparator(formattedDate)
             Column() {
                 activities.forEach { activity ->
-                    ActivityItem(activity = activity)
+                    ActivityItem(transaction = activity)
                 }
             }
             HorizontalDivider(

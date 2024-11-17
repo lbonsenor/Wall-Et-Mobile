@@ -21,7 +21,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.wall_et_mobile.model.Activity
+import com.example.wall_et_mobile.model.Transaction
 import com.example.wall_et_mobile.model.TransactionType
 import com.example.wall_et_mobile.ui.theme.Green
 import com.example.wall_et_mobile.ui.theme.WallEtTheme
@@ -39,12 +39,12 @@ fun Preview() {
 }
 
 @Composable
-fun ActivityItem(activity: Activity = Activity.Test) {
+fun ActivityItem(transaction: Transaction = Transaction.Test) {
     val timeFormatter = SimpleDateFormat("HH:MM", Locale.getDefault())
     val currencyFormatter = NumberFormat.getCurrencyInstance(Locale.US)
 
-    val formattedTime = timeFormatter.format(activity.transactionTime)
-    val formattedCurrency = currencyFormatter.format(activity.amount.number)
+    val formattedTime = timeFormatter.format(transaction.transactionTime)
+    val formattedCurrency = currencyFormatter.format(transaction.amount.number)
 
     val titleColor = MaterialTheme.colorScheme.onSurface
     val subtitleColor = MaterialTheme.colorScheme.onTertiary
@@ -73,7 +73,7 @@ fun ActivityItem(activity: Activity = Activity.Test) {
                         )
                 ) {
                     Icon(
-                        painter = painterResource(activity.transactionType.iconInt),
+                        painter = painterResource(transaction.transactionType.iconInt),
                         contentDescription = "ActivityImage",
                         tint = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(10.dp)
@@ -84,17 +84,12 @@ fun ActivityItem(activity: Activity = Activity.Test) {
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     Text(
-                        text = activity.name,
+                        text = transaction.name,
                         style = MaterialTheme.typography.titleSmall,
                         color = titleColor
                     )
                     Text(
-                        text = stringResource(activity.transactionType.stringInt),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = subtitleColor
-                    )
-                    Text(
-                        text = stringResource(activity.paymentType.stringInt),
+                        text = stringResource(transaction.transactionType.stringInt),
                         style = MaterialTheme.typography.labelSmall,
                         color = subtitleColor
                     )
@@ -104,7 +99,7 @@ fun ActivityItem(activity: Activity = Activity.Test) {
                 horizontalAlignment = Alignment.End,
                 modifier = Modifier.padding(start = 16.dp)
             ) {
-                if (activity.transactionType == TransactionType.TRANSFER_RECEIVED) {
+                if (transaction.transactionType == TransactionType.TRANSFER_RECEIVED) {
                     Text(
                         text = "+$formattedCurrency",
                         color = Green,
