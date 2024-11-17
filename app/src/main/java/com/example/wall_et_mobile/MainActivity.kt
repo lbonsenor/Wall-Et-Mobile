@@ -19,6 +19,7 @@ import androidx.compose.runtime.SideEffect
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.wall_et_mobile.model.User
 import com.example.wall_et_mobile.screens.ActivitiesScreen
 import com.example.wall_et_mobile.screens.HomeScreen
 import com.example.wall_et_mobile.screens.Screen
@@ -44,6 +45,7 @@ class MainActivity : ComponentActivity() {
                 }
 
                 Scaffold (
+                    //topBar = { CustomTopAppBar(User(1, "test", "test", "Lautaro", "test", "test", "test", "test",)) },
                     bottomBar = { CustomAppBar(navController) },
                     floatingActionButtonPosition = FabPosition.Center,
                     isFloatingActionButtonDocked = true,
