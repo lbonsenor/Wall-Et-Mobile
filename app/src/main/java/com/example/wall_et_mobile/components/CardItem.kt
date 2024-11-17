@@ -66,7 +66,9 @@ fun CardItem(card: CardDetails) {
             )
     ) {
         Column(
-            modifier = Modifier.padding(16.dp),
+            modifier = Modifier
+                .padding(horizontal = 25.dp, vertical = 15.dp)
+                .fillMaxHeight(),
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.Start
         ) {
@@ -78,7 +80,8 @@ fun CardItem(card: CardDetails) {
                 Icon(
                     painter = painterResource(card.getCardBrand().iconInt),
                     contentDescription = "Card Brand",
-                    tint = Color.Unspecified
+                    tint = Color.Unspecified,
+                    modifier = Modifier.size(70.dp)
                 )
                 IconButton(
                     onClick = { isNumberVisible = !isNumberVisible }
@@ -126,15 +129,16 @@ fun CardItem(card: CardDetails) {
                         text = stringResource(id = R.string.valid_thru),
                         fontSize = 12.sp,
                         maxLines = 2,
-                        modifier = Modifier.width(IntrinsicSize.Min).padding(horizontal = 8.dp),
+                        modifier = Modifier.width(IntrinsicSize.Min),
                         lineHeight = 16.sp,
                         textAlign = androidx.compose.ui.text.style.TextAlign.End,
                     )
+                    Spacer(modifier = Modifier.width(10.dp))
                     Text(
                         text = card.cardExpiration,
                         color = White,
                         fontSize = 16.sp,
-                        fontWeight = FontWeight.Medium
+                        fontWeight = FontWeight.SemiBold,
                     )
                 }
             }
