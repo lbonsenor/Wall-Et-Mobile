@@ -77,7 +77,7 @@ fun OutlinedButtonExample(onClick: () -> Unit) {
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text(
-            text = stringResource(R.string.add),
+            text = stringResource(R.string.add_card),
         )
     }
 }

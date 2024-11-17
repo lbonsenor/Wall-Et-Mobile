@@ -46,4 +46,5 @@
     <string name="last_year">Last year</string>
     <string name="max">Max.</string>
     <string name="valid_thru">Valid Thru</string>
+    <string name="add_card">Add new card</string>
 </resources>
