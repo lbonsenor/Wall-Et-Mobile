@@ -8,8 +8,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.example.wall_et_mobile.components.Card
 import com.example.wall_et_mobile.components.CardList
+import com.example.wall_et_mobile.data.mock.MockCards
 
 @Composable
 fun CardsScreen(innerPadding: PaddingValues) {
@@ -21,6 +21,6 @@ fun CardsScreen(innerPadding: PaddingValues) {
             .fillMaxSize()
             .verticalScroll(scrollState)
     ) {
-        CardList(Card.sampleCards)
+        CardList(MockCards.sampleCards)
     }
 }
