@@ -21,13 +21,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.wall_et_mobile.R
 import com.example.wall_et_mobile.components.ActivityList
 import com.example.wall_et_mobile.components.Balance
 import com.example.wall_et_mobile.components.CustomButton
 
 @Composable
-fun HomeScreen(innerPadding : PaddingValues){
+fun HomeScreen(innerPadding : PaddingValues, navController : NavHostController){
     Column (
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween,
@@ -51,7 +53,9 @@ fun HomeScreen(innerPadding : PaddingValues){
                     .padding(16.dp)
             ) {
                 Box(modifier = Modifier.weight(1f)) {
-                    CustomButton(stringResource(R.string.title_transfer), R.drawable.payments, onClick = {})
+                    CustomButton(stringResource(R.string.title_transfer), R.drawable.payments, onClick = {
+                        navController.navigate(Screen.Transfer.route)
+                    })
                 }
                 Box(modifier = Modifier.weight(1f)) {
                     CustomButton(stringResource(R.string.title_add_fund), R.drawable.payments, onClick = {})

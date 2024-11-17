@@ -33,10 +33,9 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.wall_et_mobile.screens.Screen.*
+import com.example.wall_et_mobile.screens.BottomAppBarScreen.*
 import com.example.wall_et_mobile.ui.theme.WallEtTheme
 import androidx.compose.runtime.rememberCoroutineScope
-import com.example.wall_et_mobile.ui.theme.White
 import kotlinx.coroutines.launch
 
 @Composable
