@@ -38,7 +38,7 @@ fun Balance(balance: CurrencyAmount = CurrencyAmount(123000.0, Currency.getInsta
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.Bottom,
         modifier = Modifier.fillMaxWidth()
-            .padding(horizontal = 10.dp)
+            .padding(horizontal = 10.dp, vertical = 30.dp)
     ){
         Spacer(modifier = Modifier.weight(1/6f))
         Column (
