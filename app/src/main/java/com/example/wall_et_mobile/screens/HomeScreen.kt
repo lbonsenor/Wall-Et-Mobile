@@ -40,77 +40,87 @@ fun HomeScreen(innerPadding : PaddingValues) {
             .background(MaterialTheme.colorScheme.background)
             .verticalScroll(rememberScrollState())
     ) {
-        Column(
-            modifier = Modifier
-                .padding(horizontal = 10.dp)
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(0.dp, 0.dp, 30.dp, 30.dp))
-                .background(MaterialTheme.colorScheme.primary)
-
-        ) {
-            Balance()
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-            ) {
-                Box(modifier = Modifier.weight(1f)) {
-                    CustomButton(
-                        stringResource(R.string.title_transfer),
-                        R.drawable.payments,
-                        onClick = {})
-                }
-                Box(modifier = Modifier.weight(1f)) {
-                    CustomButton(
-                        stringResource(R.string.title_add_fund),
-                        R.drawable.payments,
-                        onClick = {})
-                }
-            }
-        }
+        BalanceCard()
 
         Column(
             modifier = Modifier
                 .weight(1f)
                 .fillMaxWidth()
         ) {
-            Card(
-                shape = RoundedCornerShape(20.dp),
-                elevation = CardDefaults.cardElevation(
-                    defaultElevation = 10.dp
-                ),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.background
-                ),
-                modifier = Modifier
-                    .padding(20.dp)
-            ) {
-                Row(
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(15.dp)
-                ) {
-                    Text(
-                        text = stringResource(R.string.subtitle_recent_activities),
-                        style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.onBackground
-                    )
+            ActivityCard()
+        }
+    }
+}
 
-                    Text(
-                        modifier = Modifier
-                            .clickable(enabled = true) {
-                                Log.d("HomeScreen Click", "See more")
-                            },
-                        color = MaterialTheme.colorScheme.primary,
-                        style = MaterialTheme.typography.labelSmall,
-                        text = "${stringResource(R.string.see_more)} >"
-                    )
-                }
-                ActivityList(MockTransactions.sampleTransactions.take(3))
+@Composable
+fun BalanceCard(){
+    Column(
+        modifier = Modifier
+            .padding(horizontal = 10.dp)
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(0.dp, 0.dp, 30.dp, 30.dp))
+            .background(MaterialTheme.colorScheme.primary)
+
+    ) {
+        Balance()
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            Box(modifier = Modifier.weight(1f)) {
+                CustomButton(
+                    stringResource(R.string.title_transfer),
+                    R.drawable.payments,
+                    onClick = {})
+            }
+            Box(modifier = Modifier.weight(1f)) {
+                CustomButton(
+                    stringResource(R.string.title_add_fund),
+                    R.drawable.payments,
+                    onClick = {})
             }
         }
+    }
+}
+
+@Composable
+fun ActivityCard(){
+    Card(
+        shape = RoundedCornerShape(20.dp),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 10.dp
+        ),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.background
+        ),
+        modifier = Modifier
+            .padding(20.dp)
+    ) {
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(15.dp)
+        ) {
+            Text(
+                text = stringResource(R.string.subtitle_recent_activities),
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onBackground
+            )
+
+            Text(
+                modifier = Modifier
+                    .clickable(enabled = true) {
+                        Log.d("HomeScreen Click", "See more")
+                    },
+                color = MaterialTheme.colorScheme.primary,
+                style = MaterialTheme.typography.labelSmall,
+                text = "${stringResource(R.string.see_more)} >"
+            )
+        }
+        ActivityList(MockTransactions.sampleTransactions.take(3))
     }
 }
