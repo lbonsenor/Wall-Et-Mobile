@@ -21,8 +21,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.example.wall_et_mobile.R
 import com.example.wall_et_mobile.components.ActivityList
 import com.example.wall_et_mobile.components.Balance
@@ -53,12 +53,22 @@ fun HomeScreen(innerPadding : PaddingValues, navController : NavHostController){
                     .padding(16.dp)
             ) {
                 Box(modifier = Modifier.weight(1f)) {
-                    CustomButton(stringResource(R.string.title_transfer), R.drawable.payments, onClick = {
-                        navController.navigate(Screen.Transfer.route)
+                    CustomButton(stringResource(R.string.title_transfer), R.drawable.transfer, onClick = {
+                        navController.navigate(Screen.Transfer.route){
+                            popUpTo(navController.graph.findStartDestination().id) {saveState = true}
+                            launchSingleTop = true
+                            restoreState = true
+                        }
                     })
                 }
                 Box(modifier = Modifier.weight(1f)) {
-                    CustomButton(stringResource(R.string.title_add_fund), R.drawable.payments, onClick = {})
+                    CustomButton(stringResource(R.string.title_add_fund), R.drawable.receive, onClick = {})
+                }
+                Box(modifier = Modifier.weight(1f)) {
+                    CustomButton(
+                        stringResource(R.string.invest),
+                        R.drawable.invest,
+                        onClick = {})
                 }
             }
         }
