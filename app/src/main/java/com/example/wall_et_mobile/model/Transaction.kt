@@ -7,10 +7,11 @@ import java.time.LocalDate
 import java.time.ZoneId
 
 data class Transaction(
+    val transactionId: Int = 0,
     val amount: CurrencyAmount,
     val transactionTime: Timestamp,
-    val name: String,
     val transactionType: TransactionType,
+    val name: String,
 ) {
     fun toLocalDate() : LocalDate{
         return transactionTime.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
