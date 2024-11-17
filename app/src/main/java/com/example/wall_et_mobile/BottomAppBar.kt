@@ -18,6 +18,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemColors
+import androidx.compose.material3.NavigationRail
+import androidx.compose.material3.NavigationRailItem
+import androidx.compose.material3.NavigationRailItemColors
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -151,5 +154,53 @@ fun QRFab(
     )
     {
         Icon(imageVector = ImageVector.vectorResource(R.drawable.qrcode_scan), contentDescription = "QR", tint = MaterialTheme.colorScheme.onPrimary)
+    }
+}
+
+@Composable
+fun NavBarLandscape(navController: NavController, qrScanner: QRScanner){
+    val screens = listOf(Home, Cards, Activities, SeeMore)
+    val currentRoute = currentRoute(navController)
+
+    NavigationRail(
+        containerColor = MaterialTheme.colorScheme.primary,
+        modifier = Modifier
+            .clip(RoundedCornerShape(15.dp, 15.dp))
+    ) {
+        screens.forEach{ screen ->
+            NavigationRailItem(
+                onClick = { navController.navigate(screen.route){
+                    popUpTo(navController.graph.findStartDestination().id) {saveState = true}
+                    launchSingleTop = true
+                    restoreState = true
+                } },
+                selected = currentRoute == screen.route,
+                colors = NavigationRailItemColors(
+                    // LightMode: White, DarkMode: White
+                    selectedIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                    unselectedIconColor = MaterialTheme.colorScheme.onPrimary,
+
+                    selectedTextColor = MaterialTheme.colorScheme.onPrimary,
+                    unselectedTextColor = MaterialTheme.colorScheme.onPrimary,
+
+                    // LightMode: White, DarkMode: Purple
+                    selectedIndicatorColor = MaterialTheme.colorScheme.primaryContainer,
+
+                    disabledIconColor = Color.Transparent,
+                    disabledTextColor = Color.Transparent,
+                ),
+                icon = {
+                    if (screen.isEnabled)
+                        if (screen.iconInt == -1)
+                            Icon(imageVector = screen.icon, contentDescription = "App Button")
+                        else
+                            Icon(painter = painterResource(screen.iconInt), contentDescription = "App Button")
+                },
+                enabled = screen.isEnabled,
+                label = { if (screen.isEnabled) Text(text = stringResource(screen.labelInt), color = MaterialTheme.colorScheme.onPrimary, style = MaterialTheme.typography.labelSmall)},
+                alwaysShowLabel = false,
+            )
+        }
+        QRFab(qrScanner::startScan)
     }
 }

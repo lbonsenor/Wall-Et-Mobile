@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,6 +22,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -28,9 +30,11 @@ import com.example.wall_et_mobile.screens.ActivitiesScreen
 import com.example.wall_et_mobile.screens.HomeScreen
 import com.example.wall_et_mobile.screens.BottomAppBarScreen
 import com.example.wall_et_mobile.screens.CardsScreen
+import com.example.wall_et_mobile.screens.HomeScreenLandscape
 import com.example.wall_et_mobile.screens.Screen
 import com.example.wall_et_mobile.screens.TransferScreen
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import androidx.compose.material3.Scaffold as Scaffold2
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,41 +53,80 @@ class MainActivity : ComponentActivity() {
             var qrScanner = QRScanner(appContext = applicationContext)
             WallEtTheme {
                 val navController = rememberNavController()
-                val systemUiController = rememberSystemUiController()
 
-                val statusBarColor = MaterialTheme.colorScheme.background
-                val systemNavColor = MaterialTheme.colorScheme.primary
-
-                SideEffect {
-                    systemUiController.setStatusBarColor(statusBarColor)
-                    systemUiController.setNavigationBarColor(systemNavColor)
-                }
-
-                Scaffold (
-                    //topBar = { CustomTopAppBar(User(1, "test", "test", "Lautaro", "test", "test", "test", "test",)) },
-                    bottomBar = { CustomAppBar(navController) },
-                    floatingActionButtonPosition = FabPosition.Center,
-                    isFloatingActionButtonDocked = true,
-                    floatingActionButton = { QRFab(qrScanner::startScan) },
-                    backgroundColor = MaterialTheme.colorScheme.background,
-                    modifier = Modifier.systemBarsPadding()
-
-                ) { innerPadding ->
-                    NavHost(
-                        navController = navController,
-                        startDestination = BottomAppBarScreen.Home.route,
-                        builder = {
-                            composable(BottomAppBarScreen.Home.route){ HomeScreen(innerPadding, navController, orientation) }
-                            composable(BottomAppBarScreen.Cards.route){ CardsScreen(innerPadding) }
-                            composable(BottomAppBarScreen.Activities.route){ ActivitiesScreen(innerPadding) }
-                            composable(BottomAppBarScreen.SeeMore.route){}
-                            composable(Screen.Transfer.route){ TransferScreen(innerPadding)}
-                        }
-                    )
-
+                when (orientation){
+                    Configuration.ORIENTATION_PORTRAIT -> ScaffoldPortrait(navController, qrScanner)
+                    else -> ScaffoldLandscape(navController, qrScanner)
                 }
 
             }
+        }
+    }
+}
+
+@Composable
+fun ScaffoldPortrait(navController: NavHostController, qrScanner: QRScanner){
+    val systemUiController = rememberSystemUiController()
+
+    val statusBarColor = MaterialTheme.colorScheme.background
+    val systemNavColor = MaterialTheme.colorScheme.primary
+
+    SideEffect {
+        systemUiController.setStatusBarColor(statusBarColor)
+        systemUiController.setNavigationBarColor(systemNavColor)
+    }
+    Scaffold (
+        //topBar = { CustomTopAppBar(User(1, "test", "test", "Lautaro", "test", "test", "test", "test",)) },
+        bottomBar = { CustomAppBar(navController) },
+        floatingActionButtonPosition = FabPosition.Center,
+        isFloatingActionButtonDocked = true,
+        floatingActionButton = { QRFab(qrScanner::startScan) },
+        backgroundColor = MaterialTheme.colorScheme.background,
+        modifier = Modifier.systemBarsPadding()
+
+    ) { innerPadding ->
+        NavHost(
+            navController = navController,
+            startDestination = BottomAppBarScreen.Home.route,
+            builder = {
+                composable(BottomAppBarScreen.Home.route){ HomeScreen(innerPadding, navController) }
+                composable(BottomAppBarScreen.Cards.route){ CardsScreen(innerPadding) }
+                composable(BottomAppBarScreen.Activities.route){ ActivitiesScreen(innerPadding) }
+                composable(BottomAppBarScreen.SeeMore.route){}
+                composable(Screen.Transfer.route){ TransferScreen(innerPadding)}
+            }
+        )
+    }
+}
+
+@Composable
+fun ScaffoldLandscape(navController: NavHostController, qrScanner: QRScanner){
+    val systemUiController = rememberSystemUiController()
+
+    val statusBarColor = MaterialTheme.colorScheme.primary
+    val systemNavColor = MaterialTheme.colorScheme.primary
+
+    SideEffect {
+        systemUiController.setStatusBarColor(statusBarColor)
+        systemUiController.setNavigationBarColor(systemNavColor)
+    }
+    Scaffold2(
+
+    )
+    { innerPadding ->
+        Row {
+            NavBarLandscape(navController, qrScanner)
+            NavHost(
+                navController = navController,
+                startDestination = BottomAppBarScreen.Home.route,
+                builder = {
+                    composable(BottomAppBarScreen.Home.route){ HomeScreenLandscape(innerPadding, navController) }
+                    composable(BottomAppBarScreen.Cards.route){ CardsScreen(innerPadding) }
+                    composable(BottomAppBarScreen.Activities.route){ ActivitiesScreen(innerPadding) }
+                    composable(BottomAppBarScreen.SeeMore.route){}
+                    composable(Screen.Transfer.route){ TransferScreen(innerPadding)}
+                }
+            )
         }
     }
 }

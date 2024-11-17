@@ -1,7 +1,6 @@
 package com.example.wall_et_mobile.screens
 
 import MockTransactions
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -9,9 +8,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -34,7 +35,7 @@ import com.example.wall_et_mobile.components.Balance
 import com.example.wall_et_mobile.components.CustomButton
 
 @Composable
-fun HomeScreen(innerPadding : PaddingValues, navController : NavHostController, orientation: Int){
+fun HomeScreen(innerPadding : PaddingValues, navController : NavHostController){
     Column (
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween,
@@ -50,7 +51,7 @@ fun HomeScreen(innerPadding : PaddingValues, navController : NavHostController, 
                 .weight(1f)
                 .fillMaxWidth()
         ) {
-            ActivityCard(navController)
+            ActivityCard(navController, innerPadding)
         }
     }
 }
@@ -95,7 +96,7 @@ fun BalanceCard(navController : NavHostController){
 }
 
 @Composable
-fun ActivityCard(navController: NavController){
+fun ActivityCard(navController: NavController, innerPadding: PaddingValues){
     Card(
         shape = RoundedCornerShape(20.dp),
         elevation = CardDefaults.cardElevation(
@@ -105,7 +106,9 @@ fun ActivityCard(navController: NavController){
             containerColor = MaterialTheme.colorScheme.background
         ),
         modifier = Modifier
+            .padding(innerPadding)
             .padding(20.dp)
+            .verticalScroll(rememberScrollState())
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -135,5 +138,64 @@ fun ActivityCard(navController: NavController){
             )
         }
         ActivityList(MockTransactions.sampleTransactions.take(3))
+    }
+}
+
+@Composable
+fun HomeScreenLandscape(innerPadding: PaddingValues, navController: NavHostController){
+    Row(
+        modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    )
+    {
+        BalanceCardLandscape(navController, innerPadding)
+        Column (
+            modifier = Modifier
+                .fillMaxWidth()
+        ) {
+            ActivityCard(navController, innerPadding)
+        }
+    }
+}
+
+@Composable
+fun BalanceCardLandscape(navController: NavController, innerPadding: PaddingValues){
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .padding(innerPadding)
+            .fillMaxHeight()
+            .width(350.dp)
+            .clip(RoundedCornerShape(0.dp, 30.dp))
+            .background(MaterialTheme.colorScheme.primary)
+
+    ) {
+        Balance()
+
+        Row (
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            modifier = Modifier
+                .padding(16.dp)
+        ) {
+            Box(modifier = Modifier.weight(1f)) {
+                CustomButton(stringResource(R.string.title_transfer), R.drawable.transfer, onClick = {
+                    navController.navigate(Screen.Transfer.route){
+                        popUpTo(navController.graph.findStartDestination().id) {saveState = true}
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                })
+            }
+            Box(modifier = Modifier.weight(1f)) {
+                CustomButton(stringResource(R.string.title_add_fund), R.drawable.receive, onClick = {})
+            }
+            Box(modifier = Modifier.weight(1f)) {
+                CustomButton(
+                    stringResource(R.string.invest),
+                    R.drawable.invest,
+                    onClick = {})
+            }
+        }
     }
 }
