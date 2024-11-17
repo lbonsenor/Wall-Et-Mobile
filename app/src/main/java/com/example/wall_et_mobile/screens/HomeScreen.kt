@@ -121,7 +121,7 @@ fun ActivityCard(){
                     .clickable(enabled = true) {
                         Log.d("HomeScreen Click", "See more")
                     },
-                color = MaterialTheme.colorScheme.primary,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
                 style = MaterialTheme.typography.labelSmall,
                 text = "${stringResource(R.string.see_more)} >"
             )
