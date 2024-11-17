@@ -3,7 +3,9 @@ package com.example.wall_et_mobile.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
@@ -33,8 +35,9 @@ fun CustomButton(text: String, icon: Int, onClick: () -> Unit) {
             disabledContentColor = MaterialTheme.colorScheme.onSurfaceVariant
         ),
         modifier = Modifier
-            .fillMaxSize()
-            .clip(RoundedCornerShape(20.dp)),
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(20.dp))
+            .aspectRatio(1f),
         shape = RectangleShape,
         ) {
         Column(
