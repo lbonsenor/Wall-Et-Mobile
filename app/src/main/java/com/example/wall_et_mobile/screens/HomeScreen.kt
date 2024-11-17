@@ -12,7 +12,11 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,24 +31,24 @@ import com.example.wall_et_mobile.components.Balance
 import com.example.wall_et_mobile.components.CustomButton
 
 @Composable
-fun HomeScreen(innerPadding : PaddingValues){
-    Column (
+fun HomeScreen(innerPadding : PaddingValues) {
+    Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.SpaceBetween,
+        verticalArrangement = Arrangement.spacedBy(10.dp),
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
-    ){
+            .verticalScroll(rememberScrollState())
+    ) {
         Column(
             modifier = Modifier
-                .padding(5.dp, 0.dp)
+                .padding(horizontal = 10.dp)
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(0.dp, 0.dp, 30.dp, 30.dp))
                 .background(MaterialTheme.colorScheme.primary)
 
         ) {
             Balance()
-
             Row(
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
                 modifier = Modifier
@@ -52,47 +56,61 @@ fun HomeScreen(innerPadding : PaddingValues){
                     .padding(16.dp)
             ) {
                 Box(modifier = Modifier.weight(1f)) {
-                    CustomButton(stringResource(R.string.title_transfer), R.drawable.payments, onClick = {})
+                    CustomButton(
+                        stringResource(R.string.title_transfer),
+                        R.drawable.payments,
+                        onClick = {})
                 }
                 Box(modifier = Modifier.weight(1f)) {
-                    CustomButton(stringResource(R.string.title_add_fund), R.drawable.payments, onClick = {})
+                    CustomButton(
+                        stringResource(R.string.title_add_fund),
+                        R.drawable.payments,
+                        onClick = {})
                 }
             }
         }
-        // botones de transferencia e ingresar
 
-
-        Column (
+        Column(
             modifier = Modifier
                 .weight(1f)
                 .fillMaxWidth()
-//                .clip(RoundedCornerShape(20.dp, 20.dp))
-//                .background(MaterialTheme.colorScheme.surface)
         ) {
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
+            Card(
+                shape = RoundedCornerShape(20.dp),
+                elevation = CardDefaults.cardElevation(
+                    defaultElevation = 10.dp
+                ),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.background
+                ),
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(15.dp)
-                ) {
-                Text(
-                    text = stringResource(R.string.subtitle_recent_activities),
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-
-                Text(
+                    .padding(20.dp)
+            ) {
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier
-                        .clickable(enabled = true) {
-                            Log.d("HomeScreen Click", "See more")
-                        },
-                    color = MaterialTheme.colorScheme.primary,
-                    style = MaterialTheme.typography.labelSmall,
-                    text = "${stringResource(R.string.see_more)} >"
-                )
+                        .fillMaxWidth()
+                        .padding(15.dp)
+                ) {
+                    Text(
+                        text = stringResource(R.string.subtitle_recent_activities),
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
+
+                    Text(
+                        modifier = Modifier
+                            .clickable(enabled = true) {
+                                Log.d("HomeScreen Click", "See more")
+                            },
+                        color = MaterialTheme.colorScheme.primary,
+                        style = MaterialTheme.typography.labelSmall,
+                        text = "${stringResource(R.string.see_more)} >"
+                    )
+                }
+                ActivityList(MockTransactions.sampleTransactions.take(3))
             }
-            ActivityList(MockTransactions.sampleTransactions)
         }
     }
 }
