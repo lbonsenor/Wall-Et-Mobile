@@ -25,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import com.example.wall_et_mobile.R
@@ -49,7 +50,7 @@ fun HomeScreen(innerPadding : PaddingValues, navController : NavHostController, 
                 .weight(1f)
                 .fillMaxWidth()
         ) {
-            ActivityCard()
+            ActivityCard(navController)
         }
     }
 }
@@ -94,7 +95,7 @@ fun BalanceCard(navController : NavHostController){
 }
 
 @Composable
-fun ActivityCard(){
+fun ActivityCard(navController: NavController){
     Card(
         shape = RoundedCornerShape(20.dp),
         elevation = CardDefaults.cardElevation(
@@ -122,7 +123,11 @@ fun ActivityCard(){
             Text(
                 modifier = Modifier
                     .clickable(enabled = true) {
-                        Log.d("HomeScreen Click", "See more")
+                        navController.navigate(BottomAppBarScreen.Activities.route){
+                            popUpTo(navController.graph.findStartDestination().id) {saveState = true}
+                            launchSingleTop = true
+                            restoreState = true
+                        }
                     },
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
                 style = MaterialTheme.typography.labelSmall,
