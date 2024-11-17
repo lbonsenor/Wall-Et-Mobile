@@ -37,14 +37,13 @@ fun HomeScreen(innerPadding : PaddingValues){
     ){
         Column(
             modifier = Modifier
-                .padding(5.dp, 0.dp)
+                .padding(horizontal = 10.dp)
                 .fillMaxWidth()
                 .clip(RoundedCornerShape(0.dp, 0.dp, 30.dp, 30.dp))
                 .background(MaterialTheme.colorScheme.primary)
 
         ) {
             Balance()
-
             Row(
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
                 modifier = Modifier
@@ -59,15 +58,11 @@ fun HomeScreen(innerPadding : PaddingValues){
                 }
             }
         }
-        // botones de transferencia e ingresar
-
 
         Column (
             modifier = Modifier
                 .weight(1f)
                 .fillMaxWidth()
-//                .clip(RoundedCornerShape(20.dp, 20.dp))
-//                .background(MaterialTheme.colorScheme.surface)
         ) {
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
