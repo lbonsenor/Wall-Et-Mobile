@@ -108,7 +108,7 @@ fun CardItem(card: CardDetails) {
                     fontSize = 26.sp,
                     fontWeight = FontWeight.Bold,
                     fontFamily = DarkerGrotesque,
-                    letterSpacing = 1.sp
+                    letterSpacing = 2.sp
                 )
 
             Spacer(modifier = Modifier.height(8.dp))

@@ -63,5 +63,6 @@
     <string name="max">Max.</string>
     <string name="valid_thru">Válido Hasta</string>
     <string name="add_card">Agregar nueva tarjeta</string>
+    <string name="invest">Invertir</string>
 
 </resources>

@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -67,18 +68,25 @@ fun BalanceCard(){
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .height(100.dp)
+                .padding(all = 10.dp)
         ) {
             Box(modifier = Modifier.weight(1f)) {
                 CustomButton(
                     stringResource(R.string.title_transfer),
-                    R.drawable.payments,
+                    R.drawable.transfer,
                     onClick = {})
             }
             Box(modifier = Modifier.weight(1f)) {
                 CustomButton(
                     stringResource(R.string.title_add_fund),
-                    R.drawable.payments,
+                    R.drawable.receive,
+                    onClick = {})
+            }
+            Box(modifier = Modifier.weight(1f)) {
+                CustomButton(
+                    stringResource(R.string.invest),
+                    R.drawable.invest,
                     onClick = {})
             }
         }
