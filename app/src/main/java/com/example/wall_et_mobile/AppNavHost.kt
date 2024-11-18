@@ -13,8 +13,11 @@ import androidx.navigation.navArgument
 import com.example.wall_et_mobile.model.Screen
 import com.example.wall_et_mobile.screens.ActivitiesScreen
 import com.example.wall_et_mobile.screens.CardsScreen
+import com.example.wall_et_mobile.screens.ForgotPasswordScreen
 import com.example.wall_et_mobile.screens.HomeScreen
 import com.example.wall_et_mobile.screens.HomeScreenLandscape
+import com.example.wall_et_mobile.screens.LoginScreen
+import com.example.wall_et_mobile.screens.SignupScreen
 import com.example.wall_et_mobile.screens.transfer.SelectAmountScreen
 import com.example.wall_et_mobile.screens.transfer.SelectDestinataryScreen
 import com.example.wall_et_mobile.screens.transfer.SelectPaymentScreen
@@ -24,12 +27,27 @@ fun AppNavHost(
     innerPadding: PaddingValues,
     modifier: Modifier,
     navController: NavHostController = rememberNavController(),
-    startDestination: String = Screen.Home.route
+//    startDestination: String = Screen.Login.route
+    startDestination: String = Screen.Home.route    // FOR TESTING
 ){
     NavHost(
         navController = navController,
         startDestination = startDestination,
         builder = {
+            composable(Screen.Login.route) {
+                LoginScreen(
+                    onNavigateToHome = { navigateTo(navController, Screen.Home.route) },
+                    onNavigateToForgotPassword = { navigateTo(navController, Screen.ForgotPassword.route) },
+                    onNavigateToSignUp = { navigateTo(navController, Screen.Signup.route) }
+                )
+            }
+            composable(Screen.Signup.route) {
+                SignupScreen(
+                    onNavigateToLogin = { navigateTo(navController, Screen.Login.route) },
+                    onNavigateUp = { navController.navigateUp() }
+                )
+            }
+            composable(Screen.ForgotPassword.route){ ForgotPasswordScreen() }
             composable(Screen.Home.route){
                 HomeScreen(
                     { navigateTo(navController, Screen.Transfer.route) },
@@ -84,6 +102,20 @@ fun LandscapeAppNavHost(
         navController = navController,
         startDestination = startDestination,
         builder = {
+            composable(Screen.Login.route) {
+                LoginScreen(
+                    onNavigateToHome = { navigateTo(navController, Screen.Home.route) },
+                    onNavigateToForgotPassword = { navigateTo(navController, Screen.ForgotPassword.route) },
+                    onNavigateToSignUp = { navigateTo(navController, Screen.Signup.route) }
+                )
+            }
+            composable(Screen.Signup.route) {
+                SignupScreen(
+                    onNavigateToLogin = { navigateTo(navController, Screen.Login.route) },
+                    onNavigateUp = { navController.navigateUp() }
+                )
+            }
+            composable(Screen.ForgotPassword.route){ ForgotPasswordScreen() }
             composable(Screen.Home.route){
                 HomeScreenLandscape(
                     innerPadding,
