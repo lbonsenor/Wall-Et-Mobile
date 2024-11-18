@@ -24,11 +24,13 @@
     <string name="last_week">Última semana</string>
     <string name="last_month">Último mes</string>
     <string name="choose_dates">Elegir fecha/s</string>
+
     <!--    Payment form    -->
     <string name="online_payment">Pago online</string>
     <string name="offline_payment">Pago en tienda física</string>
     <string name="transfer_received">Transferencia recibida</string>
     <string name="transfer_sent">Transferencia enviada</string>
+
     <!--    Payment type    -->
     <string name="available_balance">Dinero disponible</string>
     <string name="card">Tarjeta</string>
@@ -42,7 +44,6 @@
     <string name="recent_contacts">Recientes</string>
     <string name="favorite_contacts">Favoritos</string>
 
-
     <!--    Profile    -->
     <string name="title_profile">Perfil</string>
     <string name="update_profile">Actualizar Datos</string>
@@ -51,6 +52,23 @@
     <string name="faq">Preguntas Frecuentes</string>
     <string name="dark_mode">Modo Oscuro</string>
     <string name="light_mode">Modo Claro</string>
+
+    <!-- Registration and login -->
+    <string name="welcome">¡Bienvenidx!</string>
+    <string name="email">Correo electrónico</string>
+    <string name="password">Contraseña</string>
+    <string name="log_in">Iniciar sesión</string>
+    <string name="sign_up">Registrarme</string>
+    <string name="forgot_password">Olvidé mi contraseña</string>
+    <string name="name">Nombre</string>
+    <string name="username">Nombre de usuario</string>
+    <string name="repeat_password">Repetir contraseña</string>
+    <string name="already_have_account">Ya tengo una cuenta</string>
+    <string name="required_field">Campo requerido</string>
+    <string name="invalid_email">Email inválido</string>
+    <string name="passwords_dont_match">Las contraseñas no coinciden</string>
+    <string name="password_less_than_eight_characters">La contraseña debe tener al menos 8 caracteres</string>
+    <string name="password_format">La contraseña debe contener al menos una mayúscula, un número y un símbolo</string>
 
     <!--    Common    -->
     <string name="exit">Salir</string>
