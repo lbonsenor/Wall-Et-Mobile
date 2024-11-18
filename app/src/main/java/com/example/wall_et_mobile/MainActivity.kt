@@ -6,8 +6,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,16 +23,19 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.wall_et_mobile.screens.ActivitiesScreen
 import com.example.wall_et_mobile.screens.HomeScreen
 import com.example.wall_et_mobile.model.BottomAppBarScreen
 import com.example.wall_et_mobile.screens.CardsScreen
 import com.example.wall_et_mobile.screens.HomeScreenLandscape
 import com.example.wall_et_mobile.model.Screen
-import com.example.wall_et_mobile.screens.TransferScreen
+import com.example.wall_et_mobile.screens.transfer.SelectAmountScreen
+import com.example.wall_et_mobile.screens.transfer.TransferScreen
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import androidx.compose.material3.Scaffold as Scaffold2
 
@@ -95,7 +96,17 @@ fun ScaffoldPortrait(navController: NavHostController, qrScanner: QRScanner){
                 composable(BottomAppBarScreen.Cards.route){ CardsScreen(innerPadding) }
                 composable(BottomAppBarScreen.Activities.route){ ActivitiesScreen(innerPadding) }
                 composable(BottomAppBarScreen.SeeMore.route){}
-                composable(Screen.Transfer.route){ TransferScreen(innerPadding)}
+                composable(Screen.Transfer.route){ TransferScreen(innerPadding, navController) }
+                composable(
+                    route = Screen.SelectAmount.route,
+                    arguments = listOf(
+                        navArgument(name = "id"){
+                            type = NavType.StringType
+                        }
+                    )
+                ){ backStackEntry ->
+                    SelectAmountScreen(innerPadding, navController, backStackEntry.arguments?.getString("id"))
+                }
             }
         )
     }
@@ -129,7 +140,17 @@ fun ScaffoldLandscape(navController: NavHostController, qrScanner: QRScanner){
                     composable(BottomAppBarScreen.Cards.route){ CardsScreen(innerPadding) }
                     composable(BottomAppBarScreen.Activities.route){ ActivitiesScreen(innerPadding) }
                     composable(BottomAppBarScreen.SeeMore.route){}
-                    composable(Screen.Transfer.route){ TransferScreen(innerPadding)}
+                    composable(Screen.Transfer.route){ TransferScreen(innerPadding, navController) }
+                    composable(
+                        route = Screen.SelectAmount.route,
+                        arguments = listOf(
+                            navArgument(name = "id"){
+                                type = NavType.StringType
+                            }
+                        )
+                    ){ backStackEntry ->
+                        SelectAmountScreen(innerPadding, navController, backStackEntry.arguments?.getString("id"))
+                    }
                 }
             )
         }

@@ -1,4 +1,4 @@
-package com.example.wall_et_mobile.screens.Transfer
+package com.example.wall_et_mobile.screens.transfer
 
 
 import androidx.compose.foundation.layout.Arrangement
@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Face
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Icon
@@ -18,6 +19,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -31,12 +33,14 @@ import com.example.wall_et_mobile.components.ContactListWithSearchBar
 import com.example.wall_et_mobile.components.ContactsTabs
 import com.example.wall_et_mobile.components.TransferProgress
 import com.example.wall_et_mobile.data.mock.MockContacts
+import com.example.wall_et_mobile.model.User
 
 @Composable
 fun TransferScreen(innerPadding : PaddingValues, navController: NavHostController) {
-    var currentTab by remember { mutableStateOf(0) }
+    var currentTab by remember { mutableIntStateOf(0) }
     var favoriteUserIds by remember { mutableStateOf<List<Int>>(emptyList()) }
     var contactValue by remember { mutableStateOf("") }
+    var showErrorDialog by remember { mutableStateOf(false) }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -59,7 +63,7 @@ fun TransferScreen(innerPadding : PaddingValues, navController: NavHostControlle
             leadingIcon = {
                 Icon(
                     Icons.Filled.Face,
-                    contentDescription = "Search CVU or alias",
+                    contentDescription = stringResource(R.string.transfer_to_1),
                     modifier = Modifier.padding(start = 15.dp)
                 )
             },
@@ -68,7 +72,14 @@ fun TransferScreen(innerPadding : PaddingValues, navController: NavHostControlle
         )
         Button (
             onClick = {
-                navController.navigate("select_amount/1")
+                val user : User? = if (contactValue.matches("\\d+".toRegex()) == true){
+                    MockContacts.getUserByCVU(contactValue)
+                } else {
+                    MockContacts.getUserByAlias(contactValue)
+                }
+
+                if (user == null) { showErrorDialog = true }
+                else navController.navigate("select_amount/$contactValue")
             },
             colors = ButtonColors(
                 containerColor = MaterialTheme.colorScheme.secondary,
@@ -83,6 +94,20 @@ fun TransferScreen(innerPadding : PaddingValues, navController: NavHostControlle
         ) {
             Text(stringResource(R.string.continue_button))
         }
+
+        if (showErrorDialog) {
+            AlertDialog(
+                onDismissRequest = { showErrorDialog = false },
+                title = { Text(stringResource(R.string.error)) },
+                text = { Text(stringResource(R.string.user_not_found)) },
+                confirmButton = {
+                    Button(onClick = { showErrorDialog = false }) {
+                        Text("OK")
+                    }
+                }
+            )
+        }
+
         ContactsTabs(onTabSelected = { tabIndex -> currentTab = tabIndex }, initialTab = currentTab)
         when (currentTab) {
             0 -> ContactListWithSearchBar(MockContacts.sampleContacts, favoriteUserIds)

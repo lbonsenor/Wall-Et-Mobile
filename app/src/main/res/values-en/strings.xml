@@ -52,4 +52,7 @@
     <string name="amount">Amount</string>
     <string name="payment_method">Method</string>
     <string name="search_contact">Search contact</string>
+    <string name="continue_button">Continue</string>
+    <string name="error">Error</string>
+    <string name="user_not_found">User not found, try again.</string>
 </resources>
