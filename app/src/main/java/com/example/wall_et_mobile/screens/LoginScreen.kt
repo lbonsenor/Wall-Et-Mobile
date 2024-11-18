@@ -56,6 +56,12 @@ fun LoginScreen(navController: NavController) {
             style = MaterialTheme.typography.headlineLarge
         )
 
+        Text(
+            text = stringResource(R.string.log_in),
+            color = MaterialTheme.colorScheme.onBackground,
+            style = MaterialTheme.typography.headlineMedium
+        )
+
         Card(
             modifier = Modifier
                 .fillMaxWidth()

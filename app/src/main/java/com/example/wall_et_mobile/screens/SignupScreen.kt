@@ -67,6 +67,12 @@ fun SignupScreen(navController: NavController) {
             style = MaterialTheme.typography.headlineLarge
         )
 
+        Text(
+            text = stringResource(R.string.sign_up),
+            color = MaterialTheme.colorScheme.onBackground,
+            style = MaterialTheme.typography.headlineMedium
+        )
+
         Card(
             modifier = Modifier
                 .fillMaxWidth()
