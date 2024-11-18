@@ -77,4 +77,5 @@
     <string name="verification_code">Verification code received</string>
     <string name="validate">Validate</string>
     <string name="confirm">Confirm</string>
+    <string name="fast_login">Log in without mess</string>
 </resources>

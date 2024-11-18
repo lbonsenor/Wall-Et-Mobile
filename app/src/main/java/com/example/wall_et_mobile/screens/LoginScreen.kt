@@ -101,6 +101,15 @@ fun LoginScreen(navController: NavController) {
                     enabled = isFormValid
                 )
 
+                EndFormButton(
+                    textResourceId = R.string.fast_login,
+                    onClick = {
+                        navController.navigate(Screen.Home.route) {
+                            popUpTo(Screen.Login.route) { inclusive = true }
+                        }
+                    },
+                )
+
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween

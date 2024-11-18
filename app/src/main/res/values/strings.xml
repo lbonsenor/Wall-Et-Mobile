@@ -96,5 +96,6 @@
     <string name="verification_code">Código de verificación recibido</string>
     <string name="validate">Validar</string>
     <string name="confirm">Confirmar</string>
+    <string name="fast_login">Entrar sin este lío (provisional)</string>
 
 </resources>
