@@ -72,27 +72,24 @@ fun ContactItem(user: User, favoriteUserIds: List<Int>, onFavoriteChange: (Int, 
                     //modifier = Modifier.padding(start = 8.dp),
                 )
             }
-            Row() {
-                IconButton(
-                    onClick = { onFavoriteChange(user.id, !isFavorited) } // agregarlo a la lista de favoritos
-                ) {
-                    Icon(
-                        painter = rememberVectorPainter(image = if (isFavorited) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder),
-                        contentDescription = "Favorite",
-                        modifier = Modifier.padding(8.dp),
-                        tint = if (isSystemInDarkTheme()) { DarkModeYellow } else { LightModeYellow }
+            IconButton(
+                onClick = {
+                    onFavoriteChange(
+                        user.id,
+                        !isFavorited
                     )
-                }
-                IconButton(
-                    onClick = { } // agregarlo a la lista de favoritos
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.Delete,
-                        contentDescription = "Favorite",
-                        //modifier = Modifier.padding(8.dp),
-                        tint = Color.Red
-                    )
-                }
+                } // agregarlo a la lista de favoritos
+            ) {
+                Icon(
+                    painter = rememberVectorPainter(image = if (isFavorited) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder),
+                    contentDescription = "Favorite",
+                    modifier = Modifier.padding(8.dp),
+                    tint = if (isSystemInDarkTheme()) {
+                        DarkModeYellow
+                    } else {
+                        LightModeYellow
+                    }
+                )
             }
         }
     }
