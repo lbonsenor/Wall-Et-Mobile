@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 
 @Composable
-fun CustomTextField(value: String, onValueChange: (String) -> Unit, labelResourceId: Int, modifier: Modifier = Modifier, trailingIcon: @Composable (() -> Unit)? = null) {
+fun CustomTextField(value: String, onValueChange: (String) -> Unit, labelResourceId: Int, modifier: Modifier = Modifier, trailingIcon: @Composable (() -> Unit)? = null, isError: Boolean = false) {
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
@@ -25,8 +25,11 @@ fun CustomTextField(value: String, onValueChange: (String) -> Unit, labelResourc
             unfocusedBorderColor = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.5f),
             focusedLabelColor = MaterialTheme.colorScheme.surfaceContainer,
             unfocusedLabelColor = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.5f),
+            errorBorderColor = MaterialTheme.colorScheme.error,
+            errorLabelColor = MaterialTheme.colorScheme.error,
         ),
         trailingIcon = trailingIcon,
-        modifier = modifier
+        modifier = modifier,
+        isError = isError
     )
 }

@@ -12,14 +12,16 @@ import androidx.compose.ui.res.painterResource
 import com.example.wall_et_mobile.R
 
 @Composable
-fun PasswordField(password: String, onPasswordChange: (String) -> Unit, modifier: Modifier = Modifier) {
+fun PasswordField(password: String, onPasswordChange: (String) -> Unit, modifier: Modifier = Modifier, isRepeatPassword: Boolean = false, originalPassword: String = "", label: Int = R.string.password) {
     var passwordVisible by remember { mutableStateOf(false) }
+    val isError = isRepeatPassword && password.isNotEmpty() && password != originalPassword
 
     CustomTextField(
         value = password,
         onValueChange = onPasswordChange,
-        labelResourceId = R.string.password,
+        labelResourceId = label,
         modifier = modifier,
+        isError = isError,
         trailingIcon = {
             IconButton(onClick = { passwordVisible = !passwordVisible }) {
                 Icon(

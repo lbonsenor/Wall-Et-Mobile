@@ -125,7 +125,7 @@ fun LoginScreen(navController: NavController) {
 @Preview(name = "LightMode")
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "DarkMode")
 @Composable
-fun Preview() {
+fun LoginScreenPreview() {
     WallEtTheme {
         LoginScreen(navController = NavController(LocalContext.current))
     }
