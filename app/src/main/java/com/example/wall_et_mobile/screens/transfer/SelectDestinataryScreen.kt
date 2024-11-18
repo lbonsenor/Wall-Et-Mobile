@@ -79,7 +79,7 @@ fun TransferScreen(innerPadding : PaddingValues, navController: NavHostControlle
                 }
 
                 if (user == null) { showErrorDialog = true }
-                else navController.navigate("select_amount/$contactValue")
+                else navController.navigate("select_amount/${user.id}")
             },
             colors = ButtonColors(
                 containerColor = MaterialTheme.colorScheme.secondary,
