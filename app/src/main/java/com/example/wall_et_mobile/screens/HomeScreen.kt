@@ -33,6 +33,8 @@ import com.example.wall_et_mobile.R
 import com.example.wall_et_mobile.components.ActivityList
 import com.example.wall_et_mobile.components.Balance
 import com.example.wall_et_mobile.components.CustomButton
+import com.example.wall_et_mobile.model.BottomAppBarScreen
+import com.example.wall_et_mobile.model.Screen
 
 @Composable
 fun HomeScreen(innerPadding : PaddingValues, navController : NavHostController){

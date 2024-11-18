@@ -28,10 +28,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.wall_et_mobile.screens.ActivitiesScreen
 import com.example.wall_et_mobile.screens.HomeScreen
-import com.example.wall_et_mobile.screens.BottomAppBarScreen
+import com.example.wall_et_mobile.model.BottomAppBarScreen
 import com.example.wall_et_mobile.screens.CardsScreen
 import com.example.wall_et_mobile.screens.HomeScreenLandscape
-import com.example.wall_et_mobile.screens.Screen
+import com.example.wall_et_mobile.model.Screen
 import com.example.wall_et_mobile.screens.TransferScreen
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import androidx.compose.material3.Scaffold as Scaffold2
