@@ -1,5 +1,6 @@
-package com.example.wall_et_mobile.screens
+package com.example.wall_et_mobile.screens.forgotPassword
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,41 +12,36 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.runtime.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.wall_et_mobile.R
-import com.example.wall_et_mobile.components.CustomTextField
 import com.example.wall_et_mobile.components.EndFormButton
 import com.example.wall_et_mobile.components.PasswordField
+import com.example.wall_et_mobile.model.Screen
+import com.example.wall_et_mobile.ui.theme.WallEtTheme
 
 @Composable
-fun SignupScreen(
-    onNavigateToLogin : () -> Unit,
-    onNavigateUp : () -> Unit
-
-) {
-    var name by remember { mutableStateOf("") }
-    var email by remember { mutableStateOf("") }
+fun NewPasswordScreen(navController: NavController) {
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
-
-    fun validateEmail(email: String): Boolean {
-        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
-    }
 
     fun validatePassword(password: String): Boolean {
         val passwordPattern = "^(?=.*\\d)(?=.*[A-Z])(?=.*[@#$%^&+=!])[A-Za-z\\d@#$%^&+=!]{8,}$"
         return password.matches(passwordPattern.toRegex())
     }
 
-    val isFormValid = remember(name, email, password, confirmPassword) {
-        name.isNotEmpty() && validateEmail(email) && validatePassword(password) && password == confirmPassword
+    val isFormValid = remember(password, confirmPassword) {
+        validatePassword(password) && password == confirmPassword
     }
 
     Column(
@@ -62,7 +58,7 @@ fun SignupScreen(
         )
 
         Text(
-            text = stringResource(R.string.sign_up),
+            text = stringResource(R.string.recover_password),
             color = MaterialTheme.colorScheme.onBackground,
             style = MaterialTheme.typography.headlineMedium
         )
@@ -81,22 +77,6 @@ fun SignupScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                CustomTextField(
-                    value = name,
-                    onValueChange = { name = it },
-                    labelResourceId = R.string.name,
-                    modifier = Modifier.fillMaxWidth()
-                )
-
-                CustomTextField(
-                    value = email,
-                    onValueChange = { email = it },
-                    labelResourceId = R.string.email,
-                    modifier = Modifier.fillMaxWidth(),
-                    errorMessage = stringResource(R.string.invalid_email),
-                    validate = { newEmail -> validateEmail(newEmail) }
-                )
-
                 PasswordField(
                     password = password,
                     onPasswordChange = { password = it },
@@ -117,20 +97,20 @@ fun SignupScreen(
                 )
 
                 EndFormButton(
-                    textResourceId = R.string.sign_up,
-                    onClick = onNavigateToLogin,
+                    textResourceId = R.string.confirm,
+                    onClick = { navController.navigate(Screen.Login.route) },
                     enabled = isFormValid
                 )
-
-                TextButton(
-                    onClick = onNavigateUp
-                ) {
-                    Text(
-                        stringResource(R.string.already_have_account),
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                }
             }
         }
+    }
+}
+
+@Preview(name = "LightMode")
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "DarkMode")
+@Composable
+fun NewPasswordScreenPreview() {
+    WallEtTheme {
+        NewPasswordScreen(navController = NavController(LocalContext.current))
     }
 }

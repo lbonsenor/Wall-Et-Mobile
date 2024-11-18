@@ -1,9 +1,9 @@
-package com.example.wall_et_mobile.screens
+package com.example.wall_et_mobile.screens.forgotPassword
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -12,34 +12,34 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.runtime.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.wall_et_mobile.R
 import com.example.wall_et_mobile.components.CustomTextField
 import com.example.wall_et_mobile.components.EndFormButton
-import com.example.wall_et_mobile.components.PasswordField
+import com.example.wall_et_mobile.model.Screen
+import com.example.wall_et_mobile.ui.theme.WallEtTheme
 
 @Composable
-fun LoginScreen(
-//    navController: NavController,
-    onNavigateToHome : () -> Unit,
-    onNavigateToForgotPassword : () -> Unit,
-    onNavigateToSignUp : () -> Unit,
-) {
+fun ForgotPasswordScreen(navController: NavController) {
     var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
 
     fun validateEmail(email: String): Boolean {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
 
-    val isFormValid = remember(email, password) {
-        validateEmail(email) && password.isNotEmpty()
+    val isFormValid = remember(email) {
+        validateEmail(email)
     }
 
     Column(
@@ -56,7 +56,7 @@ fun LoginScreen(
         )
 
         Text(
-            text = stringResource(R.string.log_in),
+            text = stringResource(R.string.recover_password),
             color = MaterialTheme.colorScheme.onBackground,
             style = MaterialTheme.typography.headlineMedium
         )
@@ -84,46 +84,21 @@ fun LoginScreen(
                     validate = { newEmail -> validateEmail(newEmail) }
                 )
 
-                PasswordField(
-                    password = password,
-                    onPasswordChange = { password = it },
-                    modifier = Modifier.fillMaxWidth()
-                )
-
                 EndFormButton(
-                    textResourceId = R.string.log_in,
-                    onClick = onNavigateToHome,
+                    textResourceId = R.string.send,
+                    onClick = { navController.navigate(Screen.VerificationCode.route) },
                     enabled = isFormValid
                 )
-
-                EndFormButton(
-                    textResourceId = R.string.fast_login,
-                    onClick = {
-                        navController.navigate(Screen.Home.route) {
-                            popUpTo(Screen.Login.route) { inclusive = true }
-                        }
-                    },
-                )
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    TextButton(onClick = onNavigateToSignUp) {
-                        Text(
-                            text = stringResource(R.string.sign_up),
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
-                    }
-
-                    TextButton(onClick = onNavigateToForgotPassword) {
-                        Text(
-                            text = stringResource(R.string.forgot_password),
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
-                    }
-                }
             }
         }
+    }
+}
+
+@Preview(name = "LightMode")
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "DarkMode")
+@Composable
+fun ForgotPasswordPreview() {
+    WallEtTheme {
+        ForgotPasswordScreen(navController = NavController(LocalContext.current))
     }
 }
