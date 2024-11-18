@@ -68,7 +68,7 @@
     <string name="invalid_email">Email inválido</string>
     <string name="passwords_dont_match">Las contraseñas no coinciden</string>
     <string name="password_less_than_eight_characters">La contraseña debe tener al menos 8 caracteres</string>
-    <string name="password_format">La contraseña debe contener al menos una mayúscula, un número y un símbolo</string>
+    <string name="password_format">La contraseña debe tener al menos 8 caracteres, contener una mayúscula, un número y un símbolo</string>
 
     <!--    Common    -->
     <string name="exit">Salir</string>

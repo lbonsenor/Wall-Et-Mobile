@@ -7,9 +7,21 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.VisualTransformation
 
 @Composable
-fun CustomTextField(value: String, onValueChange: (String) -> Unit, labelResourceId: Int, modifier: Modifier = Modifier, trailingIcon: @Composable (() -> Unit)? = null, isError: Boolean = false) {
+fun CustomTextField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    labelResourceId: Int,
+    modifier: Modifier = Modifier,
+    trailingIcon: @Composable (() -> Unit)? = null,
+    errorMessage: String? = null,
+    validate: ((String) -> Boolean)? = null,
+    visualTransformation: VisualTransformation = VisualTransformation.None
+) {
+    val isError = validate?.invoke(value) == false && value.isNotEmpty()
+    
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
@@ -30,6 +42,10 @@ fun CustomTextField(value: String, onValueChange: (String) -> Unit, labelResourc
         ),
         trailingIcon = trailingIcon,
         modifier = modifier,
-        isError = isError
+        isError = isError,
+        supportingText = if (isError && errorMessage != null) {
+            { Text(errorMessage) }
+        } else null,
+        visualTransformation = visualTransformation
     )
 }

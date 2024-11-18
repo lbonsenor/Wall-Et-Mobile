@@ -9,19 +9,36 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import com.example.wall_et_mobile.R
 
 @Composable
-fun PasswordField(password: String, onPasswordChange: (String) -> Unit, modifier: Modifier = Modifier, isRepeatPassword: Boolean = false, originalPassword: String = "", label: Int = R.string.password) {
+fun PasswordField(
+    password: String,
+    onPasswordChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    isRepeatPassword: Boolean = false,
+    originalPassword: String = "",
+    label: Int = R.string.password,
+    errorMessage: String? = null,
+    validate: ((String) -> Boolean)? = null
+) {
     var passwordVisible by remember { mutableStateOf(false) }
-    val isError = isRepeatPassword && password.isNotEmpty() && password != originalPassword
+    val defaultValidation: (String) -> Boolean = {
+        if (isRepeatPassword) {
+            it == originalPassword
+        } else true
+    }
 
     CustomTextField(
         value = password,
         onValueChange = onPasswordChange,
         labelResourceId = label,
         modifier = modifier,
-        isError = isError,
+        errorMessage = errorMessage,
+        validate = validate ?: defaultValidation,
+        visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
         trailingIcon = {
             IconButton(onClick = { passwordVisible = !passwordVisible }) {
                 Icon(

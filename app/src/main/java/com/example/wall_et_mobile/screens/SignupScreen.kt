@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -29,6 +30,7 @@ import androidx.navigation.NavController
 import com.example.wall_et_mobile.ui.theme.WallEtTheme
 import com.example.wall_et_mobile.R
 import com.example.wall_et_mobile.components.CustomTextField
+import com.example.wall_et_mobile.components.EndFormButton
 import com.example.wall_et_mobile.components.PasswordField
 import com.example.wall_et_mobile.model.Screen
 
@@ -36,9 +38,21 @@ import com.example.wall_et_mobile.model.Screen
 fun SignupScreen(navController: NavController) {
     var name by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
-    var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
+
+    fun validateEmail(email: String): Boolean {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    }
+
+    fun validatePassword(password: String): Boolean {
+        val passwordPattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{8,}$"
+        return password.matches(passwordPattern.toRegex())
+    }
+
+    val isFormValid = remember(name, email, password, confirmPassword) {
+        name.isNotEmpty() && validateEmail(email) && validatePassword(password) && password == confirmPassword
+    }
 
     Column(
         modifier = Modifier
@@ -78,14 +92,18 @@ fun SignupScreen(navController: NavController) {
                     value = email,
                     onValueChange = { email = it },
                     labelResourceId = R.string.email,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    errorMessage = stringResource(R.string.invalid_email),
+                    validate = { newEmail -> validateEmail(newEmail) }
                 )
 
                 PasswordField(
                     password = password,
                     onPasswordChange = { password = it },
                     modifier = Modifier.fillMaxWidth(),
-                    label = R.string.password
+                    label = R.string.password,
+                    errorMessage = stringResource(R.string.password_format),
+                    validate = { newPassword -> validatePassword(newPassword) }
                 )
 
                 PasswordField(
@@ -94,30 +112,19 @@ fun SignupScreen(navController: NavController) {
                     modifier = Modifier.fillMaxWidth(),
                     isRepeatPassword = true,
                     originalPassword = password,
-                    label = R.string.repeat_password
+                    label = R.string.repeat_password,
+                    errorMessage = stringResource(R.string.passwords_dont_match)
                 )
 
-                Button(
+                EndFormButton(
+                    textResourceId = R.string.sign_up,
                     onClick = {
                         navController.navigate(Screen.Home.route) {
                             popUpTo(Screen.Login.route) { inclusive = true }
                         }
                     },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(50.dp),
-                    shape = RoundedCornerShape(20.dp),
-                    colors = ButtonColors(
-                        containerColor = MaterialTheme.colorScheme.surfaceContainer,
-                        contentColor = MaterialTheme.colorScheme.onPrimary,
-                        disabledContainerColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                        disabledContentColor = MaterialTheme.colorScheme.onSurfaceVariant
-                    ),
-                ) {
-                    Text(
-                        text = stringResource(R.string.sign_up)
-                    )
-                }
+                    enabled = isFormValid
+                )
 
                 TextButton(
                     onClick = { navController.navigateUp() }

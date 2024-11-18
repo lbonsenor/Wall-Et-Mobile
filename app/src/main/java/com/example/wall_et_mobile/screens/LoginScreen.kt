@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.wall_et_mobile.R
 import com.example.wall_et_mobile.components.CustomTextField
+import com.example.wall_et_mobile.components.EndFormButton
 import com.example.wall_et_mobile.components.PasswordField
 import com.example.wall_et_mobile.model.Screen
 
@@ -36,6 +37,10 @@ import com.example.wall_et_mobile.model.Screen
 fun LoginScreen(navController: NavController) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+
+    val isFormValid = remember(email, password) {
+        email.isNotEmpty() && password.isNotEmpty()
+    }
 
     Column(
         modifier = Modifier
@@ -77,27 +82,15 @@ fun LoginScreen(navController: NavController) {
                     modifier = Modifier.fillMaxWidth()
                 )
 
-                Button(
+                EndFormButton(
+                    textResourceId = R.string.log_in,
                     onClick = {
                         navController.navigate(Screen.Home.route) {
                             popUpTo(Screen.Login.route) { inclusive = true }
                         }
                     },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(50.dp),
-                    shape = RoundedCornerShape(20.dp),
-                    colors = ButtonColors(
-                        containerColor = MaterialTheme.colorScheme.surfaceContainer,
-                        contentColor = MaterialTheme.colorScheme.onPrimary,
-                        disabledContainerColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                        disabledContentColor = MaterialTheme.colorScheme.onSurfaceVariant
-                    ),
-                ) {
-                    Text(
-                        text = stringResource(R.string.log_in)
-                    )
-                }
+                    enabled = isFormValid
+                )
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),

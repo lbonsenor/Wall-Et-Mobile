@@ -71,5 +71,5 @@
     <string name="invalid_email">Invalid email</string>
     <string name="passwords_dont_match">Passwords do not match</string>
     <string name="password_less_than_eight_characters">Password must have at least eight characters</string>
-    <string name="password_format">Password must contain at least one capital letter, one number and one symbol</string>
+    <string name="password_format">Password must have at least 8 characters, contain one capital letter, one number and one symbol</string>
 </resources>
