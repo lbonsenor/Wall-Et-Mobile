@@ -20,8 +20,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldColors
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -29,6 +32,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
@@ -46,6 +51,8 @@ import com.example.wall_et_mobile.components.TransferProgress
 import com.example.wall_et_mobile.data.mock.MockContacts
 import com.example.wall_et_mobile.model.User
 import com.example.wall_et_mobile.ui.theme.DarkerGrotesque
+import java.text.NumberFormat
+import java.util.Locale
 
 @Composable
 fun SelectAmountScreen(innerPadding : PaddingValues, navController: NavController, id: Int?) {
@@ -63,16 +70,71 @@ fun SelectAmountScreen(innerPadding : PaddingValues, navController: NavControlle
     ) {
         TransferProgress(1)
         ContactCard(user)
-        OutlinedTextField(
+        TextField(
+            supportingText = {Text("${stringResource(R.string.max_amount)} $6,000,000.00")},
             value = amount,
-            onValueChange = { amount = it },
+            onValueChange = {
+                if (it.length <= 12 ) amount = it },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
             textStyle = TextStyle(
                 fontFamily = DarkerGrotesque,
                 fontWeight = FontWeight.SemiBold,
-                fontSize = 30.sp,
+                fontSize = 50.sp,
             ),
+            colors = TextFieldDefaults.colors(
+                focusedIndicatorColor = MaterialTheme.colorScheme.secondary,  // bottom line color when focused
+                unfocusedIndicatorColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.3f), // bottom line color when not focused
+                cursorColor = Color.Transparent,
+                disabledIndicatorColor = Color.Transparent,
+                errorIndicatorColor = MaterialTheme.colorScheme.error,
+                focusedContainerColor = Color.Transparent,  // background color
+                unfocusedContainerColor = Color.Transparent,
+            ),
+            prefix = {
+                Text(
+                    text = "$ ",
+                    style = TextStyle(
+                        fontFamily = DarkerGrotesque,
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 50.sp))
+            },
+            singleLine = true,
+            modifier = Modifier.padding(bottom = 8.dp),
+            visualTransformation = VisualTransformation { it ->
+                val formattedAmount = formatAmount(it.text)
+
+                val originalToTransformed = object : OffsetMapping{
+                    override fun originalToTransformed(offset: Int): Int {
+                        if (it.text.isEmpty()) return 0
+                        return formattedAmount.length
+                    }
+
+                    override fun transformedToOriginal(offset: Int): Int {
+                        if (formattedAmount.isEmpty()) return 0
+                        return it.text.length
+                    }
+                }
+
+                TransformedText(AnnotatedString(formattedAmount), originalToTransformed)
+            },
+
+
         )
+    }
+
+}
+
+fun formatAmount(amount: String): String {
+    if (amount.isEmpty()) return "0.00"
+    return try {
+        val number = amount.toDoubleOrNull() ?: return ""
+        if (number >= 6000000) return "6,000,000.00"
+        val formatter = NumberFormat.getNumberInstance(Locale.US)
+        formatter.minimumFractionDigits = 2
+        formatter.maximumFractionDigits = 2
+        formatter.format(number)
+    } catch (e: Exception) {
+        ""
     }
 
 }
@@ -98,15 +160,16 @@ fun ContactCard(user: User) {
             )
             Text(
                 text = "${user.name} ${user.lastName}",
-                fontWeight = FontWeight.SemiBold
+                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.onBackground
             )
         }
         OutlinedButton (
             onClick = { },
             shape = CircleShape,
             colors = ButtonDefaults.outlinedButtonColors(
-                contentColor = MaterialTheme.colorScheme.secondary,
-                containerColor = MaterialTheme.colorScheme.onSecondary,
+                contentColor = MaterialTheme.colorScheme.onSecondary,
+                containerColor = MaterialTheme.colorScheme.secondary,
             ),
             border = BorderStroke(1.dp, MaterialTheme.colorScheme.secondary)
         ) {

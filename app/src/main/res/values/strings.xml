@@ -71,5 +71,6 @@
     <string name="continue_button">Continuar</string>
     <string name="error">Error</string>
     <string name="user_not_found">No se ha encontrado el usuario, intente de nuevo.</string>
+    <string name="max_amount">Monto máximo:</string>
 
 </resources>
