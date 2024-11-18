@@ -26,17 +26,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.NavHostController
 import com.example.wall_et_mobile.R
 import com.example.wall_et_mobile.components.ActivityList
 import com.example.wall_et_mobile.components.Balance
 import com.example.wall_et_mobile.components.CustomButton
-import com.example.wall_et_mobile.model.Screen
 
 @Composable
-fun HomeScreen(innerPadding : PaddingValues, navController : NavHostController){
+fun HomeScreen(
+    onNavigateToTransfer: () -> Unit,
+    onNavigateToActivity: () -> Unit
+) {
     Column (
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween,
@@ -45,20 +44,20 @@ fun HomeScreen(innerPadding : PaddingValues, navController : NavHostController){
             .background(MaterialTheme.colorScheme.background)
             .verticalScroll(rememberScrollState())
     ){
-        BalanceCard(navController)
+        BalanceCard(onNavigateToTransfer)
 
         Column (
             modifier = Modifier
                 .weight(1f)
                 .fillMaxWidth()
         ) {
-            ActivityCard(navController)
+            ActivityCard(onNavigateToActivity)
         }
     }
 }
 
 @Composable
-fun BalanceCard(navController : NavHostController){
+fun BalanceCard(onNavigateToTransfer: () -> Unit){
     Column(
         modifier = Modifier
             .padding(horizontal = 10.dp)
@@ -75,13 +74,13 @@ fun BalanceCard(navController : NavHostController){
                 .padding(16.dp)
         ) {
             Box(modifier = Modifier.weight(1f)) {
-                CustomButton(stringResource(R.string.title_transfer), R.drawable.transfer, onClick = {
-                    navController.navigate(Screen.Transfer.route){
-                        popUpTo(navController.graph.findStartDestination().id) {saveState = true}
-                        launchSingleTop = true
-                        restoreState = true
-                    }
-                })
+                CustomButton(stringResource(R.string.title_transfer), R.drawable.transfer, onClick = onNavigateToTransfer
+//                    navController.navigate(Screen.Transfer.route){
+//                        popUpTo(navController.graph.findStartDestination().id) {saveState = true}
+//                        launchSingleTop = true
+//                        restoreState = true
+//                    }
+                )
             }
             Box(modifier = Modifier.weight(1f)) {
                 CustomButton(stringResource(R.string.title_add_fund), R.drawable.receive, onClick = {})
@@ -97,7 +96,7 @@ fun BalanceCard(navController : NavHostController){
 }
 
 @Composable
-fun ActivityCard(navController: NavController){
+fun ActivityCard(onNavigateToActivity: () -> Unit){
     Card(
         shape = RoundedCornerShape(20.dp),
         elevation = CardDefaults.cardElevation(
@@ -124,13 +123,13 @@ fun ActivityCard(navController: NavController){
 
             Text(
                 modifier = Modifier
-                    .clickable(enabled = true) {
-                        navController.navigate(Screen.Activities.route){
-                            popUpTo(navController.graph.findStartDestination().id) {saveState = true}
-                            launchSingleTop = true
-                            restoreState = true
-                        }
-                    },
+                    .clickable(enabled = true, onClick = onNavigateToActivity)
+//                        navController.navigate(Screen.Activities.route){
+//                            popUpTo(navController.graph.findStartDestination().id) {saveState = true}
+//                            launchSingleTop = true
+//                            restoreState = true
+//                        }
+                    ,
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
                 style = MaterialTheme.typography.labelSmall,
                 text = stringResource(R.string.see_more)
@@ -141,25 +140,25 @@ fun ActivityCard(navController: NavController){
 }
 
 @Composable
-fun HomeScreenLandscape(innerPadding: PaddingValues, navController: NavHostController){
+fun HomeScreenLandscape(innerPadding: PaddingValues, onNavigateToTransfer: () -> Unit, onNavigateToActivity: () -> Unit){
     Row(
         modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     )
     {
-        BalanceCardLandscape(navController, innerPadding)
+        BalanceCardLandscape(onNavigateToTransfer, innerPadding)
         Column (
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            ActivityCard(navController)
+            ActivityCard(onNavigateToActivity)
         }
     }
 }
 
 @Composable
-fun BalanceCardLandscape(navController: NavController, innerPadding: PaddingValues){
+fun BalanceCardLandscape(onNavigateToTransfer: () -> Unit, innerPadding: PaddingValues){
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
@@ -178,13 +177,13 @@ fun BalanceCardLandscape(navController: NavController, innerPadding: PaddingValu
                 .padding(16.dp)
         ) {
             Box(modifier = Modifier.weight(1f)) {
-                CustomButton(stringResource(R.string.title_transfer), R.drawable.transfer, onClick = {
-                    navController.navigate(Screen.Transfer.route){
-                        popUpTo(navController.graph.findStartDestination().id) {saveState = true}
-                        launchSingleTop = true
-                        restoreState = true
-                    }
-                })
+                CustomButton(stringResource(R.string.title_transfer), R.drawable.transfer, onClick = onNavigateToTransfer
+//                    navController.navigate(Screen.Transfer.route){
+//                        popUpTo(navController.graph.findStartDestination().id) {saveState = true}
+//                        launchSingleTop = true
+//                        restoreState = true
+//                    }
+                )
             }
             Box(modifier = Modifier.weight(1f)) {
                 CustomButton(stringResource(R.string.title_add_fund), R.drawable.receive, onClick = {})

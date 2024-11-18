@@ -21,7 +21,7 @@ sealed class Screen(
     object Activities : Screen(route = "activities", iconInt = R.drawable.history, labelInt = R.string.title_activity)
     object SeeMore: Screen(route = "see_more", icon = Icons.Outlined.Menu, labelInt = R.string.see_more)
     object Transfer : Screen(route = "transfer")
-    object SelectAmount : Screen(route = "select_amount/{id}")
-    object SelectPaymentMethod : Screen(route = "select_payment_method/{id}/{amount}")
+    object SelectAmount : Screen(route = "select_amount")
+    object SelectPaymentMethod : Screen(route = "select_payment_method")
 }
 

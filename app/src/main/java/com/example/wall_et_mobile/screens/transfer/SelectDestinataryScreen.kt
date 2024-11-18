@@ -27,8 +27,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.NavHostController
 import com.example.wall_et_mobile.R
 import com.example.wall_et_mobile.components.ContactListWithSearchBar
 import com.example.wall_et_mobile.components.ContactsTabs
@@ -37,7 +35,10 @@ import com.example.wall_et_mobile.data.mock.MockContacts
 import com.example.wall_et_mobile.model.User
 
 @Composable
-fun TransferScreen(innerPadding : PaddingValues, navController: NavHostController) {
+fun SelectDestinataryScreen(
+    innerPadding : PaddingValues,
+    onNavigateToSelectAmount: (Int) -> Unit,
+) {
     var currentTab by remember { mutableIntStateOf(0) }
     var favoriteUserIds by remember { mutableStateOf<List<Int>>(emptyList()) }
     var contactValue by remember { mutableStateOf("") }
@@ -80,11 +81,8 @@ fun TransferScreen(innerPadding : PaddingValues, navController: NavHostControlle
                 }
 
                 if (user == null) { showErrorDialog = true }
-                else navController.navigate("select_amount/${user.id}") {
-                    popUpTo(navController.graph.findStartDestination().id) {saveState = true}
-                    launchSingleTop = true
-                    restoreState = true
-                }
+                else
+                    onNavigateToSelectAmount(user.id)
             },
             colors = ButtonColors(
                 containerColor = MaterialTheme.colorScheme.secondary,

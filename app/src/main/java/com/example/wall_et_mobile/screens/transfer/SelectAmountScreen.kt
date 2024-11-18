@@ -44,8 +44,6 @@ import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.example.wall_et_mobile.R
 import com.example.wall_et_mobile.components.TransferCardSlider
 import com.example.wall_et_mobile.components.TransferProgress
@@ -57,9 +55,14 @@ import java.text.NumberFormat
 import java.util.Locale
 
 @Composable
-fun SelectAmountScreen(innerPadding : PaddingValues, navController: NavController, id: Int?) {
+fun SelectAmountScreen(
+    innerPadding : PaddingValues,
+    id: Int,
+    onNavigateToSelectPayment : (Int, String) -> Unit
+)
+{
 
-    val user : User = MockContacts.sampleContacts[id!!]
+    val user : User = MockContacts.sampleContacts[id]
     var amount by remember { mutableStateOf("") }
 
     Column(
@@ -130,11 +133,7 @@ fun SelectAmountScreen(innerPadding : PaddingValues, navController: NavControlle
 
         Button(
             onClick = {
-                navController.navigate("select_payment_method/${user.id}/${amount}") {
-                    popUpTo(navController.graph.findStartDestination().id) {saveState = true}
-                    launchSingleTop = true
-                    restoreState = true
-                }
+                onNavigateToSelectPayment(user.id, amount)
             },
             colors = ButtonColors(
                 containerColor = MaterialTheme.colorScheme.secondary,
