@@ -101,11 +101,24 @@ fun ScaffoldPortrait(navController: NavHostController, qrScanner: QRScanner){
                     route = Screen.SelectAmount.route,
                     arguments = listOf(
                         navArgument(name = "id"){
+                            type = NavType.IntType
+                        }
+                    )
+                ){ backStackEntry ->
+                    SelectAmountScreen(innerPadding, navController, backStackEntry.arguments?.getInt("id")!!)
+                }
+                composable(
+                    route = Screen.SelectPaymentMethod.route,
+                    arguments = listOf(
+                        navArgument(name = "id"){
+                            type = NavType.IntType
+                        },
+                        navArgument(name = "amount"){
                             type = NavType.StringType
                         }
                     )
                 ){ backStackEntry ->
-                    SelectAmountScreen(innerPadding, navController, backStackEntry.arguments?.getString("id"))
+                    SelectPaymentScreen(innerPadding, navController, backStackEntry.arguments?.getInt("id")!!, backStackEntry.arguments?.getString("amount")!!)
                 }
             }
         )
@@ -145,24 +158,24 @@ fun ScaffoldLandscape(navController: NavHostController, qrScanner: QRScanner){
                         route = Screen.SelectAmount.route,
                         arguments = listOf(
                             navArgument(name = "id"){
-                                type = NavType.StringType
+                                type = NavType.IntType
                             }
                         )
                     ){ backStackEntry ->
-                        SelectAmountScreen(innerPadding, navController, backStackEntry.arguments?.getString("id"))
+                        SelectAmountScreen(innerPadding, navController, backStackEntry.arguments?.getInt("id")!!)
                     }
                     composable(
                         route = Screen.SelectPaymentMethod.route,
                         arguments = listOf(
                             navArgument(name = "id"){
-                                type = NavType.StringType
+                                type = NavType.IntType
                             },
                             navArgument(name = "amount"){
                                 type = NavType.StringType
                             }
                         )
                     ){ backStackEntry ->
-                        SelectPaymentScreen(innerPadding, navController, backStackEntry.arguments?.getString("id"), backStackEntry.arguments?.getString("amount"))
+                        SelectPaymentScreen(innerPadding, navController, backStackEntry.arguments?.getInt("id")!!, backStackEntry.arguments?.getString("amount")!!)
                     }
                 }
             )

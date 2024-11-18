@@ -18,15 +18,9 @@ import com.example.wall_et_mobile.model.User
 import com.example.wall_et_mobile.ui.theme.White
 
 @Composable
-fun SelectAmountScreen(innerPadding : PaddingValues, navController: NavController, id: String?) {
+fun SelectAmountScreen(innerPadding : PaddingValues, navController: NavController, id: Int) {
 
-    val user : User? = if (id?.matches("\\d+".toRegex()) == true){
-        MockContacts.getUserByCVU(id)
-    } else {
-        MockContacts.getUserByAlias(id ?: "")
-    }
-
-    if (user == null) { navController.popBackStack() }
+    val user : User = MockContacts.sampleContacts[id]
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,

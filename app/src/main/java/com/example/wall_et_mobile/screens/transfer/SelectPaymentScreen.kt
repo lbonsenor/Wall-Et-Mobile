@@ -5,6 +5,6 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
 
 @Composable
-fun SelectPaymentScreen(innerPadding : PaddingValues, navController: NavController, id: String?, amount: String?){
+fun SelectPaymentScreen(innerPadding : PaddingValues, navController: NavController, id: Int, amount: String){
 
 }
