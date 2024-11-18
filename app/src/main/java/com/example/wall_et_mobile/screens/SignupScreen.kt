@@ -46,7 +46,7 @@ fun SignupScreen(navController: NavController) {
     }
 
     fun validatePassword(password: String): Boolean {
-        val passwordPattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{8,}$"
+        val passwordPattern = "^(?=.*\\d)(?=.*[A-Z])(?=.*[@#$%^&+=!])[A-Za-z\\d@#$%^&+=!]{8,}$"
         return password.matches(passwordPattern.toRegex())
     }
 
