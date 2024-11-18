@@ -16,4 +16,7 @@ val DarkPurple = Color(0xFF41249f)
 val DarkerGray = Color(0xFF242526)
 val LightPurple = Color(0xFF7264FF)
 val TransparentGray = Color(0x4D242526)
+val LightModeYellow = Color(0xFFFFCC00)
+val DarkModeYellow = Color(0xFFFFD700)
 
+val Red = Color(0xFFBA1A1A)

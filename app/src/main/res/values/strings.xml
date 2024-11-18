@@ -67,5 +67,6 @@
     <string name="destinatary">Destinatario</string>
     <string name="amount">Monto</string>
     <string name="payment_method">Medio de Pago</string>
+    <string name="search_contact">Buscar contacto</string>
 
 </resources>
