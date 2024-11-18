@@ -51,7 +51,7 @@ fun HomeScreen(innerPadding : PaddingValues, navController : NavHostController){
                 .weight(1f)
                 .fillMaxWidth()
         ) {
-            ActivityCard(navController, innerPadding)
+            ActivityCard(navController)
         }
     }
 }
@@ -96,7 +96,7 @@ fun BalanceCard(navController : NavHostController){
 }
 
 @Composable
-fun ActivityCard(navController: NavController, innerPadding: PaddingValues){
+fun ActivityCard(navController: NavController){
     Card(
         shape = RoundedCornerShape(20.dp),
         elevation = CardDefaults.cardElevation(
@@ -106,9 +106,7 @@ fun ActivityCard(navController: NavController, innerPadding: PaddingValues){
             containerColor = MaterialTheme.colorScheme.background
         ),
         modifier = Modifier
-            .padding(innerPadding)
             .padding(20.dp)
-            .verticalScroll(rememberScrollState())
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -154,7 +152,7 @@ fun HomeScreenLandscape(innerPadding: PaddingValues, navController: NavHostContr
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            ActivityCard(navController, innerPadding)
+            ActivityCard(navController)
         }
     }
 }
