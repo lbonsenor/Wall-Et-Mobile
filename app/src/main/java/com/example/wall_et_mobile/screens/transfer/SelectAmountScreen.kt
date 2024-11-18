@@ -6,14 +6,20 @@ import android.icu.util.CurrencyAmount
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -46,8 +52,11 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.example.wall_et_mobile.R
+import com.example.wall_et_mobile.components.TransferCardSlider
 import com.example.wall_et_mobile.components.TransferProgress
+import com.example.wall_et_mobile.data.mock.MockCards
 import com.example.wall_et_mobile.data.mock.MockContacts
 import com.example.wall_et_mobile.model.User
 import com.example.wall_et_mobile.ui.theme.DarkerGrotesque
@@ -67,9 +76,11 @@ fun SelectAmountScreen(innerPadding : PaddingValues, navController: NavControlle
             .padding(innerPadding)
             .fillMaxSize()
             .padding(16.dp)
+            .verticalScroll(rememberScrollState())
     ) {
         TransferProgress(1)
         ContactCard(user)
+
         TextField(
             supportingText = {Text("${stringResource(R.string.max_amount)} $6,000,000.00")},
             value = amount,
@@ -114,12 +125,37 @@ fun SelectAmountScreen(innerPadding : PaddingValues, navController: NavControlle
                         return it.text.length
                     }
                 }
-
                 TransformedText(AnnotatedString(formattedAmount), originalToTransformed)
             },
-
-
         )
+
+        Box(
+            contentAlignment = Alignment.Center,
+        ) {
+            TransferCardSlider(MockCards.sampleCards)
+        }
+
+        Button(
+            onClick = {
+                navController.navigate("select_payment_method/${user.id}/${amount}") {
+                    popUpTo(navController.graph.findStartDestination().id) {saveState = true}
+                    launchSingleTop = true
+                    restoreState = true
+                }
+            },
+            colors = ButtonColors(
+                containerColor = MaterialTheme.colorScheme.secondary,
+                contentColor = MaterialTheme.colorScheme.onSecondary,
+                disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                disabledContentColor = MaterialTheme.colorScheme.onPrimaryContainer
+            ),
+            shape = RoundedCornerShape(10.dp),
+            modifier = Modifier
+                .fillMaxWidth(),
+            contentPadding = PaddingValues(16.dp),
+        ) {
+            Text(stringResource(R.string.continue_button))
+        }
     }
 
 }
@@ -177,3 +213,9 @@ fun ContactCard(user: User) {
         }
     }
 }
+
+@Composable
+fun AmountTextField() {
+
+}
+

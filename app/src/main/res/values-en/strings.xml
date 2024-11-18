@@ -56,4 +56,5 @@
     <string name="error">Error</string>
     <string name="user_not_found">User not found, try again.</string>
     <string name="max_amount">Max. amount:</string>
+    <string name="wallet_balance">Wall-Et Balance</string>
 </resources>

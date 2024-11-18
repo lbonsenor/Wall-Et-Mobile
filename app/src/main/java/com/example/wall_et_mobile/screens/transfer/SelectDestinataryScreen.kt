@@ -27,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import com.example.wall_et_mobile.R
 import com.example.wall_et_mobile.components.ContactListWithSearchBar
@@ -79,7 +80,11 @@ fun TransferScreen(innerPadding : PaddingValues, navController: NavHostControlle
                 }
 
                 if (user == null) { showErrorDialog = true }
-                else navController.navigate("select_amount/${user.id}")
+                else navController.navigate("select_amount/${user.id}") {
+                    popUpTo(navController.graph.findStartDestination().id) {saveState = true}
+                    launchSingleTop = true
+                    restoreState = true
+                }
             },
             colors = ButtonColors(
                 containerColor = MaterialTheme.colorScheme.secondary,
