@@ -98,11 +98,7 @@ fun LoginScreen(
 
                 EndFormButton(
                     textResourceId = R.string.fast_login,
-                    onClick = {
-                        navController.navigate(Screen.Home.route) {
-                            popUpTo(Screen.Login.route) { inclusive = true }
-                        }
-                    },
+                    onClick = onNavigateToHome,
                 )
 
                 Row(
