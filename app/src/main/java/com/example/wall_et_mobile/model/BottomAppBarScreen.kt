@@ -26,4 +26,6 @@ sealed class Screen(
     val route: String
 ) {
     object Transfer : Screen(route = "transfer")
+    object SelectAmount : Screen(route = "select_amount/{id}")
 }
+
