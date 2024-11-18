@@ -68,5 +68,6 @@
     <string name="amount">Monto</string>
     <string name="payment_method">Medio de Pago</string>
     <string name="search_contact">Buscar contacto</string>
+    <string name="continue_button">Continuar</string>
 
 </resources>

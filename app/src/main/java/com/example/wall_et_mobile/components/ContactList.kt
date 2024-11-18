@@ -14,6 +14,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
+import androidx.compose.material3.TabRowDefaults
+import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -21,6 +23,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.wall_et_mobile.R
@@ -30,7 +33,16 @@ import com.example.wall_et_mobile.model.User
 fun ContactsTabs(onTabSelected: (Int) -> Unit, initialTab: Int = 0) {
     var selectedTabIndex by remember { mutableStateOf(initialTab) }
 
-    TabRow(selectedTabIndex = selectedTabIndex) {
+    TabRow(
+        selectedTabIndex = selectedTabIndex,
+        containerColor = Color.Transparent,
+        contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        indicator = { tabPositions ->
+            TabRowDefaults.SecondaryIndicator(
+                color = MaterialTheme.colorScheme.secondary,
+                modifier = Modifier.tabIndicatorOffset(tabPositions[selectedTabIndex])
+            )}
+        ) {
         Tab(
             selected = selectedTabIndex == 0,
             text = { Text(stringResource(R.string.recent_contacts)) },
@@ -57,7 +69,9 @@ fun ContactListWithSearchBar(contacts: List<User>, favoriteUserIds: List<Int>, o
         SearchBar(
             query = searchQuery,
             onQueryChange = { searchQuery = it },
-            modifier = Modifier.fillMaxWidth().padding(15.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(15.dp)
         )
         ContactList(filteredContacts, favoriteUserIds, onFavoriteChange)
 
