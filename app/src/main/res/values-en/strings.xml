@@ -57,4 +57,19 @@
     <string name="user_not_found">User not found, try again.</string>
     <string name="max_amount">Max. amount:</string>
     <string name="wallet_balance">Wall-Et Balance</string>
+    <string name="welcome">Welcome!</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="log_in">Log in</string>
+    <string name="sign_up">Sign up</string>
+    <string name="forgot_password">Forgot my password</string>
+    <string name="name">Name</string>
+    <string name="username">Username</string>
+    <string name="repeat_password">Repeat password</string>
+    <string name="already_have_account">I already have an account</string>
+    <string name="required_field">Required field</string>
+    <string name="invalid_email">Invalid email</string>
+    <string name="passwords_dont_match">Passwords do not match</string>
+    <string name="password_less_than_eight_characters">Password must have at least eight characters</string>
+    <string name="password_format">Password must have at least 8 characters, contain one capital letter, one number and one symbol</string>
 </resources>
