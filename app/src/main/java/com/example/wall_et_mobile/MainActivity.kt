@@ -32,10 +32,12 @@ import com.example.wall_et_mobile.screens.ActivitiesScreen
 import com.example.wall_et_mobile.screens.HomeScreen
 import com.example.wall_et_mobile.model.Screen
 import com.example.wall_et_mobile.screens.CardsScreen
-import com.example.wall_et_mobile.screens.ForgotPasswordScreen
+import com.example.wall_et_mobile.screens.forgotPassword.ForgotPasswordScreen
 import com.example.wall_et_mobile.screens.HomeScreenLandscape
 import com.example.wall_et_mobile.screens.LoginScreen
 import com.example.wall_et_mobile.screens.SignupScreen
+import com.example.wall_et_mobile.screens.forgotPassword.NewPasswordScreen
+import com.example.wall_et_mobile.screens.forgotPassword.VerificationCodeScreen
 import com.example.wall_et_mobile.screens.transfer.SelectAmountScreen
 import com.example.wall_et_mobile.screens.transfer.SelectPaymentScreen
 import com.example.wall_et_mobile.screens.transfer.TransferScreen
@@ -85,14 +87,14 @@ fun ScaffoldPortrait(navController: NavHostController, qrScanner: QRScanner) {
     Scaffold(
         //topBar = { CustomTopAppBar(User(1, "test", "test", "Lautaro", "test", "test", "test", "test",)) },
         bottomBar = {
-            if (currentRoute != Screen.Login.route && currentRoute != Screen.Signup.route) {
+            if (currentRoute != Screen.Login.route && currentRoute != Screen.Signup.route && currentRoute != Screen.ForgotPassword.route && currentRoute != Screen.VerificationCode.route && currentRoute != Screen.NewPassword.route) {
                 CustomAppBar(navController)
             }
         },
         floatingActionButtonPosition = FabPosition.Center,
         isFloatingActionButtonDocked = true,
         floatingActionButton = {
-            if (currentRoute != Screen.Login.route && currentRoute != Screen.Signup.route) {
+            if (currentRoute != Screen.Login.route && currentRoute != Screen.Signup.route && currentRoute != Screen.ForgotPassword.route && currentRoute != Screen.VerificationCode.route && currentRoute != Screen.NewPassword.route) {
                 QRFab(qrScanner::startScan)
             }
         },
@@ -107,6 +109,8 @@ fun ScaffoldPortrait(navController: NavHostController, qrScanner: QRScanner) {
                 composable(Screen.Login.route) { LoginScreen(navController) }
                 composable(Screen.Signup.route) { SignupScreen(navController) }
                 composable(Screen.ForgotPassword.route) { ForgotPasswordScreen(navController) }
+                composable(Screen.VerificationCode.route) { VerificationCodeScreen(navController) }
+                composable(Screen.NewPassword.route) { NewPasswordScreen(navController) }
                 composable(Screen.Home.route) { HomeScreen(innerPadding, navController) }
                 composable(Screen.Cards.route) { CardsScreen(innerPadding) }
                 composable(Screen.Activities.route) { ActivitiesScreen(innerPadding) }
