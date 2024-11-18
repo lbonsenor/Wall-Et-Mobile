@@ -134,7 +134,7 @@ fun ActivityCard(navController: NavController){
                     },
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
                 style = MaterialTheme.typography.labelSmall,
-                text = "${stringResource(R.string.see_more)} >"
+                text = stringResource(R.string.see_more)
             )
         }
         ActivityList(MockTransactions.sampleTransactions.take(3))
