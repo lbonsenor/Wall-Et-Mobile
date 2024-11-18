@@ -24,8 +24,8 @@ fun EndFormButton(textResourceId: Int, onClick: () -> Unit, enabled: Boolean = t
         colors = ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.surfaceContainer,
             contentColor = MaterialTheme.colorScheme.onPrimary,
-            disabledContainerColor = MaterialTheme.colorScheme.onSurfaceVariant,
-            disabledContentColor = MaterialTheme.colorScheme.onSurfaceVariant
+            disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
+            disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
         )
     ) {
         Text(text = stringResource(textResourceId))
