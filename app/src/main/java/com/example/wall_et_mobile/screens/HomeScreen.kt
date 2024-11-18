@@ -33,7 +33,6 @@ import com.example.wall_et_mobile.R
 import com.example.wall_et_mobile.components.ActivityList
 import com.example.wall_et_mobile.components.Balance
 import com.example.wall_et_mobile.components.CustomButton
-import com.example.wall_et_mobile.model.BottomAppBarScreen
 import com.example.wall_et_mobile.model.Screen
 
 @Composable
@@ -126,7 +125,7 @@ fun ActivityCard(navController: NavController){
             Text(
                 modifier = Modifier
                     .clickable(enabled = true) {
-                        navController.navigate(BottomAppBarScreen.Activities.route){
+                        navController.navigate(Screen.Activities.route){
                             popUpTo(navController.graph.findStartDestination().id) {saveState = true}
                             launchSingleTop = true
                             restoreState = true

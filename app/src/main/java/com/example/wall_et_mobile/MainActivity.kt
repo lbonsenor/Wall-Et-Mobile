@@ -30,11 +30,11 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.wall_et_mobile.screens.ActivitiesScreen
 import com.example.wall_et_mobile.screens.HomeScreen
-import com.example.wall_et_mobile.model.BottomAppBarScreen
+import com.example.wall_et_mobile.model.Screen
 import com.example.wall_et_mobile.screens.CardsScreen
 import com.example.wall_et_mobile.screens.HomeScreenLandscape
-import com.example.wall_et_mobile.model.Screen
 import com.example.wall_et_mobile.screens.transfer.SelectAmountScreen
+import com.example.wall_et_mobile.screens.transfer.SelectPaymentScreen
 import com.example.wall_et_mobile.screens.transfer.TransferScreen
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import androidx.compose.material3.Scaffold as Scaffold2
@@ -90,12 +90,12 @@ fun ScaffoldPortrait(navController: NavHostController, qrScanner: QRScanner){
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = BottomAppBarScreen.Home.route,
+            startDestination = Screen.Home.route,
             builder = {
-                composable(BottomAppBarScreen.Home.route){ HomeScreen(innerPadding, navController) }
-                composable(BottomAppBarScreen.Cards.route){ CardsScreen(innerPadding) }
-                composable(BottomAppBarScreen.Activities.route){ ActivitiesScreen(innerPadding) }
-                composable(BottomAppBarScreen.SeeMore.route){}
+                composable(Screen.Home.route){ HomeScreen(innerPadding, navController) }
+                composable(Screen.Cards.route){ CardsScreen(innerPadding) }
+                composable(Screen.Activities.route){ ActivitiesScreen(innerPadding) }
+                composable(Screen.SeeMore.route){}
                 composable(Screen.Transfer.route){ TransferScreen(innerPadding, navController) }
                 composable(
                     route = Screen.SelectAmount.route,
@@ -134,12 +134,12 @@ fun ScaffoldLandscape(navController: NavHostController, qrScanner: QRScanner){
             NavBarLandscape(navController, qrScanner)
             NavHost(
                 navController = navController,
-                startDestination = BottomAppBarScreen.Home.route,
+                startDestination = Screen.Home.route,
                 builder = {
-                    composable(BottomAppBarScreen.Home.route){ HomeScreenLandscape(innerPadding, navController) }
-                    composable(BottomAppBarScreen.Cards.route){ CardsScreen(innerPadding) }
-                    composable(BottomAppBarScreen.Activities.route){ ActivitiesScreen(innerPadding) }
-                    composable(BottomAppBarScreen.SeeMore.route){}
+                    composable(Screen.Home.route){ HomeScreenLandscape(innerPadding, navController) }
+                    composable(Screen.Cards.route){ CardsScreen(innerPadding) }
+                    composable(Screen.Activities.route){ ActivitiesScreen(innerPadding) }
+                    composable(Screen.SeeMore.route){}
                     composable(Screen.Transfer.route){ TransferScreen(innerPadding, navController) }
                     composable(
                         route = Screen.SelectAmount.route,
@@ -150,6 +150,19 @@ fun ScaffoldLandscape(navController: NavHostController, qrScanner: QRScanner){
                         )
                     ){ backStackEntry ->
                         SelectAmountScreen(innerPadding, navController, backStackEntry.arguments?.getString("id"))
+                    }
+                    composable(
+                        route = Screen.SelectPaymentMethod.route,
+                        arguments = listOf(
+                            navArgument(name = "id"){
+                                type = NavType.StringType
+                            },
+                            navArgument(name = "amount"){
+                                type = NavType.StringType
+                            }
+                        )
+                    ){ backStackEntry ->
+                        SelectPaymentScreen(innerPadding, navController, backStackEntry.arguments?.getString("id"), backStackEntry.arguments?.getString("amount"))
                     }
                 }
             )
