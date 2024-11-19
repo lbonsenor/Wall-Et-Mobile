@@ -62,7 +62,7 @@ fun CardsScreen(innerPadding: PaddingValues) {
             showDialog = true
         }
         AddCardDialog(showDialog = showDialog, onDismiss = { showDialog = false }, onSubmit = {
-
+            MockCards.add(it)
         })
     }
 }

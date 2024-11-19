@@ -5,7 +5,7 @@ import com.example.wall_et_mobile.model.CardGradient
 import com.example.wall_et_mobile.model.CardType
 
 object MockCards {
-    val sampleCards = listOf(
+    private val _sampleCards = mutableListOf(
         CardDetails(
             cardNumber = "4234 5678 9012 3456",
             cardType = CardType.CREDIT_CARD,
@@ -31,4 +31,9 @@ object MockCards {
             gradient = CardGradient.MIDNIGHT_BLUE
         )
     )
+    val sampleCards: List<CardDetails> = _sampleCards
+
+    fun add(card: CardDetails){
+        _sampleCards.add(card)
+    }
 }

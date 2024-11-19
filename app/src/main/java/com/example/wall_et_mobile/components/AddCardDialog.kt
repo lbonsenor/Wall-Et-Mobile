@@ -55,7 +55,7 @@ fun AddCardDialog(
     var expirationDate by remember { mutableStateOf("") }
     var type by remember { mutableStateOf("") }
 
-    val isEnabled = number.length == 16 && fullName.isNotEmpty() && expirationDate.length == 4 && cvv.length == 3
+    val isEnabled = number.length == 19 && fullName.isNotEmpty() && expirationDate.length == 4 && cvv.length == 3
 
     Log.d("AddCardDialog", """
     Button enabled: $isEnabled
@@ -88,7 +88,8 @@ fun AddCardDialog(
                     )
                     OutlinedTextField(
                         value = number,
-                        onValueChange = { if (it.length <= 16) number = it },
+                        onValueChange = {if (it.length <= 5) number = it},
+//                        visualTransformation = CardNumberTransformation(),
                         label = { Text("Card Number") },
                         maxLines = 1,
                         modifier = Modifier.fillMaxWidth(),
@@ -202,32 +203,28 @@ fun AddCardDialog(
         }
     }
 }
-
 class ExpirationDateTransformation : VisualTransformation {
     override fun filter(text: AnnotatedString): TransformedText {
-        val trimmed = if (text.text.length >= 4) text.text.substring(0..3) else text.text
-        var out = ""
-        for (i in trimmed.indices) {
-            out += trimmed[i]
-            if (i == 1) out += "/"
+        var out = text.text
+        if (text.text.length >= 2) {
+            out = text.text.substring(0, 2) + "/" + text.text.substring(2)
         }
         return TransformedText(
             AnnotatedString(out),
-            ExpirationDateOffsetMapping
+            object : OffsetMapping {
+                override fun originalToTransformed(offset: Int): Int =
+                    if (offset <= 2) offset else offset + 1
+                override fun transformedToOriginal(offset: Int): Int =
+                    if (offset <= 2) offset else offset - 1
+            }
         )
     }
 }
 
-object ExpirationDateOffsetMapping : OffsetMapping {
-    override fun originalToTransformed(offset: Int): Int {
-        if (offset <= 1) return offset
-        if (offset <= 4) return offset + 1
-        return 5
-    }
-
-    override fun transformedToOriginal(offset: Int): Int {
-        if (offset <= 1) return offset
-        if (offset <= 5) return offset - 1
-        return 4
-    }
-}
+//class CardNumberTransformation : VisualTransformation {
+//
+//        return TransformedText(
+//
+//        )
+//    }
+//}
