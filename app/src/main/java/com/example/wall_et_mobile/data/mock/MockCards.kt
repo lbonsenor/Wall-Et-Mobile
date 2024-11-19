@@ -36,4 +36,9 @@ object MockCards {
     fun add(card: CardDetails){
         _sampleCards.add(card)
     }
+
+    fun delete(card: CardDetails) {
+        _sampleCards.remove(card)
+
+    }
 }

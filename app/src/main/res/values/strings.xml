@@ -107,5 +107,7 @@
     <string name="back_to_home">Volver al inicio</string>
     <string name="add_funds">Ingresar dinero</string>
     <string name="add_funds_success">¡Tu ingreso fue realizado con éxito!</string>
+    <string name="delete_card">Quitar Tarjeta</string>
+    <string name="delete_card_check">¿Está seguro que desea eliminar la tarjeta?</string>
 
 </resources>

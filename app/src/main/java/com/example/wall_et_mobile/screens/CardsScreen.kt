@@ -57,7 +57,9 @@ fun CardsScreen(innerPadding: PaddingValues) {
             .fillMaxSize()
             .verticalScroll(scrollState)
     ) {
-        CardList(cards = MockCards.sampleCards, onDeleteCard = {})
+        CardList(cards = MockCards.sampleCards, onDeleteCard = { cardToDelete ->
+            MockCards.delete(cardToDelete)
+        })
         AddCardButton {
             showDialog = true
         }
