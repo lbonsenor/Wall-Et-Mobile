@@ -1,6 +1,7 @@
 package com.example.wall_et_mobile.screens.transfer
 
 
+import android.util.Log
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -135,21 +136,6 @@ class AmountTransformation : VisualTransformation {
     }
 }
 
-fun formatAmount(amount: String): String {
-    if (amount.isEmpty()) return ""
-    return try {
-        val number = amount.toDoubleOrNull() ?: return ""
-        if (number > 6000000) return "6,000,000"
-        val formatter = NumberFormat.getNumberInstance(Locale.US)
-        formatter.minimumFractionDigits = 0
-        formatter.maximumFractionDigits = 0
-        formatter.format(number)
-    } catch (e: Exception) {
-        ""
-    }
-
-}
-
 @Composable
 fun ContactCard(user: User, modifier : Modifier, onClick : () -> Unit) {
     Row(
@@ -198,10 +184,11 @@ fun AmountTextField(whole: String, cents: String, setWhole: (String) -> Unit, se
             supportingText = {Text("${stringResource(R.string.max_amount)} $6,000,000.00")},
             value = whole,
             onValueChange = {
-                if (it.isDigitsOnly()) {
+                if (it.isEmpty()) setWhole(it)
+                else if (it.isDigitsOnly()) {
                     if (it.length > 1 && it[0] == '0') setWhole(it.trimStart('0').ifEmpty { "0" })
-                    else if (it.length <= 7) setWhole(it)
-                    if (it.toDouble() >= 6000000) setCents("00")
+                    else if (it.toDouble() <= 6000000) setWhole(it)
+                    else if (it.toDouble() >= 6000000) setCents("00")
                 }
             },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
@@ -266,3 +253,18 @@ fun AmountTextField(whole: String, cents: String, setWhole: (String) -> Unit, se
 
 }
 
+fun formatAmount(amount: String): String {
+    if (amount.isEmpty()) return ""
+    return try {
+        val number = amount.toDoubleOrNull() ?: return ""
+        if (number > 6000000) return "6,000,000"
+        val formatter = NumberFormat.getNumberInstance(Locale.US)
+        formatter.minimumFractionDigits = 0
+        formatter.maximumFractionDigits = 0
+        formatter.format(number)
+    } catch (e: Exception) {
+        Log.e("Error on formatting string", e.toString())
+        ""
+    }
+
+}
