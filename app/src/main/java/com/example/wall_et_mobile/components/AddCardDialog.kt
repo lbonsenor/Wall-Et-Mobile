@@ -50,7 +50,7 @@ fun AddCardDialog(
     var expirationDate by remember { mutableStateOf("") }
     var type by remember { mutableStateOf("") }
 
-    val isEnabled = number.length == 19 && fullName.isNotEmpty() && expirationDate.length == 4 && cvv.length == 3
+    val isEnabled = number.length == 16 && fullName.isNotEmpty() && expirationDate.length == 4 && cvv.length == 3
 
     Log.d("AddCardDialog", """
     Button enabled: $isEnabled
