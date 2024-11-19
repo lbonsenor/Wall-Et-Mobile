@@ -41,48 +41,58 @@ import com.example.wall_et_mobile.ui.theme.DarkerGrotesque
 import com.example.wall_et_mobile.ui.theme.TransparentGray
 import com.example.wall_et_mobile.ui.theme.WallEtTheme
 import com.example.wall_et_mobile.ui.theme.White
-
-
+import kotlinx.coroutines.flow.filter
 
 
 @Composable
 fun CardItem(card: CardDetails, onDelete: () -> Unit) {
     var visible by remember { mutableStateOf(true) }
     val state = rememberSwipeToDismissBoxState(
-        positionalThreshold =  {distance -> distance * 0.2f }
+        positionalThreshold = { distance -> distance * 0.2f }
     )
-    SwipeToDismissBox(
-        state = state,
-        enableDismissFromEndToStart = true,
-        enableDismissFromStartToEnd = false,
-        backgroundContent = {
-            Row(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .height(250.dp)
-                    .padding(15.dp)
-                    .clip(RoundedCornerShape(16.dp))
-                    .background(MaterialTheme.colorScheme.error),
-                horizontalArrangement = Arrangement.End,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                IconButton(
-                    onClick = onDelete,
-                    modifier = Modifier.padding(end = 16.dp)
+
+    AnimatedVisibility(
+        visible = visible,
+        exit = shrinkHorizontally(animationSpec = tween(300)) + fadeOut()
+    ) {
+        SwipeToDismissBox(
+            state = state,
+            enableDismissFromEndToStart = true,
+            enableDismissFromStartToEnd = false,
+            backgroundContent = {
+                Row(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .height(250.dp)
+                        .padding(15.dp)
+                        .clip(RoundedCornerShape(16.dp))
+                        .background(MaterialTheme.colorScheme.error),
+                    horizontalArrangement = Arrangement.End,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Icon(
-                        Icons.Default.Delete,
-                        contentDescription = "Delete",
-                        tint = Color.White,
-                    )
+                    IconButton(
+                        onClick = onDelete,
+                        modifier = Modifier.padding(end = 16.dp)
+                    ) {
+                        Icon(
+                            Icons.Default.Delete,
+                            contentDescription = "Delete",
+                            tint = Color.White,
+                        )
+                    }
                 }
             }
+        )
+        {
+            CardIndividualItem(card)
         }
-    )
-    {
-        CardIndividualItem(card)
-    }
 
+    }
+    LaunchedEffect(state) {
+        snapshotFlow { state.currentValue }
+            .filter { it == SwipeToDismissBoxValue.EndToStart }
+            .collect { visible = false }
+    }
 }
 
 @Composable
