@@ -1,24 +1,19 @@
-package com.example.wall_et_mobile.screens.transfer
+package com.example.wall_et_mobile.screens.top_up
 
 
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
-import androidx.compose.material3.FilledTonalButton
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -31,7 +26,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
@@ -43,24 +37,20 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.wall_et_mobile.R
+import com.example.wall_et_mobile.components.SuccessDialog
 import com.example.wall_et_mobile.components.TransferCardSlider
-import com.example.wall_et_mobile.components.TransferProgress
 import com.example.wall_et_mobile.data.mock.MockCards
-import com.example.wall_et_mobile.data.mock.MockContacts
-import com.example.wall_et_mobile.model.User
 import com.example.wall_et_mobile.ui.theme.DarkerGrotesque
 import java.text.NumberFormat
 import java.util.Locale
 
 @Composable
-fun SelectAmountScreen(
-    innerPadding : PaddingValues,
-    id: Int,
-    onNavigateToSelectPayment : (Int, String) -> Unit
+fun TopUpScreen(
+    innerPadding : PaddingValues
 )
 {
-    val user : User = MockContacts.sampleContacts[id]
     var amount by remember { mutableStateOf("") }
+    var showSuccess by remember { mutableStateOf(false) }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -71,8 +61,13 @@ fun SelectAmountScreen(
             .padding(16.dp)
             .verticalScroll(rememberScrollState())
     ) {
-        TransferProgress(1)
-        ContactCard(user, Modifier.fillMaxWidth().padding(25.dp), onClick = {})
+        SuccessDialog(
+            visible = showSuccess,
+            message = stringResource(R.string.add_funds_success),
+            onDismiss = { showSuccess = false }
+        )
+
+        Text(text = stringResource(R.string.add_funds), style = MaterialTheme.typography.titleLarge)
 
         TextField(
             supportingText = {Text("${stringResource(R.string.max_amount)} $6,000,000.00")},
@@ -122,15 +117,9 @@ fun SelectAmountScreen(
             },
         )
 
-        Box(
-            contentAlignment = Alignment.Center,
-        ) {
-            TransferCardSlider(MockCards.sampleCards)
-        }
-
         Button(
             onClick = {
-                onNavigateToSelectPayment(user.id, amount)
+                 showSuccess = true
             },
             colors = ButtonColors(
                 containerColor = MaterialTheme.colorScheme.secondary,
@@ -161,50 +150,6 @@ fun formatAmount(amount: String): String {
     } catch (e: Exception) {
         ""
     }
-
-}
-
-@Composable
-fun ContactCard(user: User, modifier : Modifier, onClick : () -> Unit) {
-    Row(
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier,
-    ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(10.dp)
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.person),
-                tint = MaterialTheme.colorScheme.secondary,
-                contentDescription = "Profile Picture",
-                modifier = Modifier
-                    .border(2.dp, MaterialTheme.colorScheme.surfaceVariant, shape = CircleShape)
-                    .padding(10.dp)
-            )
-            Text(
-                text = "${user.name} ${user.lastName}",
-                fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.onBackground
-            )
-        }
-        FilledTonalButton (
-            onClick = {  },
-            shape = CircleShape,
-//            colors = ButtonDefaults.outlinedButtonColors(
-//                contentColor = MaterialTheme.colorScheme.onSecondary,
-//                containerColor = MaterialTheme.colorScheme.secondary,
-//            ),
-            //border = BorderStroke(1.dp, MaterialTheme.colorScheme.secondary)
-        ) {
-            Text(text = stringResource(R.string.change))
-        }
-    }
-}
-
-@Composable
-fun AmountTextField() {
 
 }
 

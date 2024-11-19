@@ -18,6 +18,7 @@ import com.example.wall_et_mobile.screens.HomeScreen
 import com.example.wall_et_mobile.screens.HomeScreenLandscape
 import com.example.wall_et_mobile.screens.LoginScreen
 import com.example.wall_et_mobile.screens.SignupScreen
+import com.example.wall_et_mobile.screens.top_up.TopUpScreen
 import com.example.wall_et_mobile.screens.transfer.SelectAmountScreen
 import com.example.wall_et_mobile.screens.transfer.SelectDestinataryScreen
 import com.example.wall_et_mobile.screens.transfer.SelectPaymentScreen
@@ -51,8 +52,9 @@ fun AppNavHost(
             composable(Screen.Home.route){
                 HomeScreen(
                     { navigateTo(navController, Screen.Transfer.route) },
-                    { navigateTo(navController, Screen.Activities.route) }
-                )}
+                    { navigateTo(navController, Screen.Activities.route) },
+                    { navigateTo(navController, Screen.TopUp.route) },
+                    )}
             composable(Screen.Cards.route){ CardsScreen(innerPadding) }
             composable(Screen.Activities.route){ ActivitiesScreen(innerPadding) }
             composable(Screen.SeeMore.route){}
@@ -87,6 +89,7 @@ fun AppNavHost(
             ){ backStackEntry ->
                 SelectPaymentScreen(innerPadding, backStackEntry.arguments?.getInt("id")!!, backStackEntry.arguments?.getString("amount")!!)
             }
+            composable(route = Screen.TopUp.route){ TopUpScreen(innerPadding) }
         }
     )
 }
@@ -156,6 +159,7 @@ fun LandscapeAppNavHost(
             ){ backStackEntry ->
                 SelectPaymentScreen(innerPadding, backStackEntry.arguments?.getInt("id")!!, backStackEntry.arguments?.getString("amount")!!)
             }
+            composable(route = Screen.TopUp.route){ TopUpScreen(innerPadding) }
         }
     )
 }

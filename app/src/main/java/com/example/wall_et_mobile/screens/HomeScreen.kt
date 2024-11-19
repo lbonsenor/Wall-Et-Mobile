@@ -34,7 +34,8 @@ import com.example.wall_et_mobile.components.CustomButton
 @Composable
 fun HomeScreen(
     onNavigateToTransfer: () -> Unit,
-    onNavigateToActivity: () -> Unit
+    onNavigateToActivity: () -> Unit,
+    onNavigateToTopUp: () -> Unit
 ) {
     Column (
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -44,7 +45,7 @@ fun HomeScreen(
             .background(MaterialTheme.colorScheme.background)
             .verticalScroll(rememberScrollState())
     ){
-        BalanceCard(onNavigateToTransfer)
+        BalanceCard(onNavigateToTransfer, onNavigateToTopUp)
 
         Column (
             modifier = Modifier
@@ -57,7 +58,7 @@ fun HomeScreen(
 }
 
 @Composable
-fun BalanceCard(onNavigateToTransfer: () -> Unit){
+fun BalanceCard(onNavigateToTransfer: () -> Unit, onNavigateToTopUp: () -> Unit){
     Column(
         modifier = Modifier
             .padding(horizontal = 10.dp)
@@ -83,7 +84,7 @@ fun BalanceCard(onNavigateToTransfer: () -> Unit){
                 )
             }
             Box(modifier = Modifier.weight(1f)) {
-                CustomButton(stringResource(R.string.title_add_fund), R.drawable.receive, onClick = {})
+                CustomButton(stringResource(R.string.title_add_fund), R.drawable.receive, onClick = onNavigateToTopUp)
             }
             Box(modifier = Modifier.weight(1f)) {
                 CustomButton(

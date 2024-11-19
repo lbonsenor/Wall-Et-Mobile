@@ -105,5 +105,7 @@
     <string name="swipe">Deslizar</string>
     <string name="success">¡Pago exitoso!</string>
     <string name="back_to_home">Volver al inicio</string>
+    <string name="add_funds">Ingresar dinero</string>
+    <string name="add_funds_success">¡Tu ingreso fue realizado con éxito!</string>
 
 </resources>

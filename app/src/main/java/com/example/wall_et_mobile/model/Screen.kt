@@ -4,7 +4,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.example.wall_et_mobile.*
+import com.example.wall_et_mobile.R
 
 sealed class Screen(
     val route: String = "",
@@ -28,5 +28,6 @@ sealed class Screen(
     object Transfer : Screen(route = "transfer")
     object SelectAmount : Screen(route = "select_amount")
     object SelectPaymentMethod : Screen(route = "select_payment_method")
+    object TopUp : Screen(route = "top_up")
 }
 

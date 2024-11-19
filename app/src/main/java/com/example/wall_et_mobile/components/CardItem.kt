@@ -1,16 +1,25 @@
 package com.example.wall_et_mobile.components
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.SwipeToDismissBox
+import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,8 +43,50 @@ import com.example.wall_et_mobile.ui.theme.WallEtTheme
 import com.example.wall_et_mobile.ui.theme.White
 
 
+
+
 @Composable
-fun CardItem(card: CardDetails) {
+fun CardItem(card: CardDetails, onDelete: () -> Unit) {
+    var visible by remember { mutableStateOf(true) }
+    val state = rememberSwipeToDismissBoxState(
+        positionalThreshold =  {distance -> distance * 0.2f }
+    )
+    SwipeToDismissBox(
+        state = state,
+        enableDismissFromEndToStart = true,
+        enableDismissFromStartToEnd = false,
+        backgroundContent = {
+            Row(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .height(250.dp)
+                    .padding(15.dp)
+                    .clip(RoundedCornerShape(16.dp))
+                    .background(MaterialTheme.colorScheme.error),
+                horizontalArrangement = Arrangement.End,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                IconButton(
+                    onClick = onDelete,
+                    modifier = Modifier.padding(end = 16.dp)
+                ) {
+                    Icon(
+                        Icons.Default.Delete,
+                        contentDescription = "Delete",
+                        tint = Color.White,
+                    )
+                }
+            }
+        }
+    )
+    {
+        CardIndividualItem(card)
+    }
+
+}
+
+@Composable
+fun CardIndividualItem(card: CardDetails) {
     var isNumberVisible by remember { mutableStateOf(false) }
 
     val maskedNumber = if (isNumberVisible) {
@@ -142,17 +193,6 @@ fun CardItem(card: CardDetails) {
                     )
                 }
             }
-        }
-    }
-}
-
-@Preview(name = "Light Mode")
-@Composable
-fun CardItemPreview() {
-    WallEtTheme {
-        Column {
-            CardItem(card = MockCards.sampleCards[0])
-            CardItem(card = MockCards.sampleCards[1])
         }
     }
 }

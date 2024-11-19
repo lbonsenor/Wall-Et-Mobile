@@ -52,6 +52,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.wall_et_mobile.R
+import com.example.wall_et_mobile.components.SuccessDialog
 import com.example.wall_et_mobile.components.TransferProgress
 import com.example.wall_et_mobile.data.mock.MockContacts
 import com.example.wall_et_mobile.ui.theme.DarkerGrotesque
@@ -249,53 +250,5 @@ private fun Section(
             color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
         )
         content()
-    }
-}
-
-@Composable
-fun SuccessDialog(
-    visible: Boolean,
-    message: String = stringResource(R.string.payment_success),
-    onDismiss: () -> Unit
-) {
-    if (visible) {
-        AlertDialog(
-            onDismissRequest = onDismiss,
-            icon = {
-                Icon(
-                    imageVector = Icons.Rounded.CheckCircle,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.secondary,
-                    modifier = Modifier.size(48.dp)
-                )
-            },
-            title = {
-                Text(
-                    text = stringResource(R.string.success),
-                    style = MaterialTheme.typography.headlineSmall,
-                    color = MaterialTheme.colorScheme.secondary
-                )
-            },
-            text = {
-                Text(
-                    text = message,
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
-            },
-            confirmButton = {
-                TextButton(
-                    onClick = onDismiss,
-                    colors = ButtonDefaults.textButtonColors(
-                        contentColor = MaterialTheme.colorScheme.onSecondary,
-                        containerColor = MaterialTheme.colorScheme.secondary
-                    )
-                ) {
-                    Text(stringResource(R.string.back_to_home))
-                }
-            },
-            containerColor = MaterialTheme.colorScheme.surface,
-            tonalElevation = AlertDialogDefaults.TonalElevation
-        )
     }
 }
