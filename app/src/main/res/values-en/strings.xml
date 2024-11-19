@@ -78,4 +78,12 @@
     <string name="validate">Validate</string>
     <string name="confirm">Confirm</string>
     <string name="fast_login">Log in without mess</string>
+    <string name="payment_success">Your payment was sent successfully!</string>
+    <string name="transfer_to">Transfer to</string>
+    <string name="transfer_amount">Transfer amount</string>
+    <string name="add_note">Add note</string>
+    <string name="swipe_to_send">Swipe to transfer</string>
+    <string name="swipe">Swipe</string>
+    <string name="success">Success!</string>
+    <string name="back_to_home">Back to home</string>
 </resources>

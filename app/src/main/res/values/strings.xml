@@ -97,5 +97,13 @@
     <string name="validate">Validar</string>
     <string name="confirm">Confirmar</string>
     <string name="fast_login">Entrar sin este lío (provisional)</string>
+    <string name="payment_success">¡Tu transferencia fue realizada con éxito!</string>
+    <string name="transfer_to">Transferir a</string>
+    <string name="transfer_amount">Monto de transferencia</string>
+    <string name="add_note">Agregar nota</string>
+    <string name="swipe_to_send">Deslizar para transferir</string>
+    <string name="swipe">Deslizar</string>
+    <string name="success">¡Pago exitoso!</string>
+    <string name="back_to_home">Volver al inicio</string>
 
 </resources>

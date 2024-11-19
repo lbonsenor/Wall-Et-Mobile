@@ -1,7 +1,6 @@
 package com.example.wall_et_mobile.screens.transfer
 
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,10 +17,9 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -75,7 +73,7 @@ fun SelectAmountScreen(
             .verticalScroll(rememberScrollState())
     ) {
         TransferProgress(1)
-        ContactCard(user)
+        ContactCard(user, Modifier.fillMaxWidth().padding(25.dp), onClick = {})
 
         TextField(
             supportingText = {Text("${stringResource(R.string.max_amount)} $6,000,000.00")},
@@ -168,11 +166,11 @@ fun formatAmount(amount: String): String {
 }
 
 @Composable
-fun ContactCard(user: User) {
+fun ContactCard(user: User, modifier : Modifier, onClick : () -> Unit) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.fillMaxWidth().padding(25.dp)
+        modifier = modifier,
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -192,14 +190,14 @@ fun ContactCard(user: User) {
                 color = MaterialTheme.colorScheme.onBackground
             )
         }
-        OutlinedButton (
-            onClick = { },
+        FilledTonalButton (
+            onClick = {  },
             shape = CircleShape,
-            colors = ButtonDefaults.outlinedButtonColors(
-                contentColor = MaterialTheme.colorScheme.onSecondary,
-                containerColor = MaterialTheme.colorScheme.secondary,
-            ),
-            border = BorderStroke(1.dp, MaterialTheme.colorScheme.secondary)
+//            colors = ButtonDefaults.outlinedButtonColors(
+//                contentColor = MaterialTheme.colorScheme.onSecondary,
+//                containerColor = MaterialTheme.colorScheme.secondary,
+//            ),
+            //border = BorderStroke(1.dp, MaterialTheme.colorScheme.secondary)
         ) {
             Text(text = stringResource(R.string.change))
         }

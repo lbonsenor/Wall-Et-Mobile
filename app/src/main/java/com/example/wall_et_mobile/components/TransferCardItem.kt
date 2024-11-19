@@ -15,6 +15,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,20 +33,25 @@ import com.example.wall_et_mobile.ui.theme.WallEtTheme
 
 @Composable
 fun TransferCardItem(card: CardDetails) {
+    var isClicked by remember { mutableStateOf(false) }
     val maskedNumber = card.cardNumber.replace(Regex(".{14}(.{4})"), "Termina en$1")
     Card(
         colors = CardColors(
             containerColor = Color.Transparent,
             contentColor = MaterialTheme.colorScheme.onBackground,
             disabledContainerColor = Color.Gray,
-            disabledContentColor = MaterialTheme.colorScheme.onPrimary
+            disabledContentColor = Color.Gray,
+
         ),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.onBackground),
+        border = BorderStroke(1.dp, if (isClicked) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.onBackground),
         shape = RoundedCornerShape(10.dp),
         modifier = Modifier
             .aspectRatio(8 / 3f)
             .height(100.dp)
             .padding(8.dp),
+        onClick = {
+            isClicked = !isClicked
+        }
     ) {
         Row(
             modifier = Modifier
