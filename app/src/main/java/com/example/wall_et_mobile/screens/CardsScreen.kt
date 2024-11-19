@@ -19,12 +19,17 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.wall_et_mobile.R
+import com.example.wall_et_mobile.components.AddCardDialog
 import com.example.wall_et_mobile.components.CardList
 import com.example.wall_et_mobile.data.mock.MockCards
 
@@ -43,6 +48,7 @@ fun CardsScreen(innerPadding: PaddingValues) {
 //        )
 //    }
     val scrollState = rememberScrollState()
+    var showDialog by remember { mutableStateOf(false) }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -52,7 +58,12 @@ fun CardsScreen(innerPadding: PaddingValues) {
             .verticalScroll(scrollState)
     ) {
         CardList(cards = MockCards.sampleCards, onDeleteCard = {})
-        AddCardButton {  }
+        AddCardButton {
+            showDialog = true
+        }
+        AddCardDialog(showDialog = showDialog, onDismiss = { showDialog = false }, onSubmit = {
+
+        })
     }
 }
 

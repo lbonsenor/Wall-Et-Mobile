@@ -39,6 +39,8 @@ private val DarkColorScheme = darkColorScheme(
 
     surfaceContainer = Purple,
 
+    error = Red,
+
 )
 
 private val LightColorScheme = lightColorScheme(
@@ -63,6 +65,8 @@ private val LightColorScheme = lightColorScheme(
     onSurfaceVariant = Purple,
 
     surfaceContainer = DarkPurple,
+
+    error = Red,
 
     /* Other default colors to override
     onPrimary = Color.White,
