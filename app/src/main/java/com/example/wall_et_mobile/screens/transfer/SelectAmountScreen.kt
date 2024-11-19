@@ -42,6 +42,7 @@ import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.text.isDigitsOnly
 import com.example.wall_et_mobile.R
 import com.example.wall_et_mobile.components.TransferCardSlider
 import com.example.wall_et_mobile.components.TransferProgress
@@ -61,6 +62,7 @@ fun SelectAmountScreen(
 {
     val user : User = MockContacts.sampleContacts[id]
     var amount by remember { mutableStateOf("") }
+    var cents by remember { mutableStateOf("00") }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -72,55 +74,12 @@ fun SelectAmountScreen(
             .verticalScroll(rememberScrollState())
     ) {
         TransferProgress(1)
-        ContactCard(user, Modifier.fillMaxWidth().padding(25.dp), onClick = {})
+        ContactCard(user,
+            Modifier
+                .fillMaxWidth()
+                .padding(25.dp), onClick = {})
 
-        TextField(
-            supportingText = {Text("${stringResource(R.string.max_amount)} $6,000,000.00")},
-            value = amount,
-            onValueChange = {
-                if (it.length <= 12 ) amount = it },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-            textStyle = TextStyle(
-                fontFamily = DarkerGrotesque,
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 50.sp,
-            ),
-            colors = TextFieldDefaults.colors(
-                focusedIndicatorColor = MaterialTheme.colorScheme.secondary,  // bottom line color when focused
-                unfocusedIndicatorColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.3f), // bottom line color when not focused
-                cursorColor = Color.Transparent,
-                disabledIndicatorColor = Color.Transparent,
-                errorIndicatorColor = MaterialTheme.colorScheme.error,
-                focusedContainerColor = Color.Transparent,  // background color
-                unfocusedContainerColor = Color.Transparent,
-            ),
-            prefix = {
-                Text(
-                    text = "$ ",
-                    style = TextStyle(
-                        fontFamily = DarkerGrotesque,
-                        fontWeight = FontWeight.SemiBold,
-                        fontSize = 50.sp))
-            },
-            singleLine = true,
-            modifier = Modifier.padding(bottom = 8.dp),
-            visualTransformation = VisualTransformation { it ->
-                val formattedAmount = formatAmount(it.text)
-
-                val originalToTransformed = object : OffsetMapping{
-                    override fun originalToTransformed(offset: Int): Int {
-                        if (it.text.isEmpty()) return 0
-                        return formattedAmount.length
-                    }
-
-                    override fun transformedToOriginal(offset: Int): Int {
-                        if (formattedAmount.isEmpty()) return 0
-                        return it.text.length
-                    }
-                }
-                TransformedText(AnnotatedString(formattedAmount), originalToTransformed)
-            },
-        )
+        AmountTextField(amount, cents, { amount = it }, { cents = it })
 
         Box(
             contentAlignment = Alignment.Center,
@@ -149,14 +108,41 @@ fun SelectAmountScreen(
 
 }
 
+class AmountTransformation : VisualTransformation {
+    override fun filter(text: AnnotatedString): TransformedText {
+        var out = text.text
+        out = formatAmount(text.text)
+        return TransformedText(
+            AnnotatedString(out),
+            object : OffsetMapping {
+                override fun originalToTransformed(offset: Int): Int {
+                    return when (offset) {
+                        0,1,2,3 -> offset
+                        4,5,6 -> offset + 1
+                        else -> offset + 2
+                    }
+                }
+                override fun transformedToOriginal(offset: Int): Int {
+                    if (text.text.isEmpty()) return offset
+                    return when (offset) {
+                        0,1,2,3 -> offset
+                        4,5,6 -> offset - 1
+                        else -> offset - 2
+                    }
+                }
+            }
+        )
+    }
+}
+
 fun formatAmount(amount: String): String {
-    if (amount.isEmpty()) return "0.00"
+    if (amount.isEmpty()) return ""
     return try {
         val number = amount.toDoubleOrNull() ?: return ""
-        if (number >= 6000000) return "6,000,000.00"
+        if (number > 6000000) return "6,000,000"
         val formatter = NumberFormat.getNumberInstance(Locale.US)
-        formatter.minimumFractionDigits = 2
-        formatter.maximumFractionDigits = 2
+        formatter.minimumFractionDigits = 0
+        formatter.maximumFractionDigits = 0
         formatter.format(number)
     } catch (e: Exception) {
         ""
@@ -203,8 +189,80 @@ fun ContactCard(user: User, modifier : Modifier, onClick : () -> Unit) {
     }
 }
 
+
+
 @Composable
-fun AmountTextField() {
+fun AmountTextField(whole: String, cents: String, setWhole: (String) -> Unit, setCents: (String) -> Unit) {
+    Row (verticalAlignment = Alignment.Bottom){
+        TextField(
+            supportingText = {Text("${stringResource(R.string.max_amount)} $6,000,000.00")},
+            value = whole,
+            onValueChange = {
+                if (it.isDigitsOnly()) {
+                    if (it.length > 1 && it[0] == '0') setWhole(it.trimStart('0').ifEmpty { "0" })
+                    else if (it.length <= 7) setWhole(it)
+                    if (it.toDouble() >= 6000000) setCents("00")
+                }
+            },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+            textStyle = TextStyle(
+                fontFamily = DarkerGrotesque,
+                fontWeight = FontWeight.SemiBold,
+                fontSize = 45.sp,
+            ),
+            colors = TextFieldDefaults.colors(
+                focusedIndicatorColor = MaterialTheme.colorScheme.secondary,  // bottom line color when focused
+                unfocusedIndicatorColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.3f), // bottom line color when not focused
+                errorIndicatorColor = MaterialTheme.colorScheme.error,
+                focusedContainerColor = Color.Transparent,  // background color
+                unfocusedContainerColor = Color.Transparent,
+                cursorColor = MaterialTheme.colorScheme.secondary
+            ),
+            prefix = {
+                Text(
+                    text = "$ ",
+                    style = TextStyle(
+                        fontFamily = DarkerGrotesque,
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 45.sp))
+            },
+            singleLine = true,
+            modifier = Modifier.padding(bottom = 8.dp).weight(0.75f),
+            visualTransformation = AmountTransformation(),
+        )
+        TextField(
+            supportingText = {Text(" ")},
+            value = cents,
+            onValueChange = {
+                if (it.isDigitsOnly() && it.length <= 2) setCents(it)
+                if (whole == "6000000") setCents("00")
+            },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+            textStyle = TextStyle(
+                fontFamily = DarkerGrotesque,
+                fontWeight = FontWeight.SemiBold,
+                fontSize = 30.sp,
+            ),
+            colors = TextFieldDefaults.colors(
+                focusedIndicatorColor = MaterialTheme.colorScheme.secondary,  // bottom line color when focused
+                unfocusedIndicatorColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.3f), // bottom line color when not focused
+                errorIndicatorColor = MaterialTheme.colorScheme.error,
+                focusedContainerColor = Color.Transparent,  // background color
+                unfocusedContainerColor = Color.Transparent,
+                cursorColor = MaterialTheme.colorScheme.secondary
+            ),
+            prefix = {
+                Text(
+                    text = ". ",
+                    style = TextStyle(
+                        fontFamily = DarkerGrotesque,
+                        fontWeight = FontWeight.SemiBold,
+                        fontSize = 30.sp))
+            },
+            singleLine = true,
+            modifier = Modifier.padding(bottom = 8.dp).weight(0.25f),
+        )
+    }
 
 }
 
