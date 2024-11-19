@@ -83,7 +83,7 @@ fun AddCardDialog(
                     )
                     OutlinedTextField(
                         value = number,
-                        onValueChange = {if (it.length <= 5) number = it},
+                        onValueChange = {if (it.length <= 16) number = it},
 //                        visualTransformation = CardNumberTransformation(),
                         label = { Text("Card Number") },
                         maxLines = 1,
@@ -99,7 +99,8 @@ fun AddCardDialog(
                             unfocusedLabelColor = MaterialTheme.colorScheme.onBackground.copy(0.8f),
                             unfocusedLeadingIconColor = MaterialTheme.colorScheme.onBackground.copy(0.8f),
                             focusedLeadingIconColor = MaterialTheme.colorScheme.secondary
-                        )
+                        ),
+                        visualTransformation = CardNumberTransformation()
                     )
                     OutlinedTextField(
                         value = fullName,
@@ -123,7 +124,7 @@ fun AddCardDialog(
                     ) {
                         OutlinedTextField(
                             value = expirationDate,
-                            onValueChange = { if (it.length <= 5) expirationDate = it },
+                            onValueChange = { if (it.length < 5) expirationDate = it },
                             label = { Text("MM/YY") },
                             maxLines = 1,
                             modifier = Modifier.weight(1f),
@@ -201,9 +202,7 @@ fun AddCardDialog(
 class ExpirationDateTransformation : VisualTransformation {
     override fun filter(text: AnnotatedString): TransformedText {
         var out = text.text
-        if (text.text.length >= 2) {
-            out = text.text.substring(0, 2) + "/" + text.text.substring(2)
-        }
+        out = formatDate(text.text)
         return TransformedText(
             AnnotatedString(out),
             object : OffsetMapping {
@@ -216,10 +215,41 @@ class ExpirationDateTransformation : VisualTransformation {
     }
 }
 
-//class CardNumberTransformation : VisualTransformation {
-//
-//        return TransformedText(
-//
-//        )
-//    }
-//}
+class CardNumberTransformation : VisualTransformation {
+    override fun filter(text: AnnotatedString): TransformedText {
+        var out = text.text
+        out = formatCardNumber(text.text)
+
+        return TransformedText(
+            AnnotatedString(out),
+            object : OffsetMapping {
+                override fun originalToTransformed(offset: Int): Int =
+                    when (offset) {
+                        0,1,2,3,4 -> offset
+                        5,6,7,8 -> offset + 1
+                        9,10,11,12 -> offset + 2
+                        else -> offset + 3
+                    }
+                override fun transformedToOriginal(offset: Int): Int =
+                    when (offset) {
+                        0,1,2,3,4 -> offset
+                        5,6,7,8 -> offset - 1
+                        9,10,11,12 -> offset - 2
+                        else -> offset - 3
+                    }
+            }
+        )
+    }
+}
+
+fun formatDate(str: String): String{
+    return when (str.length) {
+        0, 1, 2 -> str
+        3 -> "${str[0]}${str[1]}/${str[2]}"
+        else -> "${str[0]}${str[1]}/${str[2]}${str[3]}"
+    }
+}
+
+fun formatCardNumber(str : String): String{
+    return str.chunked(4).joinToString(" ")
+}
