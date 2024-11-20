@@ -26,10 +26,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.wall_et_mobile.CustomTopAppBar
 import com.example.wall_et_mobile.R
 import com.example.wall_et_mobile.components.ActivityList
 import com.example.wall_et_mobile.components.Balance
 import com.example.wall_et_mobile.components.CustomButton
+import com.example.wall_et_mobile.model.User
 
 @Composable
 fun HomeScreen(
@@ -67,6 +69,7 @@ fun BalanceCard(onNavigateToTransfer: () -> Unit, onNavigateToTopUp: () -> Unit)
             .background(MaterialTheme.colorScheme.primary)
 
     ) {
+        CustomTopAppBar(User(1, "test", "test", "Lautaro", "test", "test", "test", "test",))
         Balance()
         Row(
             horizontalArrangement = Arrangement.spacedBy(16.dp),

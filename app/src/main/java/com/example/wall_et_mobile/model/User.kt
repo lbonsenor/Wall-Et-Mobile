@@ -1,7 +1,5 @@
 package com.example.wall_et_mobile.model
 
-import kotlinx.serialization.Serializable
-
 data class User(
     val id: Int,
     val alias: String,
@@ -14,7 +12,6 @@ data class User(
 ) {
 }
 
-@Serializable
 data class RegisteredUser(
     val id: Int,
     val firstName: String,

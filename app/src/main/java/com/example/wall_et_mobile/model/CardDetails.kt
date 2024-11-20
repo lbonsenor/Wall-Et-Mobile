@@ -9,14 +9,15 @@ data class CardDetails(
     val cardExpiration: String,
     val cardCvv: String,
     val gradient: CardGradient = CardGradient.random(),
+    val cardBrand: CardBrand = getCardBrand(cardNumber)
 ) {
-    fun getCardBrand() : CardBrand{
-        if (cardNumber.startsWith("4")) return CardBrand.VISA
-        else if (cardNumber.startsWith("5")) return CardBrand.MASTERCARD
-        return CardBrand.VISA
-    }
-
     val backgroundColors: List<Color>
         get() = gradient.colors
+}
 
+fun getCardBrand(cardNumber: String) : CardBrand{
+    CardBrand.entries.forEach { cardBrand ->
+        if (cardBrand.validate(cardNumber)) return cardBrand
+    }
+    return CardBrand.VISA
 }

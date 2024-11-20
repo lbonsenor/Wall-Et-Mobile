@@ -1,7 +1,5 @@
 package com.example.wall_et_mobile
 
-//noinspection UsingMaterialAndMaterial3Libraries
-//noinspection UsingMaterialAndMaterial3Libraries
 import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -68,7 +66,6 @@ fun ScaffoldPortrait(navController: NavHostController, qrScanner: QRScanner){
         systemUiController.setNavigationBarColor(systemNavColor)
     }
     Scaffold (
-        //topBar = { CustomTopAppBar(User(1, "test", "test", "Lautaro", "test", "test", "test", "test",)) },
         bottomBar = { CustomAppBar(navController) },
         floatingActionButtonPosition = FabPosition.Center,
         isFloatingActionButtonDocked = true,

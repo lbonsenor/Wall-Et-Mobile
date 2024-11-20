@@ -8,9 +8,26 @@ enum class CardType(val stringInt: Int) {
     DEBIT_CARD(R.string.debit),
 }
 
-enum class CardBrand (val iconInt: Int){
-    VISA(R.drawable.visa),
-    MASTERCARD(R.drawable.master_card),
+enum class CardBrand (
+    val iconInt: Int,
+    val validate : (String) -> Boolean
+){
+    AMERICAN_EXPRESS(
+        iconInt = R.drawable.visa,
+        validate = {str -> str.startsWith("34") || str.startsWith("37")}
+    ),
+    VISA(
+        iconInt = R.drawable.visa,
+        validate = {str -> str.startsWith("4")}
+    ),
+    MASTERCARD(
+        iconInt = R.drawable.master_card,
+        validate = {str -> str.matches(regex = "^(222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720|5[1-5]).*".toRegex())}
+    ),
+    UATP(
+        iconInt = R.drawable.master_card,
+        validate = {str -> str.startsWith("1")}
+    ),
 }
 
 enum class CardGradient(val colors: List<Color>) {

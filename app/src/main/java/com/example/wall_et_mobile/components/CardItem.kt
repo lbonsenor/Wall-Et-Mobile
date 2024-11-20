@@ -198,7 +198,7 @@ fun CardIndividualItem(card: CardDetails) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
-                    painter = painterResource(card.getCardBrand().iconInt),
+                    painter = painterResource(card.cardBrand.iconInt),
                     contentDescription = "Card Brand",
                     tint = Color.Unspecified,
                     modifier = Modifier.size(70.dp)

@@ -61,9 +61,9 @@ fun TransferCardItem(card: CardDetails) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
-                painter = painterResource(card.getCardBrand().iconInt),
+                painter = painterResource(card.cardBrand.iconInt),
                 contentDescription = "Card Brand",
-                tint = if (card.getCardBrand() == CardBrand.VISA) MaterialTheme.colorScheme.secondary else Color.Unspecified,
+                tint = if (card.cardBrand == CardBrand.VISA) MaterialTheme.colorScheme.secondary else Color.Unspecified,
                 //modifier = Modifier.size(40.dp)
             )
             Text(

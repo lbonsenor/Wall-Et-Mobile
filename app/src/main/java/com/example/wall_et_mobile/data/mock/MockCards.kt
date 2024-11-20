@@ -15,7 +15,7 @@ object MockCards {
             gradient = CardGradient.PURPLE_INDIGO
         ),
         CardDetails(
-            cardNumber = "5876 5432 1098 7654",
+            cardNumber = "5576 5432 1098 7654",
             cardType = CardType.DEBIT_CARD,
             cardHolder = "Jane Smith",
             cardExpiration = "03/29",
@@ -23,7 +23,7 @@ object MockCards {
             gradient = CardGradient.DARK_TEAL
         ),
         CardDetails(
-            cardNumber = "4131 5234 6213 1231",
+            cardNumber = "2222 5234 6213 1231",
             cardType = CardType.DEBIT_CARD,
             cardHolder = "Juan José",
             cardExpiration = "12/31",
