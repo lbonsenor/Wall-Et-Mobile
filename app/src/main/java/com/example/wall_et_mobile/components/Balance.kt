@@ -11,8 +11,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.FilledTonalIconToggleButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconToggleButtonColors
-import androidx.compose.material3.Text
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -22,9 +22,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import java.text.NumberFormat
 import com.example.wall_et_mobile.R
 import com.example.wall_et_mobile.ui.theme.DarkerGrotesque
+import java.text.NumberFormat
 
 @Composable
 fun Balance(balance: CurrencyAmount = CurrencyAmount(123000.0, Currency.getInstance("ARS"))){
@@ -37,7 +37,7 @@ fun Balance(balance: CurrencyAmount = CurrencyAmount(123000.0, Currency.getInsta
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.Bottom,
         modifier = Modifier.fillMaxWidth()
-            .padding(horizontal = 10.dp, vertical = 30.dp)
+            .padding(horizontal = 10.dp, vertical = 10.dp)
     ){
         Spacer(modifier = Modifier.weight(1/6f))
         Column (
