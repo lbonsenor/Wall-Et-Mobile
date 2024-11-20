@@ -11,7 +11,8 @@ data class User(
     val natId: String,
     val phoneNo: String,
     val email: String,
-)
+) {
+}
 
 @Serializable
 data class RegisteredUser(
