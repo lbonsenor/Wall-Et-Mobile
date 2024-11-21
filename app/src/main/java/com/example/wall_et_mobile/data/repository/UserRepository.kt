@@ -8,7 +8,7 @@ class UserRepository(
     private val remoteDataSource: UserRemoteDataSource
 ) {
 
-    // Mutex to make writes to cached values thread-safe.
+    // Mutex to make writes to cached values thread-safe. omg SO hi!
     private val currentUserMutex = Mutex()
     // Cache of the current user got from the network.
     private var currentUser: User? = null

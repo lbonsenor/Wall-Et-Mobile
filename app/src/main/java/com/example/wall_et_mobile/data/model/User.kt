@@ -13,3 +13,4 @@ data class User(
     val email: String,
     val birthDate: Date?
 )
+
