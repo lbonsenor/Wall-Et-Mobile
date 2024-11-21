@@ -22,6 +22,6 @@ class UserRemoteDataSource(private val sessionManager: SessionManager,
     }
 
     suspend fun getCurrentUser() : NetworkUser {
-        handleApiResponse {userApiService.getCurrentUser()}
+        return handleApiResponse {userApiService.getCurrentUser()}
     }
 }
