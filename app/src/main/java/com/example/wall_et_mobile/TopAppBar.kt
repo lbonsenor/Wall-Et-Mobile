@@ -14,8 +14,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.wall_et_mobile.model.User
+import com.example.wall_et_mobile.data.model.User
 import com.example.wall_et_mobile.ui.theme.WallEtTheme
+import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -53,7 +54,7 @@ fun CustomTopAppBar(user: User) {
 @Preview
 @Composable
 fun PreviewTopAppBar() {
-    val testUser = User(1, "test", "test", "Lauti", "test", "test", "test", "test")
+    val testUser = User(1, "test", "test", "Lauti", "test", "test", Date(), "test")
     WallEtTheme {
         CustomTopAppBar(testUser)
     }
