@@ -74,10 +74,12 @@ fun ContactItem(user: User, favoriteUserIds: List<Int>, onFavoriteChange: (Int, 
             }
             IconButton(
                 onClick = {
-                    onFavoriteChange(
-                        user.id,
-                        !isFavorited
-                    )
+                    user.id?.toInt()?.let {
+                        onFavoriteChange(
+                            it,
+                            !isFavorited
+                        )
+                    }
                 } // agregarlo a la lista de favoritos
             ) {
                 Icon(

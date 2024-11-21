@@ -28,7 +28,7 @@ fun ActivityList(activities: List<Transaction>) {
 fun ActivityListWithDates(activities: List<Transaction>){
     val groupedActivities = activities
         .groupBy { activity ->
-            activity.transactionTime.toString().split(" ")[0]
+            activity.createdAt.toString().split(" ")[0] // Obs i changed this because of API constraints
         }
         .toSortedMap(compareByDescending { it })
 
