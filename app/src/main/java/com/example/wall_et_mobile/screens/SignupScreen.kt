@@ -7,14 +7,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -23,17 +23,18 @@ import com.example.wall_et_mobile.R
 import com.example.wall_et_mobile.components.CustomTextField
 import com.example.wall_et_mobile.components.EndFormButton
 import com.example.wall_et_mobile.components.PasswordField
+import com.example.wall_et_mobile.components.VerificationDialog
 
 @Composable
 fun SignupScreen(
     onNavigateToLogin : () -> Unit,
     onNavigateUp : () -> Unit
-
 ) {
     var name by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
+    var showDialog by remember { mutableStateOf(false) }
 
     fun validateEmail(email: String): Boolean {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
@@ -47,6 +48,12 @@ fun SignupScreen(
     val isFormValid = remember(name, email, password, confirmPassword) {
         name.isNotEmpty() && validateEmail(email) && validatePassword(password) && password == confirmPassword
     }
+
+    VerificationDialog(
+        showDialog = showDialog,
+        onDismiss = { showDialog = false },
+        onConfirm = onNavigateToLogin
+    )
 
     Column(
         modifier = Modifier
@@ -118,7 +125,7 @@ fun SignupScreen(
 
                 EndFormButton(
                     textResourceId = R.string.sign_up,
-                    onClick = onNavigateToLogin,
+                    onClick = { showDialog = true },
                     enabled = isFormValid
                 )
 

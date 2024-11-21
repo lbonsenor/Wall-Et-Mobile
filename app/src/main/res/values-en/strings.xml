@@ -78,4 +78,7 @@
     <string name="validate">Validate</string>
     <string name="confirm">Confirm</string>
     <string name="fast_login">Log in without mess</string>
+    <string name="verification_email_sent">A verification email was sent. Please confirm your account and log in.</string>
+    <string name="verification_email">Verification email</string>
+    <string name="ok">OK</string>
 </resources>

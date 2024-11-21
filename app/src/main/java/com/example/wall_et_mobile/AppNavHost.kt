@@ -28,7 +28,7 @@ fun AppNavHost(
     modifier: Modifier,
     navController: NavHostController = rememberNavController(),
 //    startDestination: String = Screen.Login.route
-    startDestination: String = Screen.Home.route    // FOR TESTING
+    startDestination: String = Screen.Login.route    // FOR TESTING
 ){
     NavHost(
         navController = navController,

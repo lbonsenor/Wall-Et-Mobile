@@ -97,5 +97,8 @@
     <string name="validate">Validar</string>
     <string name="confirm">Confirmar</string>
     <string name="fast_login">Entrar sin este lío (provisional)</string>
+    <string name="verification_email_sent">Se envió un email de verificación al correo provisto. Por favor, confirme su cuenta e inicie sesión.</string>
+    <string name="verification_email">Correo de verificación</string>
+    <string name="ok">Aceptar</string>
 
 </resources>
