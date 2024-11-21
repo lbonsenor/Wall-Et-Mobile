@@ -13,7 +13,7 @@ import retrofit2.http.Path;
 
 interface WalletApiService {
     @GET("wallet/cards")
-    suspend fun getCards(): Response<NetworkCard>
+    suspend fun getCards(): Response<List<NetworkCard>>
 
     @POST("wallet/cards")
     suspend fun addCard(@Body card: NetworkCard): Response<NetworkCard>
