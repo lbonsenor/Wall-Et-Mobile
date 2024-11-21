@@ -1,4 +1,9 @@
 package com.example.wall_et_mobile.data.network.model
 
-class NetworkToken {
-}
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class NetworkToken(
+
+    var token: String
+)
