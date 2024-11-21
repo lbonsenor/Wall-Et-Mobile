@@ -1,8 +1,10 @@
 package com.example.wall_et_mobile.data.network
 
 import com.example.wall_et_mobile.data.network.api.WalletApiService
+import com.example.wall_et_mobile.data.network.model.NetworkAliasUpdate
+import com.example.wall_et_mobile.data.network.model.NetworkBalanceResponse
 import com.example.wall_et_mobile.data.network.model.NetworkCard
-import retrofit2.Response
+import com.example.wall_et_mobile.data.network.model.NetworkWallet
 
 class WalletRemoteDataSource(
     private val walletApiService: WalletApiService
@@ -24,6 +26,18 @@ class WalletRemoteDataSource(
         handleApiResponse {
             walletApiService.deleteCard(cardId)
         }
+    }
+
+    suspend fun getBalance() : NetworkBalanceResponse {
+        return handleApiResponse { walletApiService.getBalance() }
+    }
+
+    suspend fun updateAlias(alias : NetworkAliasUpdate) : NetworkWallet {
+        return handleApiResponse { walletApiService.updateAlias(alias) }
+    }
+
+    suspend fun getWallet() : NetworkWallet {
+        return handleApiResponse { walletApiService.getWallet() }
     }
 
 }

@@ -2,8 +2,7 @@ package com.example.wall_et_mobile.data.repository
 import com.example.wall_et_mobile.data.model.RecoveryResponse
 import com.example.wall_et_mobile.data.model.User
 import com.example.wall_et_mobile.data.network.UserRemoteDataSource
-import com.example.wall_et_mobile.data.network.model.NetworkRecovery
-import com.example.wall_et_mobile.data.network.model.NetworkReset
+
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
