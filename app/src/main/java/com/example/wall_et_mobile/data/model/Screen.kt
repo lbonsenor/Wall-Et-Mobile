@@ -1,4 +1,4 @@
-package com.example.wall_et_mobile.model
+package com.example.wall_et_mobile.data.model
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Home

@@ -1,4 +1,4 @@
-package com.example.wall_et_mobile.model
+package com.example.wall_et_mobile.data.model
 
 import android.icu.util.Currency
 import android.icu.util.CurrencyAmount

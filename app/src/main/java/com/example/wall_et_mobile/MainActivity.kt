@@ -30,7 +30,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.wall_et_mobile.screens.ActivitiesScreen
 import com.example.wall_et_mobile.screens.HomeScreen
-import com.example.wall_et_mobile.model.Screen
+import com.example.wall_et_mobile.data.model.Screen
 import com.example.wall_et_mobile.screens.CardsScreen
 import com.example.wall_et_mobile.screens.ForgotPasswordScreen
 import com.example.wall_et_mobile.screens.HomeScreenLandscape

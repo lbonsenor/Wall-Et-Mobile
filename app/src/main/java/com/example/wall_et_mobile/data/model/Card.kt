@@ -1,8 +1,8 @@
-package com.example.wall_et_mobile.model
+package com.example.wall_et_mobile.data.model
 
 import androidx.compose.ui.graphics.Color
 
-data class CardDetails(
+data class Card(
     val cardNumber: String,
     val cardType: CardType,
     val cardHolder: String,
