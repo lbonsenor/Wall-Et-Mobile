@@ -1,6 +1,9 @@
 package com.example.wall_et_mobile.data.repository
+import com.example.wall_et_mobile.data.model.RecoveryResponse
 import com.example.wall_et_mobile.data.model.User
 import com.example.wall_et_mobile.data.network.UserRemoteDataSource
+import com.example.wall_et_mobile.data.network.model.NetworkRecovery
+import com.example.wall_et_mobile.data.network.model.NetworkReset
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
@@ -17,8 +20,15 @@ class UserRepository(
         remoteDataSource.login(username, password)
     }
 
+    suspend fun register(user: User){
+        remoteDataSource.register(user.asNetworkModel())
+    }
+
     suspend fun logout() {
         remoteDataSource.logout()
+    }
+    suspend fun verify() : User? {
+        return remoteDataSource.verify().asModel()
     }
 
     suspend fun getCurrentUser(refresh: Boolean) : User? {
@@ -31,5 +41,13 @@ class UserRepository(
         }
 
         return currentUserMutex.withLock { this.currentUser }
+    }
+
+    suspend fun resetPassword( newPass: String){
+        remoteDataSource.resetPassword(newPass)
+    }
+
+    suspend fun recoverPassword(email: String) : RecoveryResponse{
+        return remoteDataSource.recoverPassword(email).asModel()
     }
 }
