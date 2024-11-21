@@ -22,11 +22,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.wall_et_mobile.R
 import com.example.wall_et_mobile.data.mock.MockCards
-import com.example.wall_et_mobile.model.CardDetails
+import com.example.wall_et_mobile.data.model.Card
 import com.example.wall_et_mobile.ui.theme.WallEtTheme
 
 @Composable
-fun TransferCardSlider(cards: List<CardDetails>) {
+fun TransferCardSlider(cards: List<Card>) {
     Row(
         modifier = Modifier
             .fillMaxWidth()

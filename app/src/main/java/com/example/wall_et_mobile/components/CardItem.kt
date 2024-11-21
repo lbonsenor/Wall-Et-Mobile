@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.wall_et_mobile.R
 import com.example.wall_et_mobile.data.mock.MockCards
-import com.example.wall_et_mobile.model.CardDetails
+import com.example.wall_et_mobile.data.model.Card
 import com.example.wall_et_mobile.ui.theme.DarkerGrotesque
 import com.example.wall_et_mobile.ui.theme.TransparentGray
 import com.example.wall_et_mobile.ui.theme.WallEtTheme
@@ -35,7 +35,7 @@ import com.example.wall_et_mobile.ui.theme.White
 
 
 @Composable
-fun CardItem(card: CardDetails) {
+fun CardItem(card: Card) {
     var isNumberVisible by remember { mutableStateOf(false) }
 
     val maskedNumber = if (isNumberVisible) {

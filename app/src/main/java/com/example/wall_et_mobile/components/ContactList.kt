@@ -27,7 +27,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.wall_et_mobile.R
-import com.example.wall_et_mobile.model.User
+import com.example.wall_et_mobile.data.model.User
 
 @Composable
 fun ContactsTabs(onTabSelected: (Int) -> Unit, initialTab: Int = 0) {

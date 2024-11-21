@@ -10,7 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.wall_et_mobile.model.Transaction
+import com.example.wall_et_mobile.data.model.Transaction
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 

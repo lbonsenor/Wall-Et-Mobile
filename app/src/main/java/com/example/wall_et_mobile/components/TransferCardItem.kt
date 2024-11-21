@@ -22,13 +22,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.wall_et_mobile.data.mock.MockCards
-import com.example.wall_et_mobile.model.CardBrand
-import com.example.wall_et_mobile.model.CardDetails
+import com.example.wall_et_mobile.data.model.CardBrand
+import com.example.wall_et_mobile.data.model.Card
 import com.example.wall_et_mobile.ui.theme.WallEtTheme
 
 
 @Composable
-fun TransferCardItem(card: CardDetails) {
+fun TransferCardItem(card: Card) {
     val maskedNumber = card.cardNumber.replace(Regex(".{14}(.{4})"), "Termina en$1")
     Card(
         colors = CardColors(
