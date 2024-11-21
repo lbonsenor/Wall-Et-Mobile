@@ -30,7 +30,7 @@ import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.wall_et_mobile.R
-import com.example.wall_et_mobile.model.User
+import com.example.wall_et_mobile.data.model.User
 import com.example.wall_et_mobile.ui.theme.DarkModeYellow
 import com.example.wall_et_mobile.ui.theme.LightModeYellow
 

@@ -1,10 +1,10 @@
 package com.example.wall_et_mobile.components
 
 import androidx.compose.runtime.Composable
-import com.example.wall_et_mobile.model.CardDetails
+import com.example.wall_et_mobile.data.model.Card
 
 @Composable
-fun CardList(cards: List<CardDetails>, onDeleteCard: (CardDetails) -> Unit) {
+fun CardList(cards: List<Card>, onDeleteCard: (Card) -> Unit) {
     cards.forEach { card ->
         CardItem(card = card, onDelete = { onDeleteCard(card) })
     }

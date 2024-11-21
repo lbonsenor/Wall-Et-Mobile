@@ -21,8 +21,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.wall_et_mobile.model.Transaction
-import com.example.wall_et_mobile.model.TransactionType
+import com.example.wall_et_mobile.data.model.Transaction
+import com.example.wall_et_mobile.data.model.TransactionType
 import com.example.wall_et_mobile.ui.theme.Green
 import com.example.wall_et_mobile.ui.theme.WallEtTheme
 import java.text.NumberFormat
