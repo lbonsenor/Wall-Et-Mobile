@@ -1,6 +1,7 @@
 package com.example.wall_et_mobile.data.network
 
 import android.util.Log
+import ar.edu.itba.example.api.data.network.RemoteDataSource.Companion.INTERNAL_SERVER_ERROR_CODE
 import com.example.wall_et_mobile.data.DataSourceException
 import com.example.wall_et_mobile.data.network.model.NetworkError
 
@@ -50,6 +51,7 @@ abstract class RemoteDataSource {
         when(statusCode){
             400 -> throw DataSourceException(DATA_ERROR,message)
             401 -> throw DataSourceException(UNAUTHORIZED_ERROR_CODE, message)
+            500 -> throw DataSourceException(INTERNAL_SERVER_ERROR_CODE, message)
             else -> throw DataSourceException(UNEXPECTED_ERROR_CODE, message)
         }
     }
@@ -60,6 +62,7 @@ abstract class RemoteDataSource {
         const val DATA_ERROR = 2
         const val CONNECTION_ERROR_CODE = 98
         const val UNEXPECTED_ERROR_CODE = 99
+        const val INTERNAL_SERVER_ERROR_CODE = 100
     }
 }
 
