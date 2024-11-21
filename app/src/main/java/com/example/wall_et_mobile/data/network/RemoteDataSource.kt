@@ -1,7 +1,6 @@
 package com.example.wall_et_mobile.data.network
 
 import android.util.Log
-import ar.edu.itba.example.api.data.network.RemoteDataSource.Companion.INTERNAL_SERVER_ERROR_CODE
 import com.example.wall_et_mobile.data.DataSourceException
 import com.example.wall_et_mobile.data.network.model.NetworkError
 
