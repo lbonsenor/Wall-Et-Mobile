@@ -2,17 +2,23 @@ package com.example.wall_et_mobile.data.network.api
 
 
 import android.content.Context
-import com.example.wall_et_mobile.data.network.api.AuthInterceptor
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
-import retrofit2.create
 
 object RetrofitClient {
-    private const val BASE_URL = "http://10.0.2.2:8080/api/"
+    /*
+    In order to run this on a physical phone, we need the PC's IP Address, and Kotlin does not support
+    .env files the same way React/Vue does
+
+    Therefore, CREATE AN EMPTY git-ignored .kt file on data.network.api called IPAddress.kt
+    As an example: IPAddress.kt contains: 192.168.0.10
+     */
+
+    private const val BASE_URL = "http://${ip}:8080/api/"
 
     @Volatile
     private var instance: Retrofit? = null
