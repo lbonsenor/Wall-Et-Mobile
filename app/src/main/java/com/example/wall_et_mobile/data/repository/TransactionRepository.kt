@@ -5,9 +5,10 @@ import com.example.wall_et_mobile.data.model.Transaction
 import com.example.wall_et_mobile.data.model.TransactionLinkRequest
 import com.example.wall_et_mobile.data.model.TransactionRequest
 import com.example.wall_et_mobile.data.network.TransactionRemoteDataSource
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
-import kotlin.collections.map
 
 class TransactionRepository(
     private val remoteDataSource: TransactionRemoteDataSource
@@ -16,6 +17,10 @@ class TransactionRepository(
     private val transMutex = Mutex()
     // Cache of the latest  got from the network.
     private var transactions: List<Transaction> = emptyList()
+
+    val paymentStream: Flow<List<Transaction>> =
+        remoteDataSource.paymentsStream
+            .map {  it.asModel() }
 
     suspend fun getPayments(refresh: Boolean = false, page: Int,
     direction : String,
@@ -28,7 +33,7 @@ class TransactionRepository(
             val result = remoteDataSource.getPayments(page,direction,pending,type,range,source,cardId)
             // Thread-safe write to payments
             transMutex.withLock {
-                this.transactions = result.map { it.asModel() }
+                this.transactions = result.asModel()
             }
         }
 
