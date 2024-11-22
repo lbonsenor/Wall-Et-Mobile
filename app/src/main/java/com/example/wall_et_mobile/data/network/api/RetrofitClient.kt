@@ -41,9 +41,11 @@ object RetrofitClient {
 
         val json = Json { ignoreUnknownKeys = true }
 
-        return Retrofit.Builder().baseUrl(BASE_URL)
+        return Retrofit.Builder()
+            .baseUrl(BASE_URL)
             .addConverterFactory(json.asConverterFactory("application/json".toMediaType()))
-            .client(okHttpClient).build()
+            .client(okHttpClient)
+            .build()
 
     }
 

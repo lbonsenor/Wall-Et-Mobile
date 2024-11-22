@@ -8,9 +8,11 @@ import com.example.wall_et_mobile.data.network.model.NetworkRegisterUser
 import com.example.wall_et_mobile.data.network.model.NetworkReset
 import com.example.wall_et_mobile.data.network.model.NetworkUser
 
-class UserRemoteDataSource(private val sessionManager: SessionManager,
-                           private val userApiService: UserApiService)
-    : RemoteDataSource() {
+class UserRemoteDataSource(
+    private val sessionManager: SessionManager,
+    private val userApiService: UserApiService
+) : RemoteDataSource() {
+
     suspend fun login(username: String, password: String){
             val response = handleApiResponse {
                 userApiService.login(NetworkCredentials(username,password))
