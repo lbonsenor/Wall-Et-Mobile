@@ -116,7 +116,7 @@ fun VerificationScreen(
 
                 EndFormButton(
                     textResourceId = R.string.verify_email,
-                    onClick = { viewModel.verify() },
+                    onClick = { viewModel.verify(code) },
                     enabled = code.isNotEmpty() && !uiState.isFetching
                 )
 

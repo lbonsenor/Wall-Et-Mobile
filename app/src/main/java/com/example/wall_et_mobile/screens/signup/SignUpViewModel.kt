@@ -28,8 +28,8 @@ class SignUpViewModel (
         { state, _ -> state.copy(isRegistered = true) }
     )
 
-    fun verify() = runOnViewModelScope(
-        { userRepository.verify() },
+    fun verify(code: String) = runOnViewModelScope(
+        { userRepository.verify(code) },
         { state, _ -> state.copy(isVerified = true) }
     )
 

@@ -29,8 +29,8 @@ class UserRepository(
     suspend fun logout() {
         remoteDataSource.logout()
     }
-    suspend fun verify() : User? {
-        return remoteDataSource.verify().asModel()
+    suspend fun verify(code: String) : User? {
+        return remoteDataSource.verify(code).asModel()
     }
 
     suspend fun getCurrentUser(refresh: Boolean) : User? {
