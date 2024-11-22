@@ -1,6 +1,7 @@
 
 import android.icu.util.Currency
 import android.icu.util.CurrencyAmount
+import com.example.wall_et_mobile.data.mock.MockContacts
 import com.example.wall_et_mobile.data.model.PaymentType
 import com.example.wall_et_mobile.data.model.Transaction
 import com.example.wall_et_mobile.data.model.TransactionType
@@ -19,7 +20,9 @@ object MockTransactions {
             card = null,
             linkUuid = null,
             createdAt = Date(System.currentTimeMillis()),
-            updatedAt = Date(System.currentTimeMillis())
+            updatedAt = Date(System.currentTimeMillis()),
+            payer = MockContacts.sampleContacts[0],
+            receiver = MockContacts.sampleContacts[1]
         ),
         Transaction(
             transactionType = TransactionType.TRANSFER_RECEIVED,
@@ -32,7 +35,9 @@ object MockTransactions {
             pending = false,
             paymentType = PaymentType.BALANCE,
             card = null,
-            linkUuid = null
+            linkUuid = null,
+            payer = MockContacts.sampleContacts[0],
+            receiver = MockContacts.sampleContacts[1]
         ),
         Transaction(
             transactionType = TransactionType.LOCAL_STORE,
@@ -45,7 +50,9 @@ object MockTransactions {
             pending = false,
             paymentType = PaymentType.BALANCE,
             card = null,
-            linkUuid = null
+            linkUuid = null,
+            payer = MockContacts.sampleContacts[0],
+            receiver = MockContacts.sampleContacts[1]
         ),
         Transaction(
             transactionType = TransactionType.TRANSFER_SENT,
@@ -58,7 +65,9 @@ object MockTransactions {
             pending = false,
             paymentType = PaymentType.BALANCE,
             card = null,
-            linkUuid = null
+            linkUuid = null,
+            payer = MockContacts.sampleContacts[0],
+            receiver = MockContacts.sampleContacts[1]
         )
     )
 }

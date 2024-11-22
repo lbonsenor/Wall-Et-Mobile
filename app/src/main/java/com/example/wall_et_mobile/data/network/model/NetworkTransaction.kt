@@ -31,6 +31,8 @@ data class NetworkTransaction(
     var createdAt: String, /* turn to local date afterwards*/
     var updatedAt: String,
     var card : NetworkCard?,
+    var payer : NetworkUser,
+    var receiver : NetworkUser
 ){
     fun asModel(): Transaction{
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault(Locale.Category.FORMAT))
@@ -49,6 +51,8 @@ data class NetworkTransaction(
             balanceAfter = balanceAfter,
             pending = pending,
             linkUuid = linkUuid,
+            payer = payer.asModel(),
+            receiver = receiver.asModel()
         )
     }
 }
