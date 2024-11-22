@@ -4,6 +4,7 @@ import com.example.wall_et_mobile.data.model.RecoveryResponse
 import com.example.wall_et_mobile.data.model.RegisterUser
 import com.example.wall_et_mobile.data.model.User
 import com.example.wall_et_mobile.data.network.UserRemoteDataSource
+import com.example.wall_et_mobile.data.network.model.NetworkVerify
 
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -29,8 +30,9 @@ class UserRepository(
     suspend fun logout() {
         remoteDataSource.logout()
     }
-    suspend fun verify(code: String) : User? {
-        return remoteDataSource.verify(code).asModel()
+
+    suspend fun verify(code: String){
+        remoteDataSource.verify(NetworkVerify(code))
     }
 
     suspend fun getCurrentUser(refresh: Boolean) : User? {

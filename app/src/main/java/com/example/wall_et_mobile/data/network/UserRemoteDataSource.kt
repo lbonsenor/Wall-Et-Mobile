@@ -7,6 +7,7 @@ import com.example.wall_et_mobile.data.network.model.NetworkRecovery
 import com.example.wall_et_mobile.data.network.model.NetworkRegisterUser
 import com.example.wall_et_mobile.data.network.model.NetworkReset
 import com.example.wall_et_mobile.data.network.model.NetworkUser
+import com.example.wall_et_mobile.data.network.model.NetworkVerify
 
 class UserRemoteDataSource(
     private val sessionManager: SessionManager,
@@ -24,9 +25,10 @@ class UserRemoteDataSource(
         return handleApiResponse { userApiService.register(user) }
     }
 
-    suspend fun verify(code: String) : NetworkUser {
+    suspend fun verify(code: NetworkVerify) : NetworkUser {
         return handleApiResponse { userApiService.verify(code) }
     }
+
     suspend fun logout(){
         handleApiResponse { userApiService.logout()}
         sessionManager.removeAuthToken()

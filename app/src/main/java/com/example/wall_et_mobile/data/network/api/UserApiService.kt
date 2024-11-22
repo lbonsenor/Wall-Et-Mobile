@@ -18,7 +18,7 @@ interface UserApiService {
     suspend fun logout(): Response<Unit>
 
     @POST("user/verify")
-    suspend fun verify(@Body code : String) : Response<NetworkUser>
+    suspend fun verify(@Body code : NetworkVerify) : Response<NetworkUser>
 
     @GET("user")
     suspend fun getCurrentUser(): Response<NetworkUser>
