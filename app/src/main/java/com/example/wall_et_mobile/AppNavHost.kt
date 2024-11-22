@@ -17,7 +17,8 @@ import com.example.wall_et_mobile.screens.forgotPassword.ForgotPasswordScreen
 import com.example.wall_et_mobile.screens.home.HomeScreen
 import com.example.wall_et_mobile.screens.home.HomeScreenLandscape
 import com.example.wall_et_mobile.screens.login.LoginScreen
-import com.example.wall_et_mobile.screens.login.SignupScreen
+import com.example.wall_et_mobile.screens.signup.SignupScreen
+import com.example.wall_et_mobile.screens.signup.VerificationScreen
 import com.example.wall_et_mobile.screens.top_up.TopUpScreen
 import com.example.wall_et_mobile.screens.transfer.SelectAmountScreen
 import com.example.wall_et_mobile.screens.transfer.SelectDestinataryScreen
@@ -45,7 +46,13 @@ fun AppNavHost(
             composable(Screen.Signup.route) {
                 SignupScreen(
                     onNavigateToLogin = { navigateTo(navController, Screen.Login.route) },
-                    onNavigateUp = { navController.navigateUp() }
+                    onNavigateUp = { navController.navigateUp() },
+                    onNavigateToVerification = { navigateTo(navController, Screen.Verification.route) }
+                )
+            }
+            composable(Screen.Verification.route) {
+                VerificationScreen(
+                    onNavigateToLogin = { navigateTo(navController, Screen.Login.route) },
                 )
             }
             composable(Screen.ForgotPassword.route){ ForgotPasswordScreen() }
@@ -115,7 +122,13 @@ fun LandscapeAppNavHost(
             composable(Screen.Signup.route) {
                 SignupScreen(
                     onNavigateToLogin = { navigateTo(navController, Screen.Login.route) },
-                    onNavigateUp = { navController.navigateUp() }
+                    onNavigateUp = { navController.navigateUp() },
+                    onNavigateToVerification = { navigateTo(navController, Screen.Verification.route) }
+                )
+            }
+            composable(Screen.Verification.route) {
+                VerificationScreen(
+                    onNavigateToLogin = { navigateTo(navController, Screen.Login.route) },
                 )
             }
             composable(Screen.ForgotPassword.route){ ForgotPasswordScreen() }

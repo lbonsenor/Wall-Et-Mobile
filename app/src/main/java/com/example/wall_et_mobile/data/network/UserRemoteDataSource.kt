@@ -4,6 +4,7 @@ import com.example.wall_et_mobile.SessionManager
 import com.example.wall_et_mobile.data.network.api.UserApiService
 import com.example.wall_et_mobile.data.network.model.NetworkCredentials
 import com.example.wall_et_mobile.data.network.model.NetworkRecovery
+import com.example.wall_et_mobile.data.network.model.NetworkRegisterUser
 import com.example.wall_et_mobile.data.network.model.NetworkReset
 import com.example.wall_et_mobile.data.network.model.NetworkUser
 
@@ -17,7 +18,7 @@ class UserRemoteDataSource(private val sessionManager: SessionManager,
             sessionManager.saveAuthToken(response.token)
         }
 
-    suspend fun register(user : NetworkUser) : NetworkUser {
+    suspend fun register(user : NetworkRegisterUser) : NetworkUser {
         return handleApiResponse { userApiService.register(user) }
     }
 

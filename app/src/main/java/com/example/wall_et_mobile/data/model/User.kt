@@ -1,16 +1,14 @@
 package com.example.wall_et_mobile.data.model
 
+import com.example.wall_et_mobile.data.network.model.NetworkRegisterUser
 import com.example.wall_et_mobile.data.network.model.NetworkUser
-import java.util.Date
 
 data class User(
     val id: Int?,
     val name: String,
     val lastName: String,
-    val phoneNo: String? = "+54 911 4447-3947",
     val email: String = "clee@itba.edu.ar",
-    val birthDate: Date?,
-    val password: String? /*only when registering , afterwards it will always be null*/
+    val birthDate: String,
 ){
     fun asNetworkModel() : NetworkUser{
         return NetworkUser(
@@ -18,9 +16,26 @@ data class User(
             firstName = name,
             lastName = lastName ,
             email = email,
-            birthDate = birthDate.toString(),
-            password = password
+            birthDate = birthDate,
         )
     }
 }
 
+
+data class RegisterUser(
+    val firstName: String,
+    val lastName: String,
+    val email: String,
+    val birthDate: String,
+    val password: String
+) {
+    fun asNetworkModel(): NetworkRegisterUser {
+        return NetworkRegisterUser(
+            firstName = firstName,
+            lastName = lastName,
+            email = email,
+            birthDate = birthDate,
+            password = password
+        )
+    }
+}

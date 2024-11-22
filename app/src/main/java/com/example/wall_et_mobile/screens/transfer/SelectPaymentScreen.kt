@@ -83,9 +83,7 @@ fun SelectPaymentScreen(innerPadding : PaddingValues, id: Int, amount: String){
             TransferProgress(2)
 
             Section(title = stringResource(R.string.transfer_to)) {
-                ContactCard(User(1, "Lautaro", "Bonseñor", password = "1234", birthDate = Date.from(
-                    Instant.now())), Modifier.fillMaxWidth(), onClick = {})
-
+                ContactCard(User(1, "Lautaro", "Bonseñor", birthDate = "2002-20-02"), Modifier.fillMaxWidth(), onClick = {})
             }
 
             Section(title = stringResource(R.string.transfer_amount)) {
@@ -185,7 +183,6 @@ fun SwipeToSendButton(
             )
         }
 
-        // Double arrow indicator
         Text(
             text = "⟫",
             modifier = Modifier

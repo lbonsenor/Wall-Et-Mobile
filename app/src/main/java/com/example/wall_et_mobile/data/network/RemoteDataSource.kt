@@ -19,6 +19,7 @@ abstract class RemoteDataSource {
         try {
             val response = execute()
             val body = response.body()
+            Log.d(TAG, "handleApiResponse: $body")
             if (response.isSuccessful && body != null) {
                 return body
             }

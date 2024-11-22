@@ -97,8 +97,7 @@ fun BalanceCard(
 
     ) {
         CustomTopAppBar(User(
-            1, "test", "test", "test", "test", password = "test",
-            birthDate = Date.from(Instant.now()),
+            1, "test", "test", "test", "test",
         ))
         Balance(
             wallet = wallet,

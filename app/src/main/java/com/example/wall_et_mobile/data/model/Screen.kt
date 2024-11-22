@@ -18,7 +18,7 @@ sealed class Screen(
     object Login : Screen(route = "login")
     object Signup : Screen(route = "signup")
     object ForgotPassword : Screen(route = "forgot_password")
-    object VerificationCode : Screen(route = "verification_code")
+    object Verification : Screen(route = "verification")
     object NewPassword : Screen(route = "new_password")
     object Home : Screen(route = "home", icon = Icons.Outlined.Home, labelInt = R.string.title_home)
     object Cards : Screen(route = "cards", iconInt = R.drawable.credit_card, labelInt = R.string.title_cards)

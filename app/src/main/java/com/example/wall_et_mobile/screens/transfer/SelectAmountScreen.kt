@@ -62,7 +62,7 @@ fun SelectAmountScreen(
     onNavigateToSelectPayment : (Int, String) -> Unit
 )
 {
-    val user : User = User(1, "Camila", "Lee", password = "123", birthDate = Date.from(Instant.now()))
+    val user : User = User(1, "Camila", "Lee", birthDate = "2002-02-10")
     var amount by remember { mutableStateOf("") }
     var cents by remember { mutableStateOf("00") }
 

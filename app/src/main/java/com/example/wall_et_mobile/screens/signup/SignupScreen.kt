@@ -1,5 +1,6 @@
-package com.example.wall_et_mobile.screens.login
+package com.example.wall_et_mobile.screens.signup
 
+import android.util.Log
 import android.util.Patterns
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -18,23 +19,45 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.wall_et_mobile.MyApplication
 import com.example.wall_et_mobile.R
 import com.example.wall_et_mobile.components.CustomTextField
 import com.example.wall_et_mobile.components.EndFormButton
 import com.example.wall_et_mobile.components.PasswordField
+import com.example.wall_et_mobile.data.model.RegisterUser
 
 @Composable
 fun SignupScreen(
     onNavigateToLogin : () -> Unit,
-    onNavigateUp : () -> Unit
-
+    onNavigateUp : () -> Unit,
+    onNavigateToVerification : () -> Unit,
+    viewModel: SignUpViewModel = viewModel(factory = SignUpViewModel.provideFactory(LocalContext.current.applicationContext as MyApplication))
 ) {
-    var name by remember { mutableStateOf("") }
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
+
+    var user by remember {
+        mutableStateOf(
+            RegisterUser(
+                firstName = "",
+                lastName = "",
+                email = "",
+                birthDate = "2000-10-04",
+                password = ""
+            )
+        )
+    }
+    val uiState = viewModel.uiState
+
+    LaunchedEffect(uiState.isRegistered) {
+        if (uiState.isRegistered) {
+            onNavigateToVerification()
+        }
+    }
     var confirmPassword by remember { mutableStateOf("") }
+
 
     fun validateEmail(email: String): Boolean {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches()
@@ -45,10 +68,13 @@ fun SignupScreen(
         return password.matches(passwordPattern.toRegex())
     }
 
-    val isFormValid = remember(name, email, password, confirmPassword) {
-        name.isNotEmpty() && validateEmail(email) && validatePassword(password) && password == confirmPassword
+    val isFormValid = remember(user, confirmPassword) {
+        user.firstName.isNotEmpty() &&
+                user.lastName.isNotEmpty() &&
+                validateEmail(user.email) &&
+                validatePassword(user.password ?: "") &&
+                user.password == confirmPassword
     }
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -83,15 +109,22 @@ fun SignupScreen(
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 CustomTextField(
-                    value = name,
-                    onValueChange = { name = it },
+                    value = user.firstName,
+                    onValueChange = { user = user.copy(firstName = it) },
                     labelResourceId = R.string.name,
                     modifier = Modifier.fillMaxWidth()
                 )
 
                 CustomTextField(
-                    value = email,
-                    onValueChange = { email = it },
+                    value = user.lastName,
+                    onValueChange = { user = user.copy(lastName = it) },
+                    labelResourceId = R.string.last_name,
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                CustomTextField(
+                    value = user.email,
+                    onValueChange = { user = user.copy(email = it) },
                     labelResourceId = R.string.email,
                     modifier = Modifier.fillMaxWidth(),
                     errorMessage = stringResource(R.string.invalid_email),
@@ -99,8 +132,8 @@ fun SignupScreen(
                 )
 
                 PasswordField(
-                    password = password,
-                    onPasswordChange = { password = it },
+                    password = user.password ?: "", // not right, should change later
+                    onPasswordChange = { user = user.copy(password = it) },
                     modifier = Modifier.fillMaxWidth(),
                     label = R.string.password,
                     errorMessage = stringResource(R.string.password_format),
@@ -112,15 +145,16 @@ fun SignupScreen(
                     onPasswordChange = { confirmPassword = it },
                     modifier = Modifier.fillMaxWidth(),
                     isRepeatPassword = true,
-                    originalPassword = password,
+                    originalPassword = user.password ?: "", // !!!
                     label = R.string.repeat_password,
                     errorMessage = stringResource(R.string.passwords_dont_match)
                 )
 
                 EndFormButton(
                     textResourceId = R.string.sign_up,
-                    onClick = onNavigateToLogin,
-                    enabled = isFormValid
+                    onClick = { viewModel.signup(user)
+                              Log.d("User", user.toString())},
+                    enabled = isFormValid && !uiState.isFetching
                 )
 
                 TextButton(

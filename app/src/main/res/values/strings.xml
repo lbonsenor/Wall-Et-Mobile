@@ -109,5 +109,7 @@
     <string name="add_funds_success">¡Tu ingreso fue realizado con éxito!</string>
     <string name="delete_card">Quitar Tarjeta</string>
     <string name="delete_card_check">¿Está seguro que desea eliminar la tarjeta?</string>
+    <string name="last_name">Apellido</string>
+    <string name="verify_email">Verificar email</string>
 
 </resources>

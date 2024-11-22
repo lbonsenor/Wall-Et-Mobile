@@ -10,7 +10,7 @@ import retrofit2.http.POST
 
 interface UserApiService {
     @POST("/user")
-    suspend fun register(@Body user : NetworkUser) : Response<NetworkUser>
+    suspend fun register(@Body user : NetworkRegisterUser) : Response<NetworkUser>
 
     @POST("/user/login")
     suspend fun login(@Body credentials: NetworkCredentials) : Response<NetworkToken>

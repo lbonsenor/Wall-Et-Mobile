@@ -1,5 +1,7 @@
 package com.example.wall_et_mobile.data.repository
+import android.util.Log
 import com.example.wall_et_mobile.data.model.RecoveryResponse
+import com.example.wall_et_mobile.data.model.RegisterUser
 import com.example.wall_et_mobile.data.model.User
 import com.example.wall_et_mobile.data.network.UserRemoteDataSource
 
@@ -19,7 +21,8 @@ class UserRepository(
         remoteDataSource.login(username, password)
     }
 
-    suspend fun register(user: User){
+    suspend fun register(user: RegisterUser){
+        Log.d("UserRepository", "register: $user")
         remoteDataSource.register(user.asNetworkModel())
     }
 

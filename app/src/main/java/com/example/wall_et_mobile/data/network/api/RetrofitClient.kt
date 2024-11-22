@@ -26,10 +26,9 @@ object RetrofitClient {
     private var instance: Retrofit? = null
 
     private fun getInstance(context: Context): Retrofit =
-        instance?: synchronized(this)
-    {
-        instance?: buildRetrofit(context).also { instance = it }
-    }
+        instance?: synchronized(this) {
+            instance?: buildRetrofit(context).also { instance = it }
+        }
 
     private fun buildRetrofit(context: Context): Retrofit {
         val httpLoginInterceptor = HttpLoggingInterceptor()
