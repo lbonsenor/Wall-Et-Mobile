@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -32,7 +33,8 @@ import com.example.wall_et_mobile.components.EndFormButton
 
 @Composable
 fun ForgotPasswordScreen(
-    onNavigateToLogin : () -> Unit
+    onNavigateToLogin : () -> Unit,
+    onNavigateToVerification: () -> Unit,
 ) {
     var email by remember { mutableStateOf("") }
 
@@ -99,14 +101,14 @@ fun ForgotPasswordScreen(
 
                 EndFormButton(
                     textResourceId = R.string.send,
-                    onClick = {  },
+                    onClick = onNavigateToVerification,
                     enabled = isFormValid
                 )
 
                 TextButton(
                     onClick = onNavigateToLogin,
                     ) {
-                    Icons.Default.ArrowBack
+                    Icons.AutoMirrored.Filled.ArrowBack
                     Text(
                         stringResource(R.string.back_to_login),
                         color = MaterialTheme.colorScheme.secondary,

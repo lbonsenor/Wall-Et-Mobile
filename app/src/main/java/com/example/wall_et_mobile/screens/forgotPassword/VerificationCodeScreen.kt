@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -18,7 +17,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.wall_et_mobile.R
 import com.example.wall_et_mobile.components.CustomTextField
@@ -26,7 +28,9 @@ import com.example.wall_et_mobile.components.EndFormButton
 
 
 @Composable
-fun VerificationCodeScreen() {
+fun VerificationCodeScreen(
+    onNavigateToSetNewPassword: () -> Unit
+) {
     var code by remember { mutableStateOf("") }
 
     val isFormValid = remember(code) {
@@ -41,23 +45,26 @@ fun VerificationCodeScreen() {
         verticalArrangement = Arrangement.Center
     ) {
         Text(
-            text = stringResource(R.string.app_name),
-            color = MaterialTheme.colorScheme.onBackground,
-            style = MaterialTheme.typography.headlineLarge
+            text = stringResource(R.string.verification),
+            color = MaterialTheme.colorScheme.secondary,
+            style = MaterialTheme.typography.headlineLarge,
+            textAlign = TextAlign.Left,
+            fontWeight = FontWeight.Bold
         )
-
         Text(
-            text = stringResource(R.string.recover_password),
+            text = stringResource(R.string.enter_code),
             color = MaterialTheme.colorScheme.onBackground,
-            style = MaterialTheme.typography.headlineMedium
+            style = MaterialTheme.typography.bodyMedium,
+            textAlign = TextAlign.Left
         )
 
         Card(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            shape = RoundedCornerShape(20.dp),
-            elevation = CardDefaults.cardElevation(defaultElevation = 10.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = Color.Transparent
+            )
         ) {
             Column(
                 modifier = Modifier
@@ -75,10 +82,11 @@ fun VerificationCodeScreen() {
 
                 EndFormButton(
                     textResourceId = R.string.validate,
-                    onClick = {  },
+                    onClick = onNavigateToSetNewPassword,
                     enabled = isFormValid
                 )
             }
         }
     }
 }
+

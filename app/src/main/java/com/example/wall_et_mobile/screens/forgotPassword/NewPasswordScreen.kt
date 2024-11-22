@@ -1,13 +1,11 @@
 package com.example.wall_et_mobile.screens.forgotPassword
 
-import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -19,19 +17,19 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.example.wall_et_mobile.R
 import com.example.wall_et_mobile.components.EndFormButton
 import com.example.wall_et_mobile.components.PasswordField
-import com.example.wall_et_mobile.data.model.Screen
-import com.example.wall_et_mobile.ui.theme.WallEtTheme
 
 @Composable
-fun NewPasswordScreen(navController: NavController) {
+fun NewPasswordScreen(
+    onNavigateToSuccess : () -> Unit,
+) {
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
 
@@ -51,37 +49,41 @@ fun NewPasswordScreen(navController: NavController) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text(
-            text = stringResource(R.string.app_name),
-            color = MaterialTheme.colorScheme.onBackground,
-            style = MaterialTheme.typography.headlineLarge
-        )
-
-        Text(
-            text = stringResource(R.string.recover_password),
-            color = MaterialTheme.colorScheme.onBackground,
-            style = MaterialTheme.typography.headlineMedium
-        )
+            Text(
+                text = stringResource(R.string.set_new_password),
+                color = MaterialTheme.colorScheme.secondary,
+                style = MaterialTheme.typography.headlineLarge,
+                textAlign = TextAlign.Left,
+                fontWeight = FontWeight.Bold
+            )
+            Text(
+                text = stringResource(R.string.create_new_password_string),
+                color = MaterialTheme.colorScheme.onBackground,
+                style = MaterialTheme.typography.bodyMedium,
+                textAlign = TextAlign.Left
+            )
 
         Card(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            shape = RoundedCornerShape(20.dp),
-            elevation = CardDefaults.cardElevation(defaultElevation = 10.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = Color.Transparent
+            )
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+
             ) {
                 PasswordField(
                     password = password,
                     onPasswordChange = { password = it },
                     modifier = Modifier.fillMaxWidth(),
-                    label = R.string.password,
+                    label = R.string.new_password,
                     errorMessage = stringResource(R.string.password_format),
                     validate = { newPassword -> validatePassword(newPassword) }
                 )
@@ -98,19 +100,10 @@ fun NewPasswordScreen(navController: NavController) {
 
                 EndFormButton(
                     textResourceId = R.string.confirm,
-                    onClick = { navController.navigate(Screen.Login.route) },
+                    onClick = onNavigateToSuccess,
                     enabled = isFormValid
                 )
             }
         }
-    }
-}
-
-@Preview(name = "LightMode")
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "DarkMode")
-@Composable
-fun NewPasswordScreenPreview() {
-    WallEtTheme {
-        NewPasswordScreen(navController = NavController(LocalContext.current))
     }
 }
