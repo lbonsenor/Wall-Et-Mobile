@@ -28,7 +28,7 @@ import java.util.Locale
 
 @Composable
 fun ActivityItem(transaction: Transaction) {
-    val timeFormatter = SimpleDateFormat("HH:MM", Locale.getDefault())
+    val timeFormatter = SimpleDateFormat("dd/MM/y", Locale.getDefault())
     val currencyFormatter = NumberFormat.getCurrencyInstance(Locale.US)
 
     val formattedTime = timeFormatter.format(transaction.createdAt!!) //Obs ! This needs a change to date or smth
