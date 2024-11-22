@@ -4,7 +4,7 @@ class Wallet(
     val walletId : Int,
     val invested : Int,
     val balance : Double = 0.0,
-    val cvu : String,
+    val cbu : String,
     val alias : String
 ) {
 
