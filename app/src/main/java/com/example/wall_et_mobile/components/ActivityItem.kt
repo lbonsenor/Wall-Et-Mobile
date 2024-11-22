@@ -43,7 +43,7 @@ fun ActivityItem(transaction: Transaction = Transaction.Test) {
     val timeFormatter = SimpleDateFormat("HH:MM", Locale.getDefault())
     val currencyFormatter = NumberFormat.getCurrencyInstance(Locale.US)
 
-    //val formattedTime = timeFormatter.format(transaction.createdAt) //Obs ! This needs a change to date or smth
+    val formattedTime = timeFormatter.format(transaction.createdAt!!) //Obs ! This needs a change to date or smth
     val formattedCurrency = currencyFormatter.format(transaction.amount.number)
 
     val titleColor = MaterialTheme.colorScheme.onSurface
@@ -84,7 +84,7 @@ fun ActivityItem(transaction: Transaction = Transaction.Test) {
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     Text(
-                        text = transaction.name,
+                        text = transaction.receiver?.name ?: "Couldn't find",
                         style = MaterialTheme.typography.titleSmall,
                         color = titleColor
                     )
@@ -113,7 +113,7 @@ fun ActivityItem(transaction: Transaction = Transaction.Test) {
                     )
                 }
                 Text(
-                    text = "formattedTime",
+                    text = "$formattedTime",
                     style = MaterialTheme.typography.labelSmall,
                     color = subtitleColor
                 )

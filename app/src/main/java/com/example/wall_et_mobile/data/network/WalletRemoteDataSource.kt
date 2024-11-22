@@ -5,10 +5,23 @@ import com.example.wall_et_mobile.data.network.model.NetworkAliasUpdate
 import com.example.wall_et_mobile.data.network.model.NetworkBalanceResponse
 import com.example.wall_et_mobile.data.network.model.NetworkCard
 import com.example.wall_et_mobile.data.network.model.NetworkWallet
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 class WalletRemoteDataSource(
     private val walletApiService: WalletApiService
 ) : RemoteDataSource() {
+
+    val walletStream : Flow<NetworkWallet> = flow {
+        while (true) {
+            val wallet = handleApiResponse {
+                walletApiService.getWallet()
+            }
+            emit(wallet)
+            delay(DELAY)
+        }
+    }
 
     suspend fun getCards(): List<NetworkCard> {
         return handleApiResponse {
@@ -38,6 +51,10 @@ class WalletRemoteDataSource(
 
     suspend fun getWallet() : NetworkWallet {
         return handleApiResponse { walletApiService.getWallet() }
+    }
+
+    companion object {
+        const val DELAY : Long = 5000
     }
 
 }

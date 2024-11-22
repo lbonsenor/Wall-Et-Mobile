@@ -2,6 +2,7 @@ package com.example.wall_et_mobile.data.model
 
 import android.icu.util.Currency
 import android.icu.util.CurrencyAmount
+import com.example.wall_et_mobile.data.mock.MockContacts
 import com.example.wall_et_mobile.data.network.model.NetworkTransaction
 import java.util.Date
 import kotlin.Float
@@ -12,14 +13,14 @@ data class Transaction(
     var balanceBefore: Float,
     var balanceAfter : Float,
     var pending : Boolean,
-//    val transactionTime: Timestamp? = Timestamp.from(java.sql.Date.from()),
     val transactionType: TransactionType,
     val paymentType: PaymentType,
-    val name: String,
-    val card: Card?,
-    var linkUuid: String?,
+    val card: Card? = null,
+    var linkUuid: String? = null,
     var createdAt: Date? = null,
-    var updatedAt: Date? = null
+    var updatedAt: Date? = null,
+    var payer: User? = null,
+    var receiver: User? = MockContacts.sampleContacts[0]
 ) {
     fun asNetworkModel() : NetworkTransaction{
         return NetworkTransaction(
@@ -38,10 +39,8 @@ data class Transaction(
 
     companion object {
         val Test = Transaction(
-            name = "Farmacity",
             transactionType = TransactionType.ONLINE_PAYMENT,
             amount = CurrencyAmount(100.0, Currency.getInstance("ARS")),
-            //transactionTime = Timestamp(System.currentTimeMillis()),
             paymentType = PaymentType.BALANCE,
             card = null,
             transactionId = 10,
@@ -51,6 +50,7 @@ data class Transaction(
             linkUuid = null,
             createdAt = null,
             updatedAt = null,
+            receiver = MockContacts.sampleContacts[0]
         )
     }
 }

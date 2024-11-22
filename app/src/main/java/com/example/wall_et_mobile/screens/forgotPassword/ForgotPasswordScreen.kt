@@ -1,6 +1,5 @@
 package com.example.wall_et_mobile.screens.forgotPassword
 
-import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,19 +18,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.example.wall_et_mobile.R
 import com.example.wall_et_mobile.components.CustomTextField
 import com.example.wall_et_mobile.components.EndFormButton
-import com.example.wall_et_mobile.data.model.Screen
-import com.example.wall_et_mobile.ui.theme.WallEtTheme
 
 @Composable
-fun ForgotPasswordScreen(navController: NavController) {
+fun ForgotPasswordScreen() {
     var email by remember { mutableStateOf("") }
 
     fun validateEmail(email: String): Boolean {
@@ -86,19 +80,10 @@ fun ForgotPasswordScreen(navController: NavController) {
 
                 EndFormButton(
                     textResourceId = R.string.send,
-                    onClick = { navController.navigate(Screen.VerificationCode.route) },
+                    onClick = {  },
                     enabled = isFormValid
                 )
             }
         }
-    }
-}
-
-@Preview(name = "LightMode")
-@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "DarkMode")
-@Composable
-fun ForgotPasswordPreview() {
-    WallEtTheme {
-        ForgotPasswordScreen(navController = NavController(LocalContext.current))
     }
 }

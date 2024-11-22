@@ -31,7 +31,6 @@ import androidx.compose.ui.unit.dp
 import com.example.wall_et_mobile.R
 import com.example.wall_et_mobile.components.ActivityListWithDates
 import com.example.wall_et_mobile.data.model.FilterDateType
-import com.example.wall_et_mobile.data.model.Transaction
 
 @Composable
 fun ActivitiesScreen(innerPadding: PaddingValues) {
@@ -48,7 +47,7 @@ fun ActivitiesScreen(innerPadding: PaddingValues) {
                 4 -> FilterDateType.MAX
                 else -> FilterDateType.MAX
             }
-            (searchQuery.isEmpty() || activity.name.contains(searchQuery, ignoreCase = true))
+            (searchQuery.isEmpty() || activity.receiver!!.name.contains(searchQuery, ignoreCase = true))
                 && filter.inRange(activity.createdAt!!)
         }
 

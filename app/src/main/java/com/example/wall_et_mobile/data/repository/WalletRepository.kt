@@ -4,6 +4,8 @@ import com.example.wall_et_mobile.data.model.Card
 import com.example.wall_et_mobile.data.model.Wallet
 import com.example.wall_et_mobile.data.network.WalletRemoteDataSource
 import com.example.wall_et_mobile.data.network.model.NetworkAliasUpdate
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
@@ -16,6 +18,10 @@ class WalletRepository(
     private var cards: List<Card> = emptyList()
 
     private var wallet : Wallet? = null
+
+    val walletStream: Flow<Wallet> =
+        remoteDataSource.walletStream
+            .map { it.asModel() }
 
     suspend fun getCards(refresh: Boolean = false): List<Card> {
         if (refresh || cards.isEmpty()) {

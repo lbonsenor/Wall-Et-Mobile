@@ -27,7 +27,6 @@ data class NetworkTransaction(
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault(Locale.Category.FORMAT))
         return Transaction(
             transactionId = id,
-            name = "Pago efectuado",
             amount = CurrencyAmount(amount, Currency.getInstance("ARS")),
             paymentType = when (type) {
                 "CARD" -> PaymentType.CARD

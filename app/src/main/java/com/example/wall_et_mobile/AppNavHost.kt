@@ -13,11 +13,11 @@ import androidx.navigation.navArgument
 import com.example.wall_et_mobile.data.model.Screen
 import com.example.wall_et_mobile.screens.ActivitiesScreen
 import com.example.wall_et_mobile.screens.CardsScreen
-import com.example.wall_et_mobile.screens.ForgotPasswordScreen
-import com.example.wall_et_mobile.screens.HomeScreen
-import com.example.wall_et_mobile.screens.HomeScreenLandscape
-import com.example.wall_et_mobile.screens.LoginScreen
-import com.example.wall_et_mobile.screens.SignupScreen
+import com.example.wall_et_mobile.screens.forgotPassword.ForgotPasswordScreen
+import com.example.wall_et_mobile.screens.home.HomeScreen
+import com.example.wall_et_mobile.screens.home.HomeScreenLandscape
+import com.example.wall_et_mobile.screens.login.LoginScreen
+import com.example.wall_et_mobile.screens.login.SignupScreen
 import com.example.wall_et_mobile.screens.top_up.TopUpScreen
 import com.example.wall_et_mobile.screens.transfer.SelectAmountScreen
 import com.example.wall_et_mobile.screens.transfer.SelectDestinataryScreen

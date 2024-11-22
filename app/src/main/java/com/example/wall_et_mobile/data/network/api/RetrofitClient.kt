@@ -15,7 +15,9 @@ object RetrofitClient {
     .env files the same way React/Vue does
 
     Therefore, CREATE AN EMPTY git-ignored .kt file on data.network.api called IPAddress.kt
-    As an example: IPAddress.kt contains: 192.168.0.10
+    As an example: IPAddress.kt contains: const val ip : String = "10.0.2.2"
+
+    It is just for commit security and efficiency reasons.
      */
 
     private const val BASE_URL = "http://${ip}:8080/api/"

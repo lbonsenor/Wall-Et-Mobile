@@ -9,7 +9,6 @@ import java.sql.Date
 object MockTransactions {
     val sampleTransactions = listOf(
         Transaction(
-            name = "Farmacity",
             transactionType = TransactionType.ONLINE_PAYMENT,
             amount = CurrencyAmount(100.0, Currency.getInstance("ARS")),
             transactionId = 0,
@@ -23,7 +22,6 @@ object MockTransactions {
             updatedAt = Date(System.currentTimeMillis())
         ),
         Transaction(
-            name = "Juan",
             transactionType = TransactionType.TRANSFER_RECEIVED,
             amount = CurrencyAmount(500.0, Currency.getInstance("ARS")),
             createdAt = Date(System.currentTimeMillis() - 3600000),
@@ -37,7 +35,6 @@ object MockTransactions {
             linkUuid = null
         ),
         Transaction(
-            name = "McDonald's",
             transactionType = TransactionType.LOCAL_STORE,
             amount = CurrencyAmount(250.0, Currency.getInstance("ARS")),
             createdAt = Date(System.currentTimeMillis() - 7200000),
@@ -51,7 +48,6 @@ object MockTransactions {
             linkUuid = null
         ),
         Transaction(
-            name = "Noah Cefalta",
             transactionType = TransactionType.TRANSFER_SENT,
             amount = CurrencyAmount(1000.0, Currency.getInstance("ARS")),
             createdAt = Date(System.currentTimeMillis() - 8640000),

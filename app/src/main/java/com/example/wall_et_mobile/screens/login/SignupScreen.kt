@@ -1,5 +1,6 @@
-package com.example.wall_et_mobile.screens
+package com.example.wall_et_mobile.screens.login
 
+import android.util.Patterns
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -23,7 +24,6 @@ import com.example.wall_et_mobile.R
 import com.example.wall_et_mobile.components.CustomTextField
 import com.example.wall_et_mobile.components.EndFormButton
 import com.example.wall_et_mobile.components.PasswordField
-import com.example.wall_et_mobile.data.model.Screen
 
 @Composable
 fun SignupScreen(
@@ -37,7 +37,7 @@ fun SignupScreen(
     var confirmPassword by remember { mutableStateOf("") }
 
     fun validateEmail(email: String): Boolean {
-        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
 
     fun validatePassword(password: String): Boolean {

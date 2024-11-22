@@ -36,4 +36,8 @@ class TransactionRemoteDataSource (private val transactionApiService: Transactio
     suspend fun settlePaymentLink(linkUuid: String, requestBody : NetworkTransactionLinkRequest) : Unit{
         return handleApiResponse { transactionApiService.settlePaymentLink(linkUuid, requestBody) }
     }
+
+    companion object {
+        const val DELAY : Long = 10000
+    }
 }
