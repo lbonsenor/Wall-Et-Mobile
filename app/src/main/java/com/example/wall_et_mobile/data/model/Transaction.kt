@@ -21,11 +21,6 @@ data class Transaction(
     var createdAt: Date? = null,
     var updatedAt: Date? = null
 ) {
-    /*
-    fun toLocalDate() : LocalDate{
-        return transactionTime.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
-    }*/
-
     fun asNetworkModel() : NetworkTransaction{
         return NetworkTransaction(
             id = transactionId,

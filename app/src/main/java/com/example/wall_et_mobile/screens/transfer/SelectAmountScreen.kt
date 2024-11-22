@@ -51,7 +51,7 @@ import com.example.wall_et_mobile.components.TransferCardSlider
 import com.example.wall_et_mobile.components.TransferProgress
 import com.example.wall_et_mobile.data.mock.MockCards
 import com.example.wall_et_mobile.data.mock.MockContacts
-import com.example.wall_et_mobile.model.User
+import com.example.wall_et_mobile.data.model.User
 import com.example.wall_et_mobile.ui.theme.DarkerGrotesque
 import java.text.NumberFormat
 import java.util.Locale

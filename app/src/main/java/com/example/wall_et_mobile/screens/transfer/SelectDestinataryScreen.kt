@@ -34,7 +34,7 @@ import com.example.wall_et_mobile.components.ContactListWithSearchBar
 import com.example.wall_et_mobile.components.ContactsTabs
 import com.example.wall_et_mobile.components.TransferProgress
 import com.example.wall_et_mobile.data.mock.MockContacts
-import com.example.wall_et_mobile.model.User
+import com.example.wall_et_mobile.data.model.User
 
 @Composable
 fun TransferScreen(innerPadding : PaddingValues, navController: NavHostController) {
@@ -74,9 +74,9 @@ fun TransferScreen(innerPadding : PaddingValues, navController: NavHostControlle
         Button (
             onClick = {
                 val user : User? = if (contactValue.matches("\\d+".toRegex()) == true){
-                    MockContacts.getUserByCVU(contactValue)
+                    MockContacts.getUserByEmail(contactValue)
                 } else {
-                    MockContacts.getUserByAlias(contactValue)
+                    MockContacts.getUserByPhoneNo(contactValue)
                 }
 
                 if (user == null) { showErrorDialog = true }
