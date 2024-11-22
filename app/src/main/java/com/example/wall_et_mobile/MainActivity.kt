@@ -22,6 +22,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.wall_et_mobile.data.model.Screen.Activities
+import com.example.wall_et_mobile.data.model.Screen.Cards
+import com.example.wall_et_mobile.data.model.Screen.Home
+import com.example.wall_et_mobile.data.model.Screen.SeeMore
 import com.example.wall_et_mobile.ui.theme.WallEtTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import androidx.compose.material3.Scaffold as Scaffold2
@@ -66,10 +70,26 @@ fun ScaffoldPortrait(navController: NavHostController, qrScanner: QRScanner){
         systemUiController.setNavigationBarColor(systemNavColor)
     }
     Scaffold (
-        bottomBar = { CustomAppBar(navController) },
+        bottomBar = {
+            when (currentRoute(navController)) {
+                Home.route -> CustomAppBar(navController)
+                Cards.route -> CustomAppBar(navController)
+                Activities.route -> CustomAppBar(navController)
+                SeeMore.route -> CustomAppBar(navController)
+                else -> {}
+            }
+        },
         floatingActionButtonPosition = FabPosition.Center,
         isFloatingActionButtonDocked = true,
-        floatingActionButton = { QRFab(qrScanner::startScan) },
+        floatingActionButton = {
+            when (currentRoute(navController)){
+                Home.route -> QRFab(qrScanner::startScan)
+                Cards.route -> QRFab(qrScanner::startScan)
+                Activities.route -> QRFab(qrScanner::startScan)
+                SeeMore.route -> QRFab(qrScanner::startScan)
+                else -> {}
+            }
+        },
         backgroundColor = MaterialTheme.colorScheme.background,
         modifier = Modifier.systemBarsPadding()
 
@@ -93,11 +113,15 @@ fun ScaffoldLandscape(navController: NavHostController, qrScanner: QRScanner){
 
     )
     { innerPadding ->
-        Row(
-            // modifier = Modifier.fillMaxSize().padding(horizontal = innerPadding.calculateRightPadding(layoutDirection = ))
-        )
+        Row()
         {
-            NavBarLandscape(navController, qrScanner)
+            when (currentRoute(navController)) {
+                Home.route -> NavBarLandscape(navController, qrScanner)
+                Cards.route -> NavBarLandscape(navController, qrScanner)
+                Activities.route -> NavBarLandscape(navController, qrScanner)
+                SeeMore.route -> NavBarLandscape(navController, qrScanner)
+                else -> {}
+            }
             LandscapeAppNavHost(innerPadding, modifier = Modifier, navController)
         }
     }
