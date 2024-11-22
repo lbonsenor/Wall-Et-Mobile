@@ -59,11 +59,10 @@
     <string name="password">Contraseña</string>
     <string name="log_in">Iniciar sesión</string>
     <string name="sign_up">Registrarme</string>
-    <string name="forgot_password">Olvidé mi contraseña</string>
+    <string name="forgot_password">¿Olvidaste tu contraseña?</string>
     <string name="name">Nombre</string>
     <string name="username">Nombre de usuario</string>
     <string name="repeat_password">Repetir contraseña</string>
-    <string name="already_have_account">Ya tengo una cuenta</string>
     <string name="required_field">Campo requerido</string>
     <string name="invalid_email">Email inválido</string>
     <string name="passwords_dont_match">Las contraseñas no coinciden</string>
@@ -111,5 +110,13 @@
     <string name="delete_card_check">¿Está seguro que desea eliminar la tarjeta?</string>
     <string name="last_name">Apellido</string>
     <string name="verify_email">Verificar email</string>
+    <string name="create_account">Crear cuenta</string>
+    <string name="signup_to_continue">Registrarse para continuar</string>
+    <string name="already_have_account">¿Ya tienes una cuenta?</string>
+    <string name="welcome_back">¡Bienvenido de vuelta a Wall-Et!</string>
+    <string name="dont_have_account">¿No estas registrado?</string>
+    <string name="no_worries">No te preocupes, nosotros te ayudamos</string>
+    <string name="send_code">Enviar código</string>
+    <string name="back_to_login">¿Volver a iniciar sesión?</string>
 
 </resources>

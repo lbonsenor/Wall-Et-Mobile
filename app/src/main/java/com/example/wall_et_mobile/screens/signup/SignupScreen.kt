@@ -5,12 +5,14 @@ import android.util.Patterns
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -19,8 +21,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.wall_et_mobile.MyApplication
@@ -82,24 +87,35 @@ fun SignupScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text(
-            text = stringResource(R.string.app_name),
-            color = MaterialTheme.colorScheme.onBackground,
-            style = MaterialTheme.typography.headlineLarge
-        )
+//        Text(
+//            text = stringResource(R.string.app_name),
+//            color = MaterialTheme.colorScheme.onBackground,
+//            style = MaterialTheme.typography.headlineLarge
+//        )
 
         Text(
-            text = stringResource(R.string.sign_up),
+            text = stringResource(R.string.create_account),
+            color = MaterialTheme.colorScheme.secondary,
+            style = MaterialTheme.typography.headlineLarge,
+            textAlign = TextAlign.Left,
+            fontWeight = FontWeight.Bold
+        )
+        Text(
+            text = stringResource(R.string.signup_to_continue),
             color = MaterialTheme.colorScheme.onBackground,
-            style = MaterialTheme.typography.headlineMedium
+            style = MaterialTheme.typography.bodyMedium,
+            textAlign = TextAlign.Left
         )
 
         Card(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            shape = RoundedCornerShape(20.dp),
-            elevation = CardDefaults.cardElevation(defaultElevation = 10.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = Color.Transparent
+            )
+            //shape = RoundedCornerShape(20.dp),
+            //elevation = CardDefaults.cardElevation(defaultElevation = 10.dp),
         ) {
             Column(
                 modifier = Modifier
@@ -156,14 +172,22 @@ fun SignupScreen(
                               Log.d("User", user.toString())},
                     enabled = isFormValid && !uiState.isFetching
                 )
-
-                TextButton(
-                    onClick = onNavigateUp
+                HorizontalDivider(
+                    modifier = Modifier.padding(top = 16.dp)
+                )
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(
-                        stringResource(R.string.already_have_account),
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
+                    Text(stringResource(R.string.already_have_account))
+                    TextButton(
+                        onClick = onNavigateUp
+                    ) {
+                        Text(
+                            stringResource(R.string.log_in),
+                            color = MaterialTheme.colorScheme.secondary,
+                            fontSize = MaterialTheme.typography.bodyLarge.fontSize
+                        )
+                    }
                 }
             }
         }

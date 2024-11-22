@@ -22,10 +22,10 @@ fun EndFormButton(textResourceId: Int, onClick: () -> Unit, enabled: Boolean = t
         shape = RoundedCornerShape(20.dp),
         enabled = enabled,
         colors = ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.surfaceContainer,
-            contentColor = MaterialTheme.colorScheme.onPrimary,
-            disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f),
-            disabledContentColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
+            containerColor = MaterialTheme.colorScheme.secondary,
+            contentColor = MaterialTheme.colorScheme.onSecondary,
+            disabledContainerColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.5f),
+            disabledContentColor = MaterialTheme.colorScheme.onSecondary.copy(alpha = 0.38f)
         )
     ) {
         Text(text = stringResource(textResourceId))

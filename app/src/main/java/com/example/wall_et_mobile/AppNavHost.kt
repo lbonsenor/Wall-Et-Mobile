@@ -55,7 +55,9 @@ fun AppNavHost(
                     onNavigateToLogin = { navigateTo(navController, Screen.Login.route) },
                 )
             }
-            composable(Screen.ForgotPassword.route){ ForgotPasswordScreen() }
+            composable(Screen.ForgotPassword.route){ ForgotPasswordScreen(
+                onNavigateToLogin = { navigateTo(navController, Screen.Login.route) }
+            ) }
             composable(Screen.Home.route){
                 HomeScreen(
                     { navigateTo(navController, Screen.Transfer.route) },
@@ -131,7 +133,9 @@ fun LandscapeAppNavHost(
                     onNavigateToLogin = { navigateTo(navController, Screen.Login.route) },
                 )
             }
-            composable(Screen.ForgotPassword.route){ ForgotPasswordScreen() }
+            composable(Screen.ForgotPassword.route){ ForgotPasswordScreen(
+                onNavigateToLogin = { navigateTo(navController, Screen.Login.route) },
+                ) }
             composable(Screen.Home.route){
                 HomeScreenLandscape(
                     innerPadding,

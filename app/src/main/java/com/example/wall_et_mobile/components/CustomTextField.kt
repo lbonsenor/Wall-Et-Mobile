@@ -1,5 +1,6 @@
 package com.example.wall_et_mobile.components
 
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -8,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.unit.dp
 
 @Composable
 fun CustomTextField(
@@ -48,6 +50,7 @@ fun CustomTextField(
         supportingText = if (isError && errorMessage != null) {
             { Text(errorMessage) }
         } else null,
-        visualTransformation = visualTransformation
+        visualTransformation = visualTransformation,
+        shape = RoundedCornerShape(15.dp)
     )
 }
