@@ -1,5 +1,6 @@
 package com.example.wall_et_mobile.screens
 
+import MockTransactions
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -31,6 +32,8 @@ import com.example.wall_et_mobile.components.ActivityList
 import com.example.wall_et_mobile.components.Balance
 import com.example.wall_et_mobile.components.CustomButton
 import com.example.wall_et_mobile.data.model.User
+import java.time.Instant
+import java.util.Date
 
 @Composable
 fun HomeScreen(
@@ -68,7 +71,10 @@ fun BalanceCard(onNavigateToTransfer: () -> Unit, onNavigateToTopUp: () -> Unit)
             .background(MaterialTheme.colorScheme.primary)
 
     ) {
-        CustomTopAppBar(User(1, "test", "test", "test", "test", password =  "test",))
+        CustomTopAppBar(User(
+            1, "test", "test", "test", "test", password = "test",
+            birthDate = Date.from(Instant.now()),
+        ))
         Balance()
         Row(
             horizontalArrangement = Arrangement.spacedBy(16.dp),
@@ -138,7 +144,7 @@ fun ActivityCard(onNavigateToActivity: () -> Unit){
                 text = stringResource(R.string.see_more)
             )
         }
-        ActivityList(listOf())
+        ActivityList(MockTransactions.sampleTransactions.take(3))
     }
 }
 

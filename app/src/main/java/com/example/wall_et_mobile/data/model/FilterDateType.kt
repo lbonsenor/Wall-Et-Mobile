@@ -1,7 +1,9 @@
 package com.example.wall_et_mobile.data.model
 
-import java.time.LocalDate
 import com.example.wall_et_mobile.R
+import java.time.LocalDate
+import java.time.ZoneId
+import java.util.Date
 
 
 enum class FilterDateType (
@@ -14,7 +16,7 @@ enum class FilterDateType (
     LAST_YEAR(R.string.last_year, LocalDate.now().minusYears(1)),
     MAX(R.string.max, LocalDate.MIN);
 
-    fun inRange(date: LocalDate): Boolean{
-        return minDate.isBefore(date) || minDate == date
+    fun inRange(date: Date): Boolean{
+        return minDate.isBefore(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()) || minDate == date
     }
 }

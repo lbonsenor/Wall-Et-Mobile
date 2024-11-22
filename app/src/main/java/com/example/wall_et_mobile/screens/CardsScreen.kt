@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import com.example.wall_et_mobile.R
 import com.example.wall_et_mobile.components.AddCardDialog
 import com.example.wall_et_mobile.components.CardList
+import com.example.wall_et_mobile.data.mock.MockCards
 
 @Composable
 fun CardsScreen(innerPadding: PaddingValues) {
@@ -56,7 +57,7 @@ fun CardsScreen(innerPadding: PaddingValues) {
             .fillMaxSize()
             .verticalScroll(scrollState)
     ) {
-        CardList(cards = listOf(), onDeleteCard = { cardToDelete ->
+        CardList(cards = MockCards.sampleCards, onDeleteCard = { cardToDelete ->
 //            MockCards.delete(cardToDelete)
         })
         AddCardButton {

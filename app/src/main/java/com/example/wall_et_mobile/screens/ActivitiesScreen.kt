@@ -1,5 +1,6 @@
 package com.example.wall_et_mobile.screens
 
+import MockTransactions
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -37,9 +38,7 @@ fun ActivitiesScreen(innerPadding: PaddingValues) {
     var searchQuery by remember { mutableStateOf("") }
     var currentFilter by remember { mutableIntStateOf(4) }
 
-    var activities = listOf<Transaction>()
-
-    val filteredActivities = activities
+    val filteredActivities = MockTransactions.sampleTransactions
         .filter { activity ->
             val filter : FilterDateType = when (currentFilter){
                 0 -> FilterDateType.TODAY
@@ -50,7 +49,7 @@ fun ActivitiesScreen(innerPadding: PaddingValues) {
                 else -> FilterDateType.MAX
             }
             (searchQuery.isEmpty() || activity.name.contains(searchQuery, ignoreCase = true))
-//                && filter.inRange(activity.toLocalDate())
+                && filter.inRange(activity.createdAt!!)
         }
 
     Column(

@@ -23,8 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.wall_et_mobile.ui.theme.WallEtTheme
 import com.example.wall_et_mobile.R
-import com.example.wall_et_mobile.ui.theme.Gray
-import com.example.wall_et_mobile.ui.theme.TransparentPurple
+
 
 enum class TransferProgressType(
     val labelInt: Int,

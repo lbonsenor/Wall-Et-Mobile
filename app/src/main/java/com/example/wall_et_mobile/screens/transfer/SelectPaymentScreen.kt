@@ -51,6 +51,8 @@ import com.example.wall_et_mobile.components.SuccessDialog
 import com.example.wall_et_mobile.components.TransferProgress
 import com.example.wall_et_mobile.data.model.User
 import com.example.wall_et_mobile.ui.theme.DarkerGrotesque
+import java.time.Instant
+import java.util.Date
 import kotlin.math.roundToInt
 
 // should change name to last section screen or smth
@@ -81,7 +83,8 @@ fun SelectPaymentScreen(innerPadding : PaddingValues, id: Int, amount: String){
             TransferProgress(2)
 
             Section(title = stringResource(R.string.transfer_to)) {
-                ContactCard(User(1, "Lautaro", "Bonseñor", password = "1234"), Modifier.fillMaxWidth(), onClick = {})
+                ContactCard(User(1, "Lautaro", "Bonseñor", password = "1234", birthDate = Date.from(
+                    Instant.now())), Modifier.fillMaxWidth(), onClick = {})
 
             }
 

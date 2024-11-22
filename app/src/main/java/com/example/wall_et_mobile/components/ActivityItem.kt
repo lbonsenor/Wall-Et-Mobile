@@ -26,6 +26,7 @@ import com.example.wall_et_mobile.data.model.TransactionType
 import com.example.wall_et_mobile.ui.theme.Green
 import com.example.wall_et_mobile.ui.theme.WallEtTheme
 import java.text.NumberFormat
+import java.text.SimpleDateFormat
 import java.util.Locale
 
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES, name = "DarkMode")
@@ -39,10 +40,10 @@ fun Preview() {
 
 @Composable
 fun ActivityItem(transaction: Transaction = Transaction.Test) {
-//    val timeFormatter = SimpleDateFormat("HH:MM", Locale.getDefault())
+    val timeFormatter = SimpleDateFormat("HH:MM", Locale.getDefault())
     val currencyFormatter = NumberFormat.getCurrencyInstance(Locale.US)
 
-//    val formattedTime = timeFormatter.format(transaction.transactionTime)
+    //val formattedTime = timeFormatter.format(transaction.createdAt) //Obs ! This needs a change to date or smth
     val formattedCurrency = currencyFormatter.format(transaction.amount.number)
 
     val titleColor = MaterialTheme.colorScheme.onSurface
@@ -111,11 +112,11 @@ fun ActivityItem(transaction: Transaction = Transaction.Test) {
                         color = titleColor
                     )
                 }
-//                Text(
-//                    text = formattedTime,
-//                    style = MaterialTheme.typography.labelSmall,
-//                    color = subtitleColor
-//                )
+                Text(
+                    text = "formattedTime",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = subtitleColor
+                )
             }
         }
     }

@@ -15,12 +15,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.example.wall_et_mobile.data.model.User
 import com.example.wall_et_mobile.ui.theme.DarkerGrotesque
-import com.example.wall_et_mobile.ui.theme.WallEtTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -49,14 +47,5 @@ fun CustomTopAppBar(user: User) {
             ),
             content = { Icon(Icons.Filled.Person, "") },
         )
-    }
-}
-
-@Preview
-@Composable
-fun PreviewTopAppBar() {
-    val testUser = User(1, "test", "test", "Bonsenor", "test", password = "test")
-    WallEtTheme {
-        CustomTopAppBar(testUser)
     }
 }

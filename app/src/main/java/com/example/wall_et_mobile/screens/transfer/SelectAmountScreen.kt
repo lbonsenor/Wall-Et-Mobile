@@ -47,9 +47,12 @@ import androidx.core.text.isDigitsOnly
 import com.example.wall_et_mobile.R
 import com.example.wall_et_mobile.components.TransferCardSlider
 import com.example.wall_et_mobile.components.TransferProgress
+import com.example.wall_et_mobile.data.mock.MockCards
 import com.example.wall_et_mobile.data.model.User
 import com.example.wall_et_mobile.ui.theme.DarkerGrotesque
 import java.text.NumberFormat
+import java.time.Instant
+import java.util.Date
 import java.util.Locale
 
 @Composable
@@ -59,7 +62,7 @@ fun SelectAmountScreen(
     onNavigateToSelectPayment : (Int, String) -> Unit
 )
 {
-    val user : User = User(1, "Camila", "Lee", password = "123")
+    val user : User = User(1, "Camila", "Lee", password = "123", birthDate = Date.from(Instant.now()))
     var amount by remember { mutableStateOf("") }
     var cents by remember { mutableStateOf("00") }
 
@@ -83,7 +86,7 @@ fun SelectAmountScreen(
         Box(
             contentAlignment = Alignment.Center,
         ) {
-            TransferCardSlider(listOf())
+            TransferCardSlider(MockCards.sampleCards)
         }
 
         Button(
