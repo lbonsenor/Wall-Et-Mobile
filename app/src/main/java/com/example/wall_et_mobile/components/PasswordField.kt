@@ -22,7 +22,8 @@ fun PasswordField(
     originalPassword: String = "",
     label: Int = R.string.password,
     errorMessage: String? = null,
-    validate: ((String) -> Boolean)? = null
+    validate: ((String) -> Boolean)? = null,
+    enabled: Boolean = true
 ) {
     var passwordVisible by remember { mutableStateOf(false) }
     val defaultValidation: (String) -> Boolean = {
@@ -36,6 +37,7 @@ fun PasswordField(
         onValueChange = onPasswordChange,
         labelResourceId = label,
         modifier = modifier,
+        enabled = enabled,
         errorMessage = errorMessage,
         validate = validate ?: defaultValidation,
         visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),

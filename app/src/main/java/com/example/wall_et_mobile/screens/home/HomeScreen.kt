@@ -21,17 +21,24 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.wall_et_mobile.CustomTopAppBar
+import com.example.wall_et_mobile.MyApplication
 import com.example.wall_et_mobile.R
 import com.example.wall_et_mobile.components.ActivityList
 import com.example.wall_et_mobile.components.Balance
 import com.example.wall_et_mobile.components.CustomButton
 import com.example.wall_et_mobile.data.model.User
+import com.example.wall_et_mobile.data.model.Wallet
+import com.example.wall_et_mobile.screens.login.LoginScreen
 import java.time.Instant
 import java.util.Date
 
@@ -39,8 +46,10 @@ import java.util.Date
 fun HomeScreen(
     onNavigateToTransfer: () -> Unit,
     onNavigateToActivity: () -> Unit,
-    onNavigateToTopUp: () -> Unit
+    onNavigateToTopUp: () -> Unit,
+    viewModel: HomeViewModel = viewModel(factory = HomeViewModel.provideFactory(LocalContext.current.applicationContext as MyApplication))
 ) {
+    val uiState by viewModel.uiState.collectAsState()
     Column (
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween,
@@ -49,20 +58,36 @@ fun HomeScreen(
             .background(MaterialTheme.colorScheme.background)
             .verticalScroll(rememberScrollState())
     ){
-        BalanceCard(onNavigateToTransfer, onNavigateToTopUp)
+//        if (!uiState.isAuthenticated) {
+//            LoginScreen(onNavigateToHome = {}, onNavigateToSignUp = {}, onNavigateToForgotPassword = {})
+//        } else {
+            BalanceCard(
+                onNavigateToTransfer = onNavigateToTransfer,
+                onNavigateToTopUp = onNavigateToTopUp,
+                wallet = uiState.wallet,
+                isFetching = uiState.isFetching,
+                error = uiState.error
+            )
 
-        Column (
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxWidth()
-        ) {
-            ActivityCard(onNavigateToActivity)
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth()
+            ) {
+                ActivityCard(onNavigateToActivity)
+            }
         }
-    }
+   // }
 }
 
 @Composable
-fun BalanceCard(onNavigateToTransfer: () -> Unit, onNavigateToTopUp: () -> Unit){
+fun BalanceCard(
+    onNavigateToTransfer: () -> Unit,
+    onNavigateToTopUp: () -> Unit,
+    wallet: Wallet?,
+    isFetching: Boolean,
+    error: Error?
+){
     Column(
         modifier = Modifier
             .padding(horizontal = 10.dp)
@@ -75,7 +100,11 @@ fun BalanceCard(onNavigateToTransfer: () -> Unit, onNavigateToTopUp: () -> Unit)
             1, "test", "test", "test", "test", password = "test",
             birthDate = Date.from(Instant.now()),
         ))
-        Balance()
+        Balance(
+            wallet = wallet,
+            isFetching = isFetching,
+            error = error
+        )
         Row(
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             modifier = Modifier
@@ -149,14 +178,18 @@ fun ActivityCard(onNavigateToActivity: () -> Unit){
 }
 
 @Composable
-fun HomeScreenLandscape(innerPadding: PaddingValues, onNavigateToTransfer: () -> Unit, onNavigateToActivity: () -> Unit){
+fun HomeScreenLandscape(innerPadding: PaddingValues, onNavigateToTransfer: () -> Unit, onNavigateToActivity: () -> Unit, onNavigateToTopUp: () -> Unit,
+                        viewModel: HomeViewModel = viewModel(factory = HomeViewModel.provideFactory(LocalContext.current.applicationContext as MyApplication))
+){
+    val uiState by viewModel.uiState.collectAsState()
+
     Row(
         modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     )
     {
-        BalanceCardLandscape(onNavigateToTransfer, innerPadding)
+        BalanceCardLandscape(onNavigateToTransfer, innerPadding, onNavigateToTopUp, uiState.wallet, uiState.isFetching, uiState.error)
         Column (
             modifier = Modifier
                 .fillMaxWidth()
@@ -167,7 +200,14 @@ fun HomeScreenLandscape(innerPadding: PaddingValues, onNavigateToTransfer: () ->
 }
 
 @Composable
-fun BalanceCardLandscape(onNavigateToTransfer: () -> Unit, innerPadding: PaddingValues){
+fun BalanceCardLandscape(
+    onNavigateToTransfer: () -> Unit,
+    innerPadding: PaddingValues,
+    onNavigateToTopUp: () -> Unit,
+    wallet: Wallet?,
+    isFetching: Boolean,
+    error: Error?
+){
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
@@ -178,7 +218,11 @@ fun BalanceCardLandscape(onNavigateToTransfer: () -> Unit, innerPadding: Padding
             .background(MaterialTheme.colorScheme.primary)
 
     ) {
-        Balance()
+        Balance(
+            wallet = wallet,
+            isFetching = isFetching,
+            error = error
+        )
 
         Row (
             horizontalArrangement = Arrangement.spacedBy(16.dp),
@@ -187,11 +231,6 @@ fun BalanceCardLandscape(onNavigateToTransfer: () -> Unit, innerPadding: Padding
         ) {
             Box(modifier = Modifier.weight(1f)) {
                 CustomButton(stringResource(R.string.title_transfer), R.drawable.transfer, onClick = onNavigateToTransfer
-//                    navController.navigate(Screen.Transfer.route){
-//                        popUpTo(navController.graph.findStartDestination().id) {saveState = true}
-//                        launchSingleTop = true
-//                        restoreState = true
-//                    }
                 )
             }
             Box(modifier = Modifier.weight(1f)) {

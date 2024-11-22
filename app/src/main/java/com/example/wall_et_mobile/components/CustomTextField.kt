@@ -18,7 +18,8 @@ fun CustomTextField(
     trailingIcon: @Composable (() -> Unit)? = null,
     errorMessage: String? = null,
     validate: ((String) -> Boolean)? = null,
-    visualTransformation: VisualTransformation = VisualTransformation.None
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    enabled: Boolean = true
 ) {
     val isError = validate?.invoke(value) == false && value.isNotEmpty()
     
@@ -43,6 +44,7 @@ fun CustomTextField(
         trailingIcon = trailingIcon,
         modifier = modifier,
         isError = isError,
+        enabled = enabled,
         supportingText = if (isError && errorMessage != null) {
             { Text(errorMessage) }
         } else null,

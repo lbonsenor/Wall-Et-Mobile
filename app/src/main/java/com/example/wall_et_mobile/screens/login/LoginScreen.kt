@@ -3,14 +3,17 @@ package com.example.wall_et_mobile.screens.login
 import android.util.Patterns
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -18,22 +21,36 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.wall_et_mobile.MyApplication
 import com.example.wall_et_mobile.R
 import com.example.wall_et_mobile.components.CustomTextField
 import com.example.wall_et_mobile.components.EndFormButton
 import com.example.wall_et_mobile.components.PasswordField
+import com.example.wall_et_mobile.screens.home.HomeViewModel
 
 @Composable
 fun LoginScreen(
-//    navController: NavController,
     onNavigateToHome : () -> Unit,
     onNavigateToForgotPassword : () -> Unit,
     onNavigateToSignUp : () -> Unit,
+    viewModel: LoginViewModel = viewModel(factory = LoginViewModel.provideFactory(LocalContext.current.applicationContext as MyApplication))
+
 ) {
+
+    val uiState = viewModel.uiState
+
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+
+    LaunchedEffect(uiState.isAuthenticated) {
+        if (uiState.isAuthenticated) {
+            onNavigateToHome()
+        }
+    }
 
     fun validateEmail(email: String): Boolean {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches()
@@ -76,13 +93,26 @@ fun LoginScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
+                if (uiState.isFetching) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(24.dp)
+                    )
+                }
+                uiState.error?.let { error ->
+                    Text(
+                        text = "ERROR",
+                        color = MaterialTheme.colorScheme.error,
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                }
                 CustomTextField(
                     value = email,
                     onValueChange = { email = it },
                     labelResourceId = R.string.email,
                     modifier = Modifier.fillMaxWidth(),
                     errorMessage = stringResource(R.string.invalid_email),
-                    validate = { newEmail -> validateEmail(newEmail) }
+                    validate = { newEmail -> validateEmail(newEmail) },
+                    enabled = !uiState.isFetching
                 )
 
                 PasswordField(
@@ -93,13 +123,16 @@ fun LoginScreen(
 
                 EndFormButton(
                     textResourceId = R.string.log_in,
-                    onClick = onNavigateToHome,
-                    enabled = isFormValid
+                    onClick = {
+                        viewModel.login(email, password)
+                    },
+                    enabled = isFormValid && !uiState.isFetching
                 )
 
                 EndFormButton(
                     textResourceId = R.string.fast_login,
                     onClick = onNavigateToHome,
+                    enabled = !uiState.isFetching
                 )
 
                 Row(

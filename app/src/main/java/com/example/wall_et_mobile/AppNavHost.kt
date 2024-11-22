@@ -28,8 +28,8 @@ fun AppNavHost(
     innerPadding: PaddingValues,
     modifier: Modifier,
     navController: NavHostController = rememberNavController(),
-//    startDestination: String = Screen.Login.route
-    startDestination: String = Screen.Home.route    // FOR TESTING
+   startDestination: String = Screen.Login.route
+    //startDestination: String = Screen.Home.route    // FOR TESTING
 ){
     NavHost(
         navController = navController,
@@ -123,7 +123,8 @@ fun LandscapeAppNavHost(
                 HomeScreenLandscape(
                     innerPadding,
                     { navigateTo(navController, Screen.Transfer.route) },
-                    { navigateTo(navController, Screen.Activities.route) }
+                    { navigateTo(navController, Screen.Activities.route) },
+                    { navigateTo(navController, Screen.TopUp.route) },
                 )}
             composable(Screen.Cards.route){ CardsScreen(innerPadding) }
             composable(Screen.Activities.route){ ActivitiesScreen(innerPadding) }
