@@ -25,7 +25,7 @@ class NetworkUser(
             email = email,
             birthDate = dateFormat.parse(birthDate)!!,
             phoneNo = null,
-            natId = null, //what is this
+            //what is this
             password = password,
         )
     }

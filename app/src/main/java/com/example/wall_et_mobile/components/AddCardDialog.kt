@@ -35,14 +35,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.example.wall_et_mobile.R
-import com.example.wall_et_mobile.model.CardDetails
-import com.example.wall_et_mobile.model.CardType
+import com.example.wall_et_mobile.data.model.Card
+import com.example.wall_et_mobile.data.model.CardType
 
 @Composable
 fun AddCardDialog(
     showDialog: Boolean,
     onDismiss: () -> Unit,
-    onSubmit: (CardDetails) -> Unit
+    onSubmit: (Card) -> Unit
 ) {
     var number by remember { mutableStateOf("") }
     var fullName by remember { mutableStateOf("") }
@@ -174,12 +174,13 @@ fun AddCardDialog(
                         }
                         Button(
                             onClick = {
-                                val cardDetails = CardDetails(
+                                val cardDetails = Card(
                                     cardNumber = number,
                                     cardType = CardType.CREDIT_CARD,
                                     cardHolder = fullName,
                                     cardExpiration = expirationDate,
-                                    cardCvv = cvv
+                                    cardCvv = cvv,
+                                    cardId = 1
                                 )
                                 onSubmit(cardDetails)
                                 number = ""

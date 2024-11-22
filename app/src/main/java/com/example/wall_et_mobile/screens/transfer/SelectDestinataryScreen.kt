@@ -31,8 +31,7 @@ import com.example.wall_et_mobile.R
 import com.example.wall_et_mobile.components.ContactListWithSearchBar
 import com.example.wall_et_mobile.components.ContactsTabs
 import com.example.wall_et_mobile.components.TransferProgress
-import com.example.wall_et_mobile.data.mock.MockContacts
-import com.example.wall_et_mobile.model.User
+import com.example.wall_et_mobile.data.model.User
 
 @Composable
 fun SelectDestinataryScreen(
@@ -74,15 +73,11 @@ fun SelectDestinataryScreen(
         )
         Button (
             onClick = {
-                val user : User? = if (contactValue.matches("\\d+".toRegex()) == true){
-                    MockContacts.getUserByCVU(contactValue)
-                } else {
-                    MockContacts.getUserByAlias(contactValue)
-                }
+                val user : User? = User(1, "Lautaro", "Bonsenor", password = "123")
 
                 if (user == null) { showErrorDialog = true }
                 else
-                    onNavigateToSelectAmount(user.id)
+                    onNavigateToSelectAmount(user.id!!)
             },
             colors = ButtonColors(
                 containerColor = MaterialTheme.colorScheme.secondary,
@@ -113,10 +108,10 @@ fun SelectDestinataryScreen(
 
         ContactsTabs(onTabSelected = { tabIndex -> currentTab = tabIndex }, initialTab = currentTab)
         when (currentTab) {
-            0 -> ContactListWithSearchBar(MockContacts.sampleContacts, favoriteUserIds)
+            0 -> ContactListWithSearchBar(listOf(), favoriteUserIds)
             { userId, isFavorite -> favoriteUserIds = if (isFavorite) { favoriteUserIds + userId } else { favoriteUserIds - userId } }
 
-            1 -> ContactListWithSearchBar(MockContacts.sampleContacts.filter { it.id in favoriteUserIds },
+            1 -> ContactListWithSearchBar(listOf<User>().filter { it.id in favoriteUserIds },
                 favoriteUserIds
             ) { userId, isFavorite -> favoriteUserIds = if (isFavorite) {
                     favoriteUserIds + userId

@@ -20,18 +20,13 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.CheckCircle
 import androidx.compose.material.icons.rounded.PlayArrow
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.AlertDialogDefaults
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -54,7 +49,7 @@ import androidx.compose.ui.unit.sp
 import com.example.wall_et_mobile.R
 import com.example.wall_et_mobile.components.SuccessDialog
 import com.example.wall_et_mobile.components.TransferProgress
-import com.example.wall_et_mobile.data.mock.MockContacts
+import com.example.wall_et_mobile.data.model.User
 import com.example.wall_et_mobile.ui.theme.DarkerGrotesque
 import kotlin.math.roundToInt
 
@@ -86,7 +81,7 @@ fun SelectPaymentScreen(innerPadding : PaddingValues, id: Int, amount: String){
             TransferProgress(2)
 
             Section(title = stringResource(R.string.transfer_to)) {
-                ContactCard(MockContacts.sampleContacts[id], Modifier.fillMaxWidth(), onClick = {})
+                ContactCard(User(1, "Lautaro", "Bonseñor", password = "1234"), Modifier.fillMaxWidth(), onClick = {})
 
             }
 

@@ -15,11 +15,14 @@ data class Card(
     val cardCvv: String?,
     val gradient: CardGradient = CardGradient.random(),
     var createdAt: Date? = null,
-    var updatedAt: Date? = null
+    var updatedAt: Date? = null,
 ) {
     fun getCardBrand() : CardBrand{
-        if (cardNumber.startsWith("4")) return CardBrand.VISA
-        else if (cardNumber.startsWith("5")) return CardBrand.MASTERCARD
+        CardBrand.entries.forEach{brand ->
+            if (brand.validate(cardNumber)) {
+                return brand
+            }
+        }
         return CardBrand.VISA
     }
 

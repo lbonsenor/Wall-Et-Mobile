@@ -55,12 +55,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.wall_et_mobile.R
-import com.example.wall_et_mobile.data.mock.MockCards
 import com.example.wall_et_mobile.data.model.Card
 import com.example.wall_et_mobile.ui.theme.DarkerGrotesque
 import com.example.wall_et_mobile.ui.theme.TransparentGray
-import com.example.wall_et_mobile.ui.theme.WallEtTheme
 import com.example.wall_et_mobile.ui.theme.White
+import kotlinx.coroutines.launch
 
 
 @Composable
@@ -156,7 +155,7 @@ fun CardItem(card: Card, onDelete: () -> Unit) {
 }
 
 @Composable
-fun CardIndividualItem(card: CardDetails) {
+fun CardIndividualItem(card: Card) {
     var isNumberVisible by remember { mutableStateOf(false) }
 
     val maskedNumber = if (isNumberVisible) {
@@ -199,7 +198,7 @@ fun CardIndividualItem(card: CardDetails) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
-                    painter = painterResource(card.cardBrand.iconInt),
+                    painter = painterResource(card.getCardBrand().iconInt),
                     contentDescription = "Card Brand",
                     tint = Color.Unspecified,
                     modifier = Modifier.size(70.dp)

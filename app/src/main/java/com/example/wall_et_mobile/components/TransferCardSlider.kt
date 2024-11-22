@@ -33,7 +33,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.wall_et_mobile.R
-import com.example.wall_et_mobile.data.mock.MockCards
 import com.example.wall_et_mobile.data.model.Card
 import com.example.wall_et_mobile.ui.theme.WallEtTheme
 
@@ -60,7 +59,7 @@ fun TransferCardSlidePreview() {
         Column (
             Modifier.background(MaterialTheme.colorScheme.background)
         ){
-            TransferCardSlider(MockCards.sampleCards)
+            TransferCardSlider(listOf())
         }
     }
 }

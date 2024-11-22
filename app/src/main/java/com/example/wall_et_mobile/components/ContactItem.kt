@@ -10,7 +10,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
@@ -75,7 +74,7 @@ fun ContactItem(user: User, favoriteUserIds: List<Int>, onFavoriteChange: (Int, 
             IconButton(
                 onClick = {
                     onFavoriteChange(
-                        user.id,
+                        user.id!!,
                         !isFavorited
                     )
                 } // agregarlo a la lista de favoritos

@@ -12,7 +12,7 @@ data class Transaction(
     var balanceBefore: Float,
     var balanceAfter : Float,
     var pending : Boolean,
-    //val transactionTime: Timestamp?,
+//    val transactionTime: Timestamp? = Timestamp.from(java.sql.Date.from()),
     val transactionType: TransactionType,
     val paymentType: PaymentType,
     val name: String,

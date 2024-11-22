@@ -18,7 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import com.example.wall_et_mobile.model.User
+import com.example.wall_et_mobile.data.model.User
 import com.example.wall_et_mobile.ui.theme.DarkerGrotesque
 import com.example.wall_et_mobile.ui.theme.WallEtTheme
 
@@ -55,7 +55,7 @@ fun CustomTopAppBar(user: User) {
 @Preview
 @Composable
 fun PreviewTopAppBar() {
-    val testUser = User(1, "test", "test", "Lauti", "Bonsenor", "test", "test", "test")
+    val testUser = User(1, "test", "test", "Bonsenor", "test", password = "test")
     WallEtTheme {
         CustomTopAppBar(testUser)
     }

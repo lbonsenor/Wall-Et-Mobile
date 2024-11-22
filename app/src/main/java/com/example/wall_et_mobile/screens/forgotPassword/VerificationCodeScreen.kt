@@ -27,7 +27,7 @@ import androidx.navigation.NavController
 import com.example.wall_et_mobile.R
 import com.example.wall_et_mobile.components.CustomTextField
 import com.example.wall_et_mobile.components.EndFormButton
-import com.example.wall_et_mobile.model.Screen
+import com.example.wall_et_mobile.data.model.Screen
 import com.example.wall_et_mobile.ui.theme.WallEtTheme
 
 

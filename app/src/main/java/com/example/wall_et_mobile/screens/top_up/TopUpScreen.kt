@@ -38,8 +38,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.wall_et_mobile.R
 import com.example.wall_et_mobile.components.SuccessDialog
-import com.example.wall_et_mobile.components.TransferCardSlider
-import com.example.wall_et_mobile.data.mock.MockCards
 import com.example.wall_et_mobile.ui.theme.DarkerGrotesque
 import java.text.NumberFormat
 import java.util.Locale
