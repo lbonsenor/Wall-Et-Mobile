@@ -72,7 +72,7 @@ fun ActivityItem(transaction: Transaction) {
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     Text(
-                        text = transaction.receiver?.name ?: "Couldn't find",
+                        text = transaction.receiver.name,
                         style = MaterialTheme.typography.titleSmall,
                         color = titleColor
                     )
