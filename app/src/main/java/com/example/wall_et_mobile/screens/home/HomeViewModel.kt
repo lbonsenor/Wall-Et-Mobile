@@ -27,13 +27,21 @@ class HomeViewModel (
 ) : ViewModel() {
 
     private var walletStreamJob : Job? = null
+    private var paymentsStreamJob : Job? = null
     private val _uiState = MutableStateFlow(HomeUiState(isAuthenticated = sessionManager.loadAuthToken() != null))
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
 
     init {
         if (uiState.value.isAuthenticated) {
             observeWalletStream()
+            observePaymentsStream()
         }
+    }
+
+    private fun observePaymentsStream(){
+        paymentsStreamJob = collectOnViewModelScope(
+            transactionRepository.paymentStream
+        ) { state, response -> state.copy(transactions = response) }
     }
 
     private fun observeWalletStream(){

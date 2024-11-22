@@ -8,7 +8,7 @@ data class HomeUiState(
     val isAuthenticated : Boolean = false,
     val isFetching: Boolean = false,
     val wallet: Wallet? = null,
-    val transactions: List<Transaction>? = null,
+    val transactions: List<Transaction> = emptyList<Transaction>(),
     val user: User? = null,
     val error: Error? = null
 )

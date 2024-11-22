@@ -1,7 +1,6 @@
 package com.example.wall_et_mobile.data.network.model
 
 import com.example.wall_et_mobile.data.model.Wallet
-import com.example.wall_et_mobile.data.network.api.WalletApiService
 import kotlinx.serialization.Serializable
 
 
@@ -9,7 +8,7 @@ import kotlinx.serialization.Serializable
 data class NetworkWallet(
     val id : Int,
     val balance : Double = 0.0,
-    val cvu : String,
+    val cbu : String,
     val alias : String,
     val invested : Int,
     val createdAt : String,
@@ -20,7 +19,7 @@ data class NetworkWallet(
             walletId = id,
             invested = invested,
             balance = balance,
-            cvu = cvu,
+            cbu = cbu,
             alias = alias
         )
     }

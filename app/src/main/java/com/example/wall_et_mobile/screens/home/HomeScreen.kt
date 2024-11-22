@@ -1,6 +1,5 @@
 package com.example.wall_et_mobile.screens.home
 
-import MockTransactions
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -36,11 +35,10 @@ import com.example.wall_et_mobile.R
 import com.example.wall_et_mobile.components.ActivityList
 import com.example.wall_et_mobile.components.Balance
 import com.example.wall_et_mobile.components.CustomButton
+import com.example.wall_et_mobile.data.model.Transaction
 import com.example.wall_et_mobile.data.model.User
 import com.example.wall_et_mobile.data.model.Wallet
-import com.example.wall_et_mobile.screens.login.LoginScreen
-import java.time.Instant
-import java.util.Date
+
 
 @Composable
 fun HomeScreen(
@@ -58,25 +56,22 @@ fun HomeScreen(
             .background(MaterialTheme.colorScheme.background)
             .verticalScroll(rememberScrollState())
     ){
-//        if (!uiState.isAuthenticated) {
-//            LoginScreen(onNavigateToHome = {}, onNavigateToSignUp = {}, onNavigateToForgotPassword = {})
-//        } else {
-            BalanceCard(
-                onNavigateToTransfer = onNavigateToTransfer,
-                onNavigateToTopUp = onNavigateToTopUp,
-                wallet = uiState.wallet,
-                isFetching = uiState.isFetching,
-                error = uiState.error
-            )
+        BalanceCard(
+            onNavigateToTransfer = onNavigateToTransfer,
+            onNavigateToTopUp = onNavigateToTopUp,
+            wallet = uiState.wallet,
+            isFetching = uiState.isFetching,
+            error = uiState.error
+        )
 
-            Column(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth()
-            ) {
-                ActivityCard(onNavigateToActivity)
-            }
+        Column(
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxWidth()
+        ) {
+            ActivityCard(onNavigateToActivity, uiState.transactions)
         }
+    }
    // }
 }
 
@@ -86,7 +81,7 @@ fun BalanceCard(
     onNavigateToTopUp: () -> Unit,
     wallet: Wallet?,
     isFetching: Boolean,
-    error: Error?
+    error: Error?,
 ){
     Column(
         modifier = Modifier
@@ -133,7 +128,7 @@ fun BalanceCard(
 }
 
 @Composable
-fun ActivityCard(onNavigateToActivity: () -> Unit){
+fun ActivityCard(onNavigateToActivity: () -> Unit, transactions : List<Transaction>){
     Card(
         shape = RoundedCornerShape(20.dp),
         elevation = CardDefaults.cardElevation(
@@ -172,13 +167,17 @@ fun ActivityCard(onNavigateToActivity: () -> Unit){
                 text = stringResource(R.string.see_more)
             )
         }
-        ActivityList(MockTransactions.sampleTransactions.take(3))
+        ActivityList(transactions.take(3))
     }
 }
 
 @Composable
-fun HomeScreenLandscape(innerPadding: PaddingValues, onNavigateToTransfer: () -> Unit, onNavigateToActivity: () -> Unit, onNavigateToTopUp: () -> Unit,
-                        viewModel: HomeViewModel = viewModel(factory = HomeViewModel.provideFactory(LocalContext.current.applicationContext as MyApplication))
+fun HomeScreenLandscape(
+    innerPadding: PaddingValues,
+    onNavigateToTransfer: () -> Unit,
+    onNavigateToActivity: () -> Unit,
+    onNavigateToTopUp: () -> Unit,
+    viewModel: HomeViewModel = viewModel(factory = HomeViewModel.provideFactory(LocalContext.current.applicationContext as MyApplication))
 ){
     val uiState by viewModel.uiState.collectAsState()
 
@@ -193,7 +192,7 @@ fun HomeScreenLandscape(innerPadding: PaddingValues, onNavigateToTransfer: () ->
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            ActivityCard(onNavigateToActivity)
+            ActivityCard(onNavigateToActivity, uiState.transactions)
         }
     }
 }

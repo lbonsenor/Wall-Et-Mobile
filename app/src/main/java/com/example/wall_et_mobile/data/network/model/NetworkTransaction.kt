@@ -11,6 +11,15 @@ import java.util.Locale
 import kotlin.Int
 
 @Serializable
+data class NetworkTransactionList(
+    val payments: List<NetworkTransaction>
+){
+    fun asModel(): List<Transaction>{
+        return payments.map { netTransaction -> netTransaction.asModel() }
+    }
+}
+
+@Serializable
 data class NetworkTransaction(
     var id : Int,
     var type: String,

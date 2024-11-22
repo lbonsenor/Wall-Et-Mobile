@@ -20,7 +20,7 @@ interface TransactionApiService {
                             @Query("type") type : String?,
                             @Query("range") range : String?,
                             @Query("source") source : String?,
-                            @Query("cardId") cardId: Int?): Response<List<NetworkTransaction>>
+                            @Query("cardId") cardId: Int?): Response<NetworkTransactionList>
 
     @GET("payment/{paymentId}")
     suspend fun getPayment(@Path("paymentId") paymentId: Int) : Response<NetworkTransaction>
