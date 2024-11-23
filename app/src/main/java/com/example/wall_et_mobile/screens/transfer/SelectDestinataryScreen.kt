@@ -25,24 +25,36 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.wall_et_mobile.MyApplication
 import com.example.wall_et_mobile.R
 import com.example.wall_et_mobile.components.ContactListWithSearchBar
 import com.example.wall_et_mobile.components.ContactsTabs
 import com.example.wall_et_mobile.components.TransferProgress
 import com.example.wall_et_mobile.data.mock.MockContacts
+import com.example.wall_et_mobile.data.model.Transaction
 import com.example.wall_et_mobile.data.model.User
+import com.example.wall_et_mobile.screens.login.LoginViewModel
 
 @Composable
 fun SelectDestinataryScreen(
     innerPadding : PaddingValues,
-    onNavigateToSelectAmount: (Int) -> Unit,
+    onNavigateToSelectAmount: (String) -> Unit,
+    viewModel: TransferViewModel = viewModel(factory = TransferViewModel.provideFactory(LocalContext.current.applicationContext as MyApplication))
 ) {
+    val uiState = viewModel.uiState
+
     var currentTab by remember { mutableIntStateOf(0) }
     var favoriteUserIds by remember { mutableStateOf<List<Int>>(emptyList()) }
     var contactValue by remember { mutableStateOf("") }
     var showErrorDialog by remember { mutableStateOf(false) }
+
+    fun isValidEmail(email: String): Boolean {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -55,7 +67,8 @@ fun SelectDestinataryScreen(
         TransferProgress(0)
         OutlinedTextField(
             value = contactValue,
-            onValueChange = { contactValue = it },
+            onValueChange = { contactValue = it  },
+            isError = !isValidEmail(contactValue),
             placeholder = {
                 Text(
                     stringResource(R.string.transfer_to_1),
@@ -79,11 +92,11 @@ fun SelectDestinataryScreen(
 //                } else {
 //                    MockContacts.getUserByPhoneNo(contactValue)
 //                }
-                val user = MockContacts.getUserByEmail(contactValue)
+                //val user = MockContacts.getUserByEmail(contactValue)
 
-                if (user == null) { showErrorDialog = true }
-                else
-                    onNavigateToSelectAmount(user.id!!)
+                //if (user == null) { showErrorDialog = true }
+                //else
+                    onNavigateToSelectAmount(contactValue)
             },
             colors = ButtonColors(
                 containerColor = MaterialTheme.colorScheme.secondary,
@@ -114,10 +127,10 @@ fun SelectDestinataryScreen(
 
         ContactsTabs(onTabSelected = { tabIndex -> currentTab = tabIndex }, initialTab = currentTab)
         when (currentTab) {
-            0 -> ContactListWithSearchBar(MockContacts.sampleContacts, favoriteUserIds)
+            0 -> ContactListWithSearchBar(getRecentContacts(uiState.transactions), favoriteUserIds)
             { userId, isFavorite -> favoriteUserIds = if (isFavorite) { favoriteUserIds + userId } else { favoriteUserIds - userId } }
 
-            1 -> ContactListWithSearchBar(MockContacts.sampleContacts.filter { it.id in favoriteUserIds },
+            1 -> ContactListWithSearchBar(getRecentContacts(uiState.transactions).filter { it.id in favoriteUserIds },
                 favoriteUserIds
             ) { userId, isFavorite -> favoriteUserIds = if (isFavorite) {
                     favoriteUserIds + userId
@@ -129,4 +142,17 @@ fun SelectDestinataryScreen(
     }
 
 }
+
+fun getRecentContacts(transactions: List<Transaction>) : List<User> {
+    val recentContacts = mutableListOf<User>()
+
+    transactions.forEach { transaction ->
+        if (!recentContacts.contains(transaction.receiver)) {
+            recentContacts.add(transaction.receiver)
+        }
+    }
+
+    return recentContacts
+}
+
 

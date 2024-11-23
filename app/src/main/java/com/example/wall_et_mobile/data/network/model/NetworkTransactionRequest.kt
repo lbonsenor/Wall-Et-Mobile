@@ -8,10 +8,10 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class NetworkTransactionRequest (
-    var amount: Float ,
+    var amount: Double ,
     var description: String,
     var type: String,
-    var cardId: String?,
+   // var cardId: String?,
     val receiverEmail: String?,
 ){
     fun asModel() : TransactionRequest {
@@ -22,7 +22,7 @@ data class NetworkTransactionRequest (
                 "CARD" -> PaymentType.CARD
                 else -> PaymentType.BALANCE
             },
-            cardId = cardId,
+            //cardId = cardId,
             receiverEmail = receiverEmail
         )
     }

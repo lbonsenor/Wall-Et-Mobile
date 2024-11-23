@@ -1,5 +1,7 @@
 package com.example.wall_et_mobile.screens.transfer
 
+import android.icu.util.Currency
+import android.icu.util.CurrencyAmount
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -39,6 +41,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -46,9 +49,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.wall_et_mobile.MyApplication
 import com.example.wall_et_mobile.R
 import com.example.wall_et_mobile.components.SuccessDialog
 import com.example.wall_et_mobile.components.TransferProgress
+import com.example.wall_et_mobile.data.model.PaymentType
+import com.example.wall_et_mobile.data.model.Transaction
+import com.example.wall_et_mobile.data.model.TransactionRequest
 import com.example.wall_et_mobile.data.model.User
 import com.example.wall_et_mobile.ui.theme.DarkerGrotesque
 import java.time.Instant
@@ -57,7 +65,12 @@ import kotlin.math.roundToInt
 
 // should change name to last section screen or smth
 @Composable
-fun SelectPaymentScreen(innerPadding : PaddingValues, id: Int, amount: String){
+fun SelectPaymentScreen(
+    innerPadding : PaddingValues, email: String, amount: String,
+    viewModel: TransferViewModel = viewModel(factory = TransferViewModel.provideFactory(LocalContext.current.applicationContext as MyApplication))
+){
+    val uiState = viewModel.uiState
+
     var note by remember { mutableStateOf("") }
     var showSuccess by remember { mutableStateOf(false) }
 
@@ -83,7 +96,9 @@ fun SelectPaymentScreen(innerPadding : PaddingValues, id: Int, amount: String){
             TransferProgress(2)
 
             Section(title = stringResource(R.string.transfer_to)) {
-                ContactCard(User(1, "Lautaro", "Bonseñor", birthDate = "2002-20-02"), Modifier.fillMaxWidth(), onClick = {})
+                ContactCard((email), Modifier.fillMaxWidth(), onClick = {
+
+                })
             }
 
             Section(title = stringResource(R.string.transfer_amount)) {
@@ -104,7 +119,17 @@ fun SelectPaymentScreen(innerPadding : PaddingValues, id: Int, amount: String){
             )
         }
         SwipeToSendButton(
-            onSwipeComplete = { showSuccess = true },
+            onSwipeComplete = {
+                if (!uiState.isFetching) {
+                    viewModel.makePayment(TransactionRequest(
+                        amount = CurrencyAmount(amount.toDouble(), Currency.getInstance("ARS")),
+                        description = note,
+                        type = PaymentType.BALANCE,
+                        receiverEmail = email
+                    ))
+                    showSuccess = true
+                }
+                 },
             isCompleted = showSuccess,
             modifier = Modifier
                 .padding(horizontal = 24.dp)

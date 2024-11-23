@@ -59,11 +59,11 @@ import java.util.Locale
 @Composable
 fun SelectAmountScreen(
     innerPadding : PaddingValues,
-    id: Int,
-    onNavigateToSelectPayment : (Int, String) -> Unit
+    email: String,
+    onNavigateToSelectPayment : (String, String) -> Unit
 )
 {
-    val user : User = User(1, "Camila", "Lee", birthDate = "2002-02-10")
+    //val user : User = User(1, "Camila", "Lee", birthDate = "2002-02-10")
     var amount by remember { mutableStateOf("") }
     var cents by remember { mutableStateOf("00") }
     var selectedOption by remember { mutableStateOf<SelectedOption?>(null) }
@@ -78,7 +78,7 @@ fun SelectAmountScreen(
             .verticalScroll(rememberScrollState())
     ) {
         TransferProgress(1)
-        ContactCard(user,
+        ContactCard(email,
             Modifier
                 .fillMaxWidth()
                 .padding(25.dp), onClick = {})
@@ -100,7 +100,7 @@ fun SelectAmountScreen(
 
         Button(
             onClick = {
-                onNavigateToSelectPayment(user.id!!, amount)
+                onNavigateToSelectPayment(email, amount)
             },
             colors = ButtonColors(
                 containerColor = MaterialTheme.colorScheme.secondary,
@@ -147,7 +147,7 @@ class AmountTransformation : VisualTransformation {
 }
 
 @Composable
-fun ContactCard(user: User, modifier : Modifier, onClick : () -> Unit) {
+fun ContactCard(email: String, modifier : Modifier, onClick : () -> Unit) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
@@ -166,7 +166,7 @@ fun ContactCard(user: User, modifier : Modifier, onClick : () -> Unit) {
                     .padding(10.dp)
             )
             Text(
-                text = "${user.name} ${user.lastName}",
+                text = email,
                 fontWeight = FontWeight.SemiBold,
                 color = MaterialTheme.colorScheme.onBackground
             )

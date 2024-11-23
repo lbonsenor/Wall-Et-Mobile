@@ -7,15 +7,15 @@ class TransactionRequest(
     var amount: CurrencyAmount ,
     var description: String,
     var type: PaymentType,
-    var cardId: String?,
+    //var cardId: String?,
     val receiverEmail: String?,
 ) {
     fun asNetworkModel() : NetworkTransactionRequest{
         return NetworkTransactionRequest(
-            amount = amount.number.toFloat(),
+            amount = amount.number.toDouble(),
             description = description,
             type = type.toString(),
-            cardId = cardId,
+            //cardId = cardId,
             receiverEmail = receiverEmail,
         )
     }
