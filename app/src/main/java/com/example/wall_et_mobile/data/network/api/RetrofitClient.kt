@@ -20,6 +20,8 @@ object RetrofitClient {
     It is just for commit security and efficiency reasons.
      */
 
+    
+
     private const val BASE_URL = "http://${ip}:8080/api/"
 
     @Volatile

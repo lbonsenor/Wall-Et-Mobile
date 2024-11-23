@@ -76,7 +76,8 @@ fun AddCardButton(onClick: () -> Unit) {
         onClick = { onClick() },
         Modifier
             .padding(15.dp)
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .padding(bottom = 24.dp),
         shape = CircleShape,
         contentPadding = PaddingValues(16.dp),
         colors = ButtonDefaults.outlinedButtonColors(
