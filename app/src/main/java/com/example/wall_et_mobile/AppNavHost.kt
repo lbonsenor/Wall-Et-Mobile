@@ -1,7 +1,6 @@
 package com.example.wall_et_mobile
 
 import SeeMoreScreen
-import SelectAmountScreen
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -18,14 +17,13 @@ import com.example.wall_et_mobile.screens.activities.ActivitiesScreen
 import com.example.wall_et_mobile.screens.forgotPassword.ForgotPasswordScreen
 import com.example.wall_et_mobile.screens.forgotPassword.NewPasswordScreen
 import com.example.wall_et_mobile.screens.forgotPassword.PasswordSuccessScreen
-import com.example.wall_et_mobile.screens.forgotPassword.VerificationCodeScreen
 import com.example.wall_et_mobile.screens.home.HomeScreen
 import com.example.wall_et_mobile.screens.home.HomeScreenLandscape
 import com.example.wall_et_mobile.screens.login.LoginScreen
 import com.example.wall_et_mobile.screens.profile.ProfileScreen
+import com.example.wall_et_mobile.screens.signup.EmailVerificationScreen
 import com.example.wall_et_mobile.screens.signup.SignupScreen
 import com.example.wall_et_mobile.screens.signup.SignupSuccessScreen
-import com.example.wall_et_mobile.screens.signup.VerificationScreen
 import com.example.wall_et_mobile.screens.top_up.TopUpScreen
 import com.example.wall_et_mobile.screens.transfer.SelectDestinataryScreen
 import com.example.wall_et_mobile.screens.transfer.SelectPaymentScreen
@@ -35,8 +33,7 @@ fun AppNavHost(
     innerPadding: PaddingValues,
     modifier: Modifier,
     navController: NavHostController = rememberNavController(),
-   startDestination: String = Screen.Login.route
-    //startDestination: String = Screen.Home.route    // FOR TESTING
+    startDestination: String = Screen.Login.route
 ){
     NavHost(
         navController = navController,
@@ -53,7 +50,7 @@ fun AppNavHost(
                 SignupScreen(
                     onNavigateToLogin = { navigateTo(navController, Screen.Login.route) },
                     onNavigateUp = { navController.navigateUp() },
-                    onNavigateToVerification = { navigateTo(navController, Screen.Verification.route) }
+                    onNavigateToVerification = { navigateTo(navController, Screen.EmailVerification.route) }
                 )
             }
             composable(Screen.SignUpSuccess.route) {
@@ -61,28 +58,26 @@ fun AppNavHost(
                     onContinue = { navigateTo(navController, Screen.Login.route) }
                 )
             }
-            composable(Screen.Verification.route) {
-                VerificationScreen(
-                     { navigateTo(navController, Screen.SignUpSuccess.route) },
+            composable(Screen.EmailVerification.route) {
+                EmailVerificationScreen(
+                    { navigateTo(navController, Screen.SignUpSuccess.route) }
                 )
             }
             composable(Screen.ForgotPassword.route){ ForgotPasswordScreen(
                 onNavigateToLogin = { navigateTo(navController, Screen.Login.route) },
-                onNavigateToVerification = { navigateTo(navController, Screen.VerificationCode.route) }
+                onNavigateToVerification = { navigateTo(navController, Screen.PasswordVerification.route) }
             )
         }
             composable(Screen.NewPassword.route) {
-                NewPasswordScreen(
-                    { navigateTo(navController, Screen.PasswordSuccess.route) },
-                )
+                NewPasswordScreen { navigateTo(navController, Screen.PasswordSuccess.route) }
             }
             composable(Screen.PasswordSuccess.route) {
                 PasswordSuccessScreen {
                     navigateTo(navController, Screen.Login.route)
                 }
             }
-            composable(Screen.VerificationCode.route) {
-                VerificationCodeScreen(
+            composable(Screen.PasswordVerification.route) {
+                PasswordVerificationScreen(
                     onNavigateToSetNewPassword = { navigateTo(navController, Screen.NewPassword.route) }
                 )
             }
@@ -189,7 +184,7 @@ fun LandscapeAppNavHost(
                 SignupScreen(
                     onNavigateToLogin = { navigateTo(navController, Screen.Login.route) },
                     onNavigateUp = { navController.navigateUp() },
-                    onNavigateToVerification = { navigateTo(navController, Screen.Verification.route) }
+                    onNavigateToVerification = { navigateTo(navController, Screen.EmailVerification.route) }
                 )
             }
             composable(Screen.SignUpSuccess.route) {
@@ -197,27 +192,27 @@ fun LandscapeAppNavHost(
                     onContinue = { navigateTo(navController, Screen.Login.route) }
                 )
             }
-            composable(Screen.Verification.route) {
-                VerificationScreen(
-                    { navigateTo(navController, Screen.SignUpSuccess.route) },
+            composable(Screen.EmailVerification.route) {
+                EmailVerificationScreen(
+                    onNavigateToSuccess = { navigateTo(navController, Screen.SignUpSuccess.route) }
                 )
             }
             composable(Screen.ForgotPassword.route){ ForgotPasswordScreen(
                 onNavigateToLogin = { navigateTo(navController, Screen.Login.route) },
-                onNavigateToVerification = { navigateTo(navController, Screen.Verification.route) }
+                onNavigateToVerification = { navigateTo(navController, Screen.PasswordVerification.route) }
             ) }
             composable(Screen.NewPassword.route) {
-                NewPasswordScreen(
-                    { navigateTo(navController, Screen.PasswordSuccess.route) },
-                )
+                NewPasswordScreen {
+                    navigateTo(navController, Screen.PasswordSuccess.route)
+                }
             }
             composable(Screen.PasswordSuccess.route) {
                 PasswordSuccessScreen {
                     navigateTo(navController, Screen.Login.route)
                 }
             }
-            composable(Screen.VerificationCode.route) {
-                VerificationCodeScreen(
+            composable(Screen.PasswordVerification.route) {
+                PasswordVerificationScreen(
                     onNavigateToSetNewPassword = { navigateTo(navController, Screen.NewPassword.route) }
                 )
             }

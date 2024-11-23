@@ -19,8 +19,8 @@ sealed class Screen(
     object Signup : Screen(route = "signup")
     object SignUpSuccess : Screen(route = "signup_success")
     object ForgotPassword : Screen(route = "forgot_password")
-    object VerificationCode : Screen(route = "verification_code") // for forgot pass
-    object Verification : Screen(route = "verification") // for login verification
+    object PasswordVerification : Screen(route = "password_verification") // for forgot pass
+    object EmailVerification : Screen(route = "email_verification") // for login verification
     object NewPassword : Screen(route = "new_password")
     object PasswordSuccess : Screen(route = "password_success")
     object Home : Screen(route = "home", icon = Icons.Outlined.Home, labelInt = R.string.title_home)

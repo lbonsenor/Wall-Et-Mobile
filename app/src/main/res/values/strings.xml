@@ -62,7 +62,7 @@
     <string name="forgot_password">¿Olvidaste tu contraseña?</string>
     <string name="name">Nombre</string>
     <string name="username">Nombre de usuario</string>
-    <string name="repeat_password">Confirmar contraseña</string>
+    <string name="repeat_password">Repetir contraseña</string>
     <string name="required_field">Campo requerido</string>
     <string name="invalid_email">Email inválido</string>
     <string name="passwords_dont_match">Las contraseñas no coinciden</string>
@@ -151,6 +151,7 @@
     <string name="card_holder_error">Ingrese el nombre completo</string>
     <string name="expiration_date_error">Fecha de expiración inválida</string>
     <string name="cvv_error">El CVV debe tener tres dígitos</string>
+    <string name="repeat">Repetir</string>
     <string name="insufficient_funds">Saldo insuficiente</string>
 
 </resources>

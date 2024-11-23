@@ -91,8 +91,8 @@ fun ScaffoldPortrait(navController: NavHostController, qrScanner: QRScanner){
                 Screen.Signup.route,
                 Screen.SignUpSuccess.route,
                 Screen.ForgotPassword.route,
-                Screen.VerificationCode.route,
-                Screen.Verification.route,
+                Screen.EmailVerification.route,
+                Screen.PasswordVerification.route,
                 Screen.NewPassword.route,
                 Screen.PasswordSuccess.route
             )
