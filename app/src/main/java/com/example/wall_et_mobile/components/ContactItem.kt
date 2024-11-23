@@ -10,7 +10,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
@@ -36,7 +35,7 @@ import com.example.wall_et_mobile.ui.theme.LightModeYellow
 
 
 @Composable
-fun ContactItem(user: User, favoriteUserIds: List<Int>, onFavoriteChange: (Int, Boolean) -> Unit) {
+fun ContactItem(user: User, favoriteUserIds: List<Int>, onFavoriteChange: (Int, Boolean) -> Unit, onClick: (String) -> Unit) {
     val isFavorited by remember (favoriteUserIds){ mutableStateOf(favoriteUserIds.contains(user.id)) }
 
     Card(
@@ -48,7 +47,8 @@ fun ContactItem(user: User, favoriteUserIds: List<Int>, onFavoriteChange: (Int, 
         ),
         modifier = Modifier
             .padding(15.dp)
-            .clip(RoundedCornerShape(16.dp))
+            .clip(RoundedCornerShape(16.dp)),
+        onClick = { onClick(user.email) }
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),

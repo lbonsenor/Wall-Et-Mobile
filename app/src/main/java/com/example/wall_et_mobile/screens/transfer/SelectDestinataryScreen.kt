@@ -36,10 +36,8 @@ import com.example.wall_et_mobile.R
 import com.example.wall_et_mobile.components.ContactListWithSearchBar
 import com.example.wall_et_mobile.components.ContactsTabs
 import com.example.wall_et_mobile.components.TransferProgress
-import com.example.wall_et_mobile.data.mock.MockContacts
 import com.example.wall_et_mobile.data.model.Transaction
 import com.example.wall_et_mobile.data.model.User
-import com.example.wall_et_mobile.screens.login.LoginViewModel
 
 @Composable
 fun SelectDestinataryScreen(
@@ -132,17 +130,20 @@ fun SelectDestinataryScreen(
 
         ContactsTabs(onTabSelected = { tabIndex -> currentTab = tabIndex }, initialTab = currentTab)
         when (currentTab) {
-            0 -> ContactListWithSearchBar(getRecentContacts(uiState.transactions), favoriteUserIds)
-            { userId, isFavorite -> favoriteUserIds = if (isFavorite) { favoriteUserIds + userId } else { favoriteUserIds - userId } }
+            0 -> ContactListWithSearchBar(
+                getRecentContacts(uiState.transactions),
+                favoriteUserIds,
+                { userId, isFavorite -> favoriteUserIds = if (isFavorite) { favoriteUserIds + userId } else { favoriteUserIds - userId } },
+                onClick = onNavigateToSelectAmount
+            )
 
-            1 -> ContactListWithSearchBar(getRecentContacts(uiState.transactions).filter { it.id in favoriteUserIds },
-                favoriteUserIds
-            ) { userId, isFavorite -> favoriteUserIds = if (isFavorite) {
-                    favoriteUserIds + userId
-                } else {
-                    favoriteUserIds - userId
-                }
-            }
+
+            1 -> ContactListWithSearchBar(
+                getRecentContacts(uiState.transactions).filter { it.id in favoriteUserIds },
+                favoriteUserIds,
+                { userId, isFavorite -> favoriteUserIds = if (isFavorite) { favoriteUserIds + userId } else { favoriteUserIds - userId }},
+                onClick = onNavigateToSelectAmount
+            )
         }
     }
 

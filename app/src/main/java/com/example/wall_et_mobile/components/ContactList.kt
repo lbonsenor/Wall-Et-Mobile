@@ -60,7 +60,7 @@ fun ContactsTabs(onTabSelected: (Int) -> Unit, initialTab: Int = 0) {
     }
 }
 @Composable
-fun ContactListWithSearchBar(contacts: List<User>, favoriteUserIds: List<Int>, onFavoriteChange: (Int, Boolean) -> Unit) {
+fun ContactListWithSearchBar(contacts: List<User>, favoriteUserIds: List<Int>, onFavoriteChange: (Int, Boolean) -> Unit, onClick: (String) -> Unit) {
     var searchQuery by remember { mutableStateOf("") }
     var filteredContacts = contacts.filter { contact -> contact.name.contains(searchQuery, ignoreCase = true) || contact.lastName.contains(searchQuery, ignoreCase = true) }
     Column(
@@ -73,14 +73,14 @@ fun ContactListWithSearchBar(contacts: List<User>, favoriteUserIds: List<Int>, o
                 .fillMaxWidth()
                 .padding(15.dp)
         )
-        ContactList(filteredContacts, favoriteUserIds, onFavoriteChange)
+        ContactList(filteredContacts, favoriteUserIds, onFavoriteChange, onClick)
 
     }
 }
 @Composable
-fun ContactList(contacts: List<User>, favoriteUserIds: List<Int>, onFavoriteChange: (Int, Boolean) -> Unit) {
+fun ContactList(contacts: List<User>, favoriteUserIds: List<Int>, onFavoriteChange: (Int, Boolean) -> Unit, onClick: (String) -> Unit) {
     contacts.forEach { contact ->
-        ContactItem(user = contact, favoriteUserIds = favoriteUserIds, onFavoriteChange = onFavoriteChange)
+        ContactItem(user = contact, favoriteUserIds = favoriteUserIds, onFavoriteChange = onFavoriteChange, onClick)
         HorizontalDivider(
             color = MaterialTheme.colorScheme.surfaceVariant,
             thickness = 0.5.dp,
