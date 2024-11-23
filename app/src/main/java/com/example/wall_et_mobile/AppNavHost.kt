@@ -121,10 +121,6 @@ fun AppNavHost(
                     onNavigateToSelectPayment = { email, amount ->
                         navigateTo(navController, "${Screen.SelectPaymentMethod.route}/${email}/${amount}")
                     },
-                    onChangeDestination = {
-                        // Navigate back to destination selection
-                        navigateTo(navController, Screen.Transfer.route)
-                    }
                 )
             }
             composable(
@@ -237,10 +233,6 @@ fun LandscapeAppNavHost(
                     onNavigateToSelectPayment = { email, amount ->
                         navigateTo(navController, "${Screen.SelectPaymentMethod.route}/${email}/${amount}")
                     },
-                    onChangeDestination = {
-                        // Navigate back to destination selection
-                        navigateTo(navController, Screen.Transfer.route)
-                    }
                 )
             }
             composable(

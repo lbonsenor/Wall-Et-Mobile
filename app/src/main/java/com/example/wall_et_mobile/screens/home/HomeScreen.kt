@@ -49,11 +49,10 @@ fun HomeScreen(
     onNavigateToActivity: () -> Unit,
     onNavigateToTopUp: () -> Unit,
     onNavigateToLoginScreen: () -> Unit,
+    onNavigateToProfile: () -> Unit,
     viewModel: HomeViewModel = viewModel(factory = HomeViewModel.provideFactory(LocalContext.current.applicationContext as MyApplication)),
     // temporary
-    loginViewModel: LoginViewModel = viewModel(factory = LoginViewModel.provideFactory(LocalContext.current.applicationContext as MyApplication))
-    onNavigateToProfile: () -> Unit,
-    viewModel: HomeViewModel = viewModel(factory = HomeViewModel.provideFactory(LocalContext.current.applicationContext as MyApplication))
+    loginViewModel: LoginViewModel = viewModel(factory = LoginViewModel.provideFactory(LocalContext.current.applicationContext as MyApplication)),
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val loginUiState = loginViewModel.uiState
