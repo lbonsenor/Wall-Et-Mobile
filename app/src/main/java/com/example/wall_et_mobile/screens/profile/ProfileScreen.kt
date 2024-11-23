@@ -10,16 +10,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.wall_et_mobile.R
-import com.example.wall_et_mobile.components.CustomTextField
 
 @Composable
-fun ProfileScreen(
-    onNavigateToLogin: () -> Unit,
-) {
+fun ProfileScreen(onNavigateToLogin: () -> Unit) {
     var alias by remember { mutableStateOf("juan.persona") }
     var showLogoutDialog by remember { mutableStateOf(false) }
 
@@ -33,11 +29,13 @@ fun ProfileScreen(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Card(
-            modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.surface
+            shape = RoundedCornerShape(20.dp),
+            elevation = CardDefaults.cardElevation(
+                defaultElevation = 10.dp
             ),
-            shape = RoundedCornerShape(16.dp)
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.background
+            ),
         ) {
             Column(
                 modifier = Modifier
