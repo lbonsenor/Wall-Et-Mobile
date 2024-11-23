@@ -45,6 +45,7 @@ fun HomeScreen(
     onNavigateToTransfer: () -> Unit,
     onNavigateToActivity: () -> Unit,
     onNavigateToTopUp: () -> Unit,
+    onNavigateToProfile: () -> Unit,
     viewModel: HomeViewModel = viewModel(factory = HomeViewModel.provideFactory(LocalContext.current.applicationContext as MyApplication))
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -59,6 +60,7 @@ fun HomeScreen(
         BalanceCard(
             onNavigateToTransfer = onNavigateToTransfer,
             onNavigateToTopUp = onNavigateToTopUp,
+            onNavigateToProfile = onNavigateToProfile,
             wallet = uiState.wallet,
             isFetching = uiState.isFetching,
             error = uiState.error,
@@ -73,13 +75,13 @@ fun HomeScreen(
             ActivityCard(onNavigateToActivity, uiState.transactions)
         }
     }
-   // }
 }
 
 @Composable
 fun BalanceCard(
     onNavigateToTransfer: () -> Unit,
     onNavigateToTopUp: () -> Unit,
+    onNavigateToProfile: () -> Unit,
     wallet: Wallet?,
     isFetching: Boolean,
     error: Error?,
@@ -93,7 +95,8 @@ fun BalanceCard(
             .background(MaterialTheme.colorScheme.primary)
 
     ) {
-        CustomTopAppBar(user?: User(1, "test", "test", "test", "test"))
+        CustomTopAppBar(user ?: User(1, "test", "test", "test", "test"), onNavigateToProfile)
+
         Balance(
             wallet = wallet,
             isFetching = isFetching,
@@ -179,6 +182,7 @@ fun HomeScreenLandscape(
     onNavigateToTransfer: () -> Unit,
     onNavigateToActivity: () -> Unit,
     onNavigateToTopUp: () -> Unit,
+    onNavigateToProfile: () -> Unit,
     viewModel: HomeViewModel = viewModel(factory = HomeViewModel.provideFactory(LocalContext.current.applicationContext as MyApplication))
 ){
     val uiState by viewModel.uiState.collectAsState()
@@ -189,7 +193,7 @@ fun HomeScreenLandscape(
         verticalAlignment = Alignment.CenterVertically
     )
     {
-        BalanceCardLandscape(onNavigateToTransfer, innerPadding, onNavigateToTopUp, uiState.wallet, uiState.isFetching, uiState.error, uiState.user)
+        BalanceCardLandscape(onNavigateToTransfer, innerPadding, onNavigateToTopUp, onNavigateToProfile, uiState.wallet, uiState.isFetching, uiState.error, uiState.user)
         Column (
             modifier = Modifier
                 .fillMaxWidth()
@@ -204,6 +208,7 @@ fun BalanceCardLandscape(
     onNavigateToTransfer: () -> Unit,
     innerPadding: PaddingValues,
     onNavigateToTopUp: () -> Unit,
+    onNavigateToProfile: () -> Unit,
     wallet: Wallet?,
     isFetching: Boolean,
     error: Error?,
