@@ -145,5 +145,9 @@
     <string name="card_date">MM/AA</string>
     <string name="cancel">Cancelar</string>
     <string name="accept">Aceptar</string>
+    <string name="card_number_error">El número de la tarjeta debe tener 16 dígitos</string>
+    <string name="card_holder_error">Ingrese el nombre completo</string>
+    <string name="expiration_date_error">Fecha de expiración inválida</string>
+    <string name="cvv_error">El CVV debe tener tres dígitos</string>
 
 </resources>

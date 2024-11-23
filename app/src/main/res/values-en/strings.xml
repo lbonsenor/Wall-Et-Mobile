@@ -126,4 +126,8 @@
     <string name="card_date">MM/YY</string>
     <string name="cancel">Cancel</string>
     <string name="accept">Accept</string>
+    <string name="card_number_error">Card number must be 16 digits</string>
+    <string name="card_holder_error">Enter full name</string>
+    <string name="expiration_date_error">Invalid expiration date</string>
+    <string name="cvv_error">CVV must be 3 digits</string>
 </resources>
