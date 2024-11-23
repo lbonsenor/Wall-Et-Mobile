@@ -12,8 +12,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.wall_et_mobile.data.model.Screen
-import com.example.wall_et_mobile.screens.ActivitiesScreen
 import com.example.wall_et_mobile.screens.CardsScreen
+import com.example.wall_et_mobile.screens.activities.ActivitiesScreen
 import com.example.wall_et_mobile.screens.forgotPassword.ForgotPasswordScreen
 import com.example.wall_et_mobile.screens.forgotPassword.NewPasswordScreen
 import com.example.wall_et_mobile.screens.forgotPassword.PasswordSuccessScreen

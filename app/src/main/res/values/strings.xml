@@ -55,7 +55,7 @@
 
     <!-- Registration and login -->
     <string name="welcome">¡Bienvenido a Wall-Et!</string>
-    <string name="email" translatable="false">Correo electrónico</string>
+    <string name="email">Correo electrónico</string>
     <string name="password">Contraseña</string>
     <string name="log_in">Iniciar sesión</string>
     <string name="sign_up">Registrarme</string>
@@ -134,7 +134,7 @@
     <string name="modify_alias">Modificar alias</string>
     <string name="new_alias">Nuevo alias</string>
     <string name="update">Actualizar</string>
-    <string name="sign_out">Cerrar sesión</string>
+    <string name="log_out">Cerrar sesión</string>
     <string name="reset_password">Resetear contraseña</string>
     <string name="account">Cuenta</string>
     <string name="theme">Tema</string>
