@@ -112,4 +112,8 @@
     <string name="alias">Alias</string>
     <string name="cbu">CBU</string>
     <string name="log_out_confirmation">Are you sure you want to log out?</string>
+    <string name="modify_alias">Modify alias</string>
+    <string name="new_alias">New alias</string>
+    <string name="update">Update</string>
+    <string name="sign_out">Sing out</string>
 </resources>

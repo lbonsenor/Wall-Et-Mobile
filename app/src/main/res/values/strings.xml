@@ -131,5 +131,9 @@
     <string name="alias">Alias</string>
     <string name="cbu">CBU</string>
     <string name="log_out_confirmation">¿Está seguro de que desea cerrar sesión?</string>
+    <string name="modify_alias">Modificar alias</string>
+    <string name="new_alias">Nuevo alias</string>
+    <string name="update">Actualizar</string>
+    <string name="sign_out">Cerrar sesión</string>
 
 </resources>

@@ -59,9 +59,33 @@ class ProfileViewModel(
             walletRepository.walletStream
                 .distinctUntilChanged()
                 .catch { e -> uiState = uiState.copy(error = handleError(e)) }
-                .collect { wallet -> 
+                .collect { wallet ->
                     uiState = uiState.copy(wallet = wallet)
                 }
+        }
+    }
+
+    fun updateAlias(newAlias: String) = runOnViewModelScope(
+        { walletRepository.updateAlias(newAlias) },
+        { state, wallet -> state.copy(wallet = wallet) }
+    )
+    
+    fun logout() = runOnViewModelScope(
+        { userRepository.logout() },
+        { state, _ -> state.copy(isAuthenticated = false) }
+    )
+
+    private fun <R> runOnViewModelScope(
+        block: suspend () -> R,
+        updateState: (ProfileUiState, R) -> ProfileUiState
+    ): Job = viewModelScope.launch {
+        uiState = uiState.copy(isFetching = true, error = null)
+        runCatching {
+            block()
+        }.onSuccess { response ->
+            uiState = updateState(uiState, response).copy(isFetching = false)
+        }.onFailure { e ->
+            uiState = uiState.copy(isFetching = false, error = handleError(e))
         }
     }
 

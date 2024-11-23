@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -24,6 +26,8 @@ fun ProfileScreen(
 ) {
     val uiState = viewModel.uiState
     var showLogoutDialog by remember { mutableStateOf(false) }
+    var showAliasDialog by remember { mutableStateOf(false) }
+    var newAlias by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
@@ -113,21 +117,42 @@ fun ProfileScreen(
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.primary
                         )
-                        Text(
-                            text = uiState.wallet?.alias ?: "",
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
+                        Column {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Column {
+                                    Text(
+                                        text = uiState.wallet?.alias ?: "",
+                                        style = MaterialTheme.typography.bodyLarge,
+                                        color = MaterialTheme.colorScheme.onSurface
+                                    )
+                                }
+                                IconButton(
+                                    onClick = { showAliasDialog = true }
+                                ) {
+                                    Icon(
+                                        Icons.Default.Edit,
+                                        contentDescription = "Edit alias",
+                                        tint = MaterialTheme.colorScheme.secondary
+                                    )
+                                }
+                            }
+                        }
                     }
                 }
             }
 
             Button(
-                onClick = { /* TODO: Navigate to reset password */ },
-                modifier = Modifier.fillMaxWidth(),
+                onClick = {
+                    viewModel.logout()
+                    onNavigateToLogin()
+                },
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.secondary,
-                    contentColor = MaterialTheme.colorScheme.onSecondary
+                    containerColor = MaterialTheme.colorScheme.error,
+                    contentColor = MaterialTheme.colorScheme.onError
                 ),
                 shape = RoundedCornerShape(10.dp)
             ) {
@@ -152,7 +177,7 @@ fun ProfileScreen(
                 onDismissRequest = { showLogoutDialog = false },
                 title = {
                     Text(
-                        text = stringResource(R.string.exit),
+                        text = stringResource(R.string.sign_out),
                         color = MaterialTheme.colorScheme.onSurface
                     )
                 },
@@ -176,6 +201,61 @@ fun ProfileScreen(
                 },
                 dismissButton = {
                     TextButton(onClick = { showLogoutDialog = false }) {
+                        Text(
+                            stringResource(android.R.string.cancel),
+                            color = MaterialTheme.colorScheme.secondary
+                        )
+                    }
+                },
+                containerColor = MaterialTheme.colorScheme.surface,
+                shape = RoundedCornerShape(16.dp)
+            )
+        }
+
+        if (showAliasDialog) {
+            AlertDialog(
+                onDismissRequest = {
+                    showAliasDialog = false
+                    newAlias = ""
+                },
+                title = {
+                    Text(
+                        text = stringResource(R.string.modify_alias),
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                },
+                text = {
+                    OutlinedTextField(
+                        value = newAlias,
+                        onValueChange = { newAlias = it },
+                        label = { Text(stringResource(R.string.new_alias)) },
+                        singleLine = true,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                },
+                confirmButton = {
+                    Button(
+                        onClick = {
+                            if (newAlias.isNotEmpty()) {
+                                viewModel.updateAlias(newAlias)
+                                showAliasDialog = false
+                                newAlias = ""
+                            }
+                        },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.secondary
+                        )
+                    ) {
+                        Text(stringResource(R.string.update))
+                    }
+                },
+                dismissButton = {
+                    TextButton(
+                        onClick = {
+                            showAliasDialog = false
+                            newAlias = ""
+                        }
+                    ) {
                         Text(
                             stringResource(android.R.string.cancel),
                             color = MaterialTheme.colorScheme.secondary
