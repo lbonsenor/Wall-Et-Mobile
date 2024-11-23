@@ -118,4 +118,6 @@
     <string name="sign_out">Sing out</string>
     <string name="reset_password">Reset password</string>
     <string name="account">Account</string>
+    <string name="theme">Theme</string>
+    <string name="system_default">System (by default)</string>
 </resources>

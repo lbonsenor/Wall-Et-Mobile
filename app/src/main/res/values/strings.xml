@@ -137,5 +137,7 @@
     <string name="sign_out">Cerrar sesión</string>
     <string name="reset_password">Resetear contraseña</string>
     <string name="account">Cuenta</string>
+    <string name="theme">Tema</string>
+    <string name="system_default">Sistema (por defecto)</string>
 
 </resources>
