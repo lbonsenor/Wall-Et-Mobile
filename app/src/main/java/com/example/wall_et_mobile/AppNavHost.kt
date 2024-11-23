@@ -116,22 +116,6 @@ fun AppNavHost(
                 )
             }
             composable(
-                route = "${Screen.SelectAmount.route}/{email}",
-                arguments = listOf(
-                    navArgument(name = "email"){
-                        type = NavType.StringType
-                    }
-                )
-            ){ backStackEntry ->
-                SelectAmountScreen(
-                    innerPadding = innerPadding,
-                    email = backStackEntry.arguments?.getString("email")!!,
-                    onNavigateToSelectPayment = { email, amount ->
-                        navigateTo(navController, "${Screen.SelectPaymentMethod.route}/${email}/${amount}")
-                    },
-                )
-            }
-            composable(
                 route = "${Screen.SelectPaymentMethod.route}/{email}/{amount}",
                 arguments = listOf(
                     navArgument(name = "email"){
@@ -233,22 +217,7 @@ fun LandscapeAppNavHost(
                     onNavigateToSelectAmount = { email -> navigateTo(navController, "${Screen.SelectAmount.route}/${email}") }
                 )
             }
-            composable(
-                route = "${Screen.SelectAmount.route}/{email}",
-                arguments = listOf(
-                    navArgument(name = "email"){
-                        type = NavType.StringType
-                    }
-                )
-            ){ backStackEntry ->
-                SelectAmountScreen(
-                    innerPadding = innerPadding,
-                    email = backStackEntry.arguments?.getString("email")!!,
-                    onNavigateToSelectPayment = { email, amount ->
-                        navigateTo(navController, "${Screen.SelectPaymentMethod.route}/${email}/${amount}")
-                    },
-                )
-            }
+            // agregar composable select amount
             composable(
                 route = "${Screen.SelectPaymentMethod.route}/{email}/{amount}",
                 arguments = listOf(
