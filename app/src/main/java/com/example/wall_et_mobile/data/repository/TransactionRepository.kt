@@ -26,20 +26,23 @@ class TransactionRepository(
         remoteDataSource.paymentsStream
             .map {  it.asModel() }
 
-    suspend fun getPayments(refresh: Boolean = false, page: Int,
-    direction : String,
-    pending : String?,
-    type : String?,
-    range : String?,
-    source : String?,
-    cardId : Int?): List<Transaction> {
-        if (refresh || transactions.isEmpty()) {
-            val result = remoteDataSource.getPayments(page,direction,pending,type,range,source,cardId)
-            // Thread-safe write to payments
-            transMutex.withLock {
-                this.transactions = result.asModel()
+    suspend fun getPayments(
+        refresh: Boolean = false,
+        page: Int = 1,
+        direction : String = "DESC",
+        pending : Boolean? = null,
+        type : String? = null,
+        range : String? = null,
+        source : String? = null,
+        cardId : Int? = null
+    ): List<Transaction> {
+            if (refresh || transactions.isEmpty()) {
+                val result = remoteDataSource.getPayments(page,direction,pending,type,range,source,cardId)
+                // Thread-safe write to payments
+                transMutex.withLock {
+                    this.transactions = result.asModel()
+                }
             }
-        }
 
         return transMutex.withLock { this.transactions }
     }

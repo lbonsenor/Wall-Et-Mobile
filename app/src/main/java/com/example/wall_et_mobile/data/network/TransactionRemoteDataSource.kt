@@ -38,7 +38,7 @@ class TransactionRemoteDataSource (private val transactionApiService: Transactio
     }
 
     suspend fun getPayments(page : Int, direction: String,
-                            pending : String?, type : String?,
+                            pending : Boolean?, type : String?,
                             range : String?, source : String?,
                             cardId: Int?) : NetworkTransactionList {
         return handleApiResponse {

@@ -16,7 +16,7 @@ interface TransactionApiService {
     @GET("payment") /* use this for the filter */
     suspend fun getPayments(@Query("page") page : Int,
                             @Query("direction") direction: String,
-                            @Query("pending") pending : String?,
+                            @Query("pending") pending : Boolean?,
                             @Query("type") type : String?,
                             @Query("range") range : String?,
                             @Query("source") source : String?,

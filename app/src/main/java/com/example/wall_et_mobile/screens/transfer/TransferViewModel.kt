@@ -62,7 +62,7 @@ class TransferViewModel (
         { state, _ -> state.copy() }
     )
 
-    fun getPayments(page: Int, direction : String, pending : String?, type : String?, range : String?, source : String?, cardId : Int?) = runOnViewModelScope(
+    fun getPayments(page: Int, direction : String, pending : Boolean?, type : String?, range : String?, source : String?, cardId : Int?) = runOnViewModelScope(
         { transactionRepository.getPayments(false, page,direction,pending,type,range,source,cardId) },
         { state, payments -> state.copy(transactions = payments)  }
     )

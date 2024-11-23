@@ -1,6 +1,7 @@
 package com.example.wall_et_mobile.screens.transfer
 
 
+import android.util.Patterns
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -18,6 +19,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -47,13 +49,25 @@ fun SelectDestinataryScreen(
 ) {
     val uiState = viewModel.uiState
 
+    LaunchedEffect(Unit) {
+        viewModel.getPayments(
+            page = 1,
+            direction = "DESC",
+            pending = null,
+            type = null,
+            range = null,
+            source = null,
+            cardId = null
+        )
+    }
+
     var currentTab by remember { mutableIntStateOf(0) }
     var favoriteUserIds by remember { mutableStateOf<List<Int>>(emptyList()) }
     var contactValue by remember { mutableStateOf("") }
     var showErrorDialog by remember { mutableStateOf(false) }
 
     fun isValidEmail(email: String): Boolean {
-        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
 
     Column(
