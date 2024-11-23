@@ -1,5 +1,6 @@
 package com.example.wall_et_mobile
 
+import SeeMoreScreen
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -68,7 +69,8 @@ fun AppNavHost(
             composable(Screen.ForgotPassword.route){ ForgotPasswordScreen(
                 onNavigateToLogin = { navigateTo(navController, Screen.Login.route) },
                 onNavigateToVerification = { navigateTo(navController, Screen.VerificationCode.route) }
-            ) }
+            ) 
+        }
             composable(Screen.NewPassword.route) {
                 NewPasswordScreen(
                     { navigateTo(navController, Screen.PasswordSuccess.route) },
@@ -95,7 +97,13 @@ fun AppNavHost(
             }
             composable(Screen.Cards.route){ CardsScreen(innerPadding) }
             composable(Screen.Activities.route){ ActivitiesScreen(innerPadding) }
-            composable(Screen.SeeMore.route){}
+            composable(Screen.SeeMore.route) {
+                SeeMoreScreen(
+                    innerPadding = innerPadding,
+                    onThemeChanged = { /* TODO: Implement theme change */ },
+                    onLanguageChanged = { /* TODO: Implement language change */ }
+                )
+            }
             composable(Screen.Profile.route) {
                 ProfileScreen(
                     onNavigateToLogin = { navigateToLogin(navController) }
@@ -212,7 +220,13 @@ fun LandscapeAppNavHost(
                 )}
             composable(Screen.Cards.route){ CardsScreen(innerPadding) }
             composable(Screen.Activities.route){ ActivitiesScreen(innerPadding) }
-            composable(Screen.SeeMore.route){}
+            composable(Screen.SeeMore.route) {
+                SeeMoreScreen(
+                    innerPadding = innerPadding,
+                    onThemeChanged = { /* TODO: Implement theme change */ },
+                    onLanguageChanged = { /* TODO: Implement language change */ }
+                )
+            }
             composable(Screen.Transfer.route) {
                 SelectDestinataryScreen(
                     innerPadding = innerPadding,
