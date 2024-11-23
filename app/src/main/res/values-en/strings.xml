@@ -17,7 +17,7 @@
     <string name="card">Card</string>
     <string name="title_transfer">Send</string>
     <string name="who_to_transfer">Who would you like to transfer?</string>
-    <string name="transfer_to_1">To a CBU / CVU / Alias</string>
+    <string name="transfer_to_1">To an email</string>
     <string name="transfer_to_2">To a contact</string>
     <string name="recent_contacts">Recent</string>
     <string name="favorite_contacts">Favorites</string>
@@ -65,7 +65,7 @@
     <string name="forgot_password">Forgot Password?</string>
     <string name="name">First Name</string>
     <string name="username">Username</string>
-    <string name="repeat_password">Repeat password</string>
+    <string name="repeat_password">Confirm password</string>
     <string name="already_have_account">Already have an account?</string>
     <string name="required_field">Required field</string>
     <string name="invalid_email">Invalid email</string>

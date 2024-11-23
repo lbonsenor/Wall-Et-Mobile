@@ -38,7 +38,7 @@
     <!--    Transfer    -->
     <string name="title_transfer">Transferir</string>
     <string name="who_to_transfer">¿A quién le vas a transferir?</string>
-    <string name="transfer_to_1">A un CBU / CVU / Alias</string>
+    <string name="transfer_to_1">A un email</string>
     <string name="transfer_to_2">A un contacto / e-mail</string>
 
     <string name="recent_contacts">Recientes</string>
@@ -62,7 +62,7 @@
     <string name="forgot_password">¿Olvidaste tu contraseña?</string>
     <string name="name">Nombre</string>
     <string name="username">Nombre de usuario</string>
-    <string name="repeat_password">Repetir contraseña</string>
+    <string name="repeat_password">Confirmar contraseña</string>
     <string name="required_field">Campo requerido</string>
     <string name="invalid_email">Email inválido</string>
     <string name="passwords_dont_match">Las contraseñas no coinciden</string>

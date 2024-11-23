@@ -45,6 +45,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.text.isDigitsOnly
 import com.example.wall_et_mobile.R
+import com.example.wall_et_mobile.components.SelectedOption
 import com.example.wall_et_mobile.components.TransferCardSlider
 import com.example.wall_et_mobile.components.TransferProgress
 import com.example.wall_et_mobile.data.mock.MockCards
@@ -65,6 +66,7 @@ fun SelectAmountScreen(
     val user : User = User(1, "Camila", "Lee", birthDate = "2002-02-10")
     var amount by remember { mutableStateOf("") }
     var cents by remember { mutableStateOf("00") }
+    var selectedOption by remember { mutableStateOf<SelectedOption?>(null) }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -86,7 +88,14 @@ fun SelectAmountScreen(
         Box(
             contentAlignment = Alignment.Center,
         ) {
-            TransferCardSlider(MockCards.sampleCards)
+
+            TransferCardSlider(
+                cards = MockCards.sampleCards,
+                selectedOption = selectedOption,
+                onSelectionChange = { selected ->
+                    selectedOption = selected
+                }
+            )
         }
 
         Button(

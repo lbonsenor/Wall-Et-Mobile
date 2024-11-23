@@ -31,26 +31,36 @@ import com.example.wall_et_mobile.ui.theme.WallEtTheme
 
 
 @Composable
-fun TransferCardItem(card: Card) {
-    var isClicked by remember { mutableStateOf(false) }
+fun TransferCardItem(
+    card: Card,
+    isSelected: Boolean,
+    onSelect: () -> Unit,
+    enabled: Boolean = false,
+) {
     val maskedNumber = card.cardNumber.replace(Regex(".{14}(.{4})"), "Termina en$1")
     Card(
         colors = CardColors(
             containerColor = Color.Transparent,
             contentColor = MaterialTheme.colorScheme.onBackground,
-            disabledContainerColor = Color.Gray,
-            disabledContentColor = Color.Gray,
-
+            disabledContainerColor = Color.Transparent,
+            disabledContentColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.38f)
         ),
-        border = BorderStroke(1.dp, if (isClicked) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.onBackground),
+        enabled = enabled,
+        border = BorderStroke(
+            width = 1.dp,
+            color = if (enabled) {
+                if (isSelected) MaterialTheme.colorScheme.secondary
+                else MaterialTheme.colorScheme.onBackground
+            } else {
+                MaterialTheme.colorScheme.onBackground.copy(alpha = 0.12f)  // Faded border for disabled state
+            }
+        ),
         shape = RoundedCornerShape(10.dp),
         modifier = Modifier
             .aspectRatio(8 / 3f)
             .height(100.dp)
             .padding(8.dp),
-        onClick = {
-            isClicked = !isClicked
-        }
+        onClick = onSelect
     ) {
         Row(
             modifier = Modifier

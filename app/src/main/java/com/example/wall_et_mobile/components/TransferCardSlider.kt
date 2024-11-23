@@ -37,7 +37,11 @@ import com.example.wall_et_mobile.data.model.Card
 import com.example.wall_et_mobile.ui.theme.WallEtTheme
 
 @Composable
-fun TransferCardSlider(cards: List<Card>) {
+fun TransferCardSlider(
+    cards: List<Card>,
+    onSelectionChange: (SelectedOption) -> Unit,
+    selectedOption: SelectedOption? = null
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -45,28 +49,35 @@ fun TransferCardSlider(cards: List<Card>) {
             .horizontalScroll(rememberScrollState())
         ,
     ) {
-        WalletCard()
-        cards.forEach { card ->
-            TransferCardItem(card = card)
+        WalletCard(
+            isSelected = selectedOption == SelectedOption.Wallet,
+            onSelect = {
+                onSelectionChange(SelectedOption.Wallet)
+            }
+        )
+        cards.forEachIndexed { index, card ->
+            TransferCardItem(
+                card = card,
+                isSelected = selectedOption == SelectedOption.Card(index),
+                onSelect = {
+                    onSelectionChange(SelectedOption.Card(index))
+                },
+                enabled = false,
+            )
         }
     }
 }
 
-@Preview(name = "Light Mode")
-@Composable
-fun TransferCardSlidePreview() {
-    WallEtTheme {
-        Column (
-            Modifier.background(MaterialTheme.colorScheme.background)
-        ){
-            TransferCardSlider(listOf())
-        }
-    }
+sealed class SelectedOption {
+    data object Wallet : SelectedOption()
+    data class Card(val index: Int) : SelectedOption()
 }
 
 @Composable
-fun WalletCard() {
-    var isClicked by remember { mutableStateOf(false) }
+fun WalletCard(
+    isSelected: Boolean,
+    onSelect: () -> Unit
+) {
     Card(
         colors = CardColors(
             containerColor = Color.Transparent,
@@ -74,14 +85,14 @@ fun WalletCard() {
             disabledContainerColor = Color.Gray,
             disabledContentColor = MaterialTheme.colorScheme.onPrimary,
         ),
-        border = BorderStroke(1.dp, if (isClicked) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.onBackground),
+        border = BorderStroke(1.dp, if (isSelected) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.onBackground),
         shape = RoundedCornerShape(10.dp),
         modifier = Modifier
             .aspectRatio(8 / 3f)
             .height(100.dp)
             .padding(8.dp)
         ,
-        onClick = { isClicked = !isClicked }
+        onClick = onSelect
     ) {
         Row(
             modifier = Modifier
