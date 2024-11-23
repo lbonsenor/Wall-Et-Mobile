@@ -171,7 +171,7 @@ fun ProfileScreen(
                     contentColor = MaterialTheme.colorScheme.onSecondary,
                 )
             ) {
-                Text(text = stringResource(R.string.sign_out))
+                Text(text = stringResource(R.string.log_out))
             }
         }
 
@@ -180,7 +180,7 @@ fun ProfileScreen(
                 onDismissRequest = { showLogoutDialog = false },
                 title = {
                     Text(
-                        text = stringResource(R.string.sign_out),
+                        text = stringResource(R.string.log_out),
                         color = MaterialTheme.colorScheme.onSurface
                     )
                 },

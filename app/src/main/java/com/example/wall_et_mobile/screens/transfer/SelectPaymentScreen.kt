@@ -413,7 +413,7 @@ private fun AmountDisplay(amount: String, onEditAmount: () -> Unit) {
         }
 
         FilledTonalButton(
-            onClick = { },
+            onClick = onEditAmount,
             shape = CircleShape
         ) {
             Text("Edit")

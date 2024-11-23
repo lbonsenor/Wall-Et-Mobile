@@ -1,4 +1,4 @@
-package com.example.wall_et_mobile.screens.home
+package com.example.wall_et_mobile.screens.activities
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -6,8 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.wall_et_mobile.MyApplication
 import com.example.wall_et_mobile.data.DataSourceException
 import com.example.wall_et_mobile.data.repository.TransactionRepository
-import com.example.wall_et_mobile.data.repository.UserRepository
-import com.example.wall_et_mobile.data.repository.WalletRepository
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,37 +16,16 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class HomeViewModel (
-    private val userRepository: UserRepository,
-    private val walletRepository: WalletRepository,
+class ActivitiesViewModel(
     private val transactionRepository: TransactionRepository
 ) : ViewModel() {
-
-    private var walletStreamJob : Job? = null
     private var paymentsStreamJob : Job? = null
-    private val _uiState = MutableStateFlow(HomeUiState())
-    val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(ActivitiesUiState())
+    val uiState: StateFlow<ActivitiesUiState> = _uiState.asStateFlow()
 
     init {
-        observeWalletStream()
         observePaymentsStream()
-        fetchUserData()
 
-    }
-
-    private fun fetchUserData() {
-        viewModelScope.launch {
-            try {
-                val user = userRepository.getCurrentUser(refresh = true)
-                _uiState.update { currentState ->
-                    currentState.copy(user = user)
-                }
-            } catch (e: Exception) {
-                _uiState.update { currentState ->
-                    currentState.copy(error = handleError(e))
-                }
-            }
-        }
     }
 
     private fun observePaymentsStream(){
@@ -57,15 +34,9 @@ class HomeViewModel (
         ) { state, response -> state.copy(transactions = response) }
     }
 
-    private fun observeWalletStream(){
-        walletStreamJob = collectOnViewModelScope(
-            walletRepository.walletStream
-        ) { state, response -> state.copy(wallet = response) }
-    }
-
     private fun <T> collectOnViewModelScope(
         flow: Flow<T>,
-        updateState: (HomeUiState, T) -> HomeUiState
+        updateState: (ActivitiesUiState, T) -> ActivitiesUiState
     ) = viewModelScope.launch {
         flow
             .distinctUntilChanged()
@@ -75,7 +46,7 @@ class HomeViewModel (
 
     private fun <R> runOnViewModelScope(
         block: suspend () -> R,
-        updateState: (HomeUiState, R) -> HomeUiState
+        updateState: (ActivitiesUiState, R) -> ActivitiesUiState
     ) : Job = viewModelScope.launch {
         _uiState.update { currentState -> currentState.copy(isFetching = true, error = null) }
         runCatching {
@@ -103,13 +74,10 @@ class HomeViewModel (
         ): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
             @Suppress("UNCHECKED_CAST")
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return HomeViewModel(
-                    application.userRepository,
-                    application.walletRepository,
+                return ActivitiesViewModel(
                     application.transactionRepository
                 ) as T
             }
         }
     }
-
 }

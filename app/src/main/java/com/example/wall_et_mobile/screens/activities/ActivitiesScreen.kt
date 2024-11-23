@@ -1,6 +1,5 @@
-package com.example.wall_et_mobile.screens
+package com.example.wall_et_mobile.screens.activities
 
-import MockTransactions
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,24 +19,33 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.wall_et_mobile.MyApplication
 import com.example.wall_et_mobile.R
 import com.example.wall_et_mobile.components.ActivityListWithDates
 import com.example.wall_et_mobile.data.model.FilterDateType
 
 @Composable
-fun ActivitiesScreen(innerPadding: PaddingValues) {
+fun ActivitiesScreen(
+    innerPadding: PaddingValues,
+    viewModel: ActivitiesViewModel = viewModel(factory = ActivitiesViewModel.provideFactory(LocalContext.current.applicationContext as MyApplication)),
+    ) {
     var searchQuery by remember { mutableStateOf("") }
     var currentFilter by remember { mutableIntStateOf(4) }
 
-    val filteredActivities = MockTransactions.sampleTransactions
+    val uiState by viewModel.uiState.collectAsState()
+
+    val filteredActivities = uiState.transactions
         .filter { activity ->
             val filter : FilterDateType = when (currentFilter){
                 0 -> FilterDateType.TODAY
@@ -47,7 +55,7 @@ fun ActivitiesScreen(innerPadding: PaddingValues) {
                 4 -> FilterDateType.MAX
                 else -> FilterDateType.MAX
             }
-            (searchQuery.isEmpty() || activity.receiver!!.name.contains(searchQuery, ignoreCase = true))
+            (searchQuery.isEmpty() || activity.receiver.name.contains(searchQuery, ignoreCase = true))
                 && filter.inRange(activity.createdAt!!)
         }
 

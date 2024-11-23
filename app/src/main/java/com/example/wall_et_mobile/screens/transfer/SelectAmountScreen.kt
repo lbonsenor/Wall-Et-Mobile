@@ -60,6 +60,7 @@ import java.util.Locale
 fun SelectAmountScreen(
     innerPadding : PaddingValues,
     email: String,
+    onChangeDestination: () -> Unit,
     onNavigateToSelectPayment : (String, String) -> Unit
 )
 {
@@ -81,7 +82,7 @@ fun SelectAmountScreen(
         ContactCard(email,
             Modifier
                 .fillMaxWidth()
-                .padding(25.dp), onClick = {})
+                .padding(25.dp), onClick = onChangeDestination)
 
         AmountTextField(amount, cents, { amount = it }, { cents = it })
 
@@ -172,7 +173,7 @@ fun ContactCard(email: String, modifier : Modifier, onClick : () -> Unit) {
             )
         }
         FilledTonalButton (
-            onClick = {  },
+            onClick = onClick,
             shape = CircleShape,
 //            colors = ButtonDefaults.outlinedButtonColors(
 //                contentColor = MaterialTheme.colorScheme.onSecondary,
