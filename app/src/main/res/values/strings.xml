@@ -128,5 +128,7 @@
     <string name="new_password">Nueva contraseña</string>
     <string name="account_created">¡Cuenta creada!</string>
     <string name="account_success">¡Tu cuenta ha sido creada exitosamente!</string>
+    <string name="link">Enlace</string>
+    <string name="card_number">Tarjeta terminada en</string>
 
 </resources>

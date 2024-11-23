@@ -4,6 +4,7 @@ import com.example.wall_et_mobile.data.network.api.WalletApiService
 import com.example.wall_et_mobile.data.network.model.NetworkAliasUpdate
 import com.example.wall_et_mobile.data.network.model.NetworkBalanceResponse
 import com.example.wall_et_mobile.data.network.model.NetworkCard
+import com.example.wall_et_mobile.data.network.model.NetworkCardRequest
 import com.example.wall_et_mobile.data.network.model.NetworkWallet
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -29,7 +30,7 @@ class WalletRemoteDataSource(
         }
     }
 
-    suspend fun addCard(card: NetworkCard): NetworkCard {
+    suspend fun addCard(card: NetworkCardRequest): NetworkCard {
         return handleApiResponse {
             walletApiService.addCard(card)
         }

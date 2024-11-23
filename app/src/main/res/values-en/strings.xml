@@ -109,4 +109,6 @@
     <string name="new_password">New password</string>
     <string name="account_created">Account created!</string>
     <string name="account_success">Your account has been created successfully!</string>
+    <string name="link">Link</string>
+    <string name="card_number">"Card that finishes in "</string>
 </resources>

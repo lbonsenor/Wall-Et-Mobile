@@ -28,7 +28,7 @@ data class Transaction(
             balanceBefore = balanceBefore,
             balanceAfter = balanceAfter,
             pending = pending,
-            card = card?.asNetworkModel(),
+            card = card?.asNetworkCard(),
             linkUuid = linkUuid,
             createdAt = createdAt.toString(),
             updatedAt = updatedAt.toString(),

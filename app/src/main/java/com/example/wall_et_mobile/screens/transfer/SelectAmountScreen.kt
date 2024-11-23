@@ -1,4 +1,3 @@
-package com.example.wall_et_mobile.screens.transfer
 
 
 import android.util.Log
@@ -25,6 +24,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,6 +32,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
@@ -44,16 +45,16 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.text.isDigitsOnly
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.wall_et_mobile.MyApplication
 import com.example.wall_et_mobile.R
 import com.example.wall_et_mobile.components.SelectedOption
 import com.example.wall_et_mobile.components.TransferCardSlider
 import com.example.wall_et_mobile.components.TransferProgress
-import com.example.wall_et_mobile.data.mock.MockCards
-import com.example.wall_et_mobile.data.model.User
+import com.example.wall_et_mobile.data.model.PaymentType
+import com.example.wall_et_mobile.screens.transfer.TransferViewModel
 import com.example.wall_et_mobile.ui.theme.DarkerGrotesque
 import java.text.NumberFormat
-import java.time.Instant
-import java.util.Date
 import java.util.Locale
 
 @Composable
@@ -61,13 +62,20 @@ fun SelectAmountScreen(
     innerPadding : PaddingValues,
     email: String,
     onChangeDestination: () -> Unit,
-    onNavigateToSelectPayment : (String, String) -> Unit
+    onNavigateToSelectPayment : (String, String, String, Int?) -> Unit, // email, amount, paymentType, cardId
+    viewModel: TransferViewModel = viewModel(factory = TransferViewModel.provideFactory(LocalContext.current.applicationContext as MyApplication))
 )
 {
-    //val user : User = User(1, "Camila", "Lee", birthDate = "2002-02-10")
+    val uiState = viewModel.uiState
+
     var amount by remember { mutableStateOf("") }
     var cents by remember { mutableStateOf("00") }
-    var selectedOption by remember { mutableStateOf<SelectedOption?>(null) }
+    var selectedPaymentMethod by remember { mutableStateOf<SelectedOption?>(null) }
+
+    LaunchedEffect(Unit) {
+        viewModel.getWallet()
+        viewModel.getBalance()
+    }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -91,17 +99,36 @@ fun SelectAmountScreen(
         ) {
 
             TransferCardSlider(
-                cards = MockCards.sampleCards,
-                selectedOption = selectedOption,
-                onSelectionChange = { selected ->
-                    selectedOption = selected
-                }
+                cards = uiState.cards,
+                balance = uiState.balance ?: 0.0, // this is literally so wrongviewModel.getBalance() ?: 0.0, // this is literally so wrong
+                selectedOption = selectedPaymentMethod,
+                onSelectionChange = { selectedPaymentMethod = it }
             )
+//            paymentMethod = when (selectedPaymentMethod) {
+//                is SelectedOption.Wallet -> PaymentType.BALANCE.toString()
+//                is SelectedOption.Card -> {
+//                    cardId = SelectedOption
+//                    PaymentType.CARD.toString()
+//                }
+//                else -> throw IllegalStateException("Unexpected payment method: $selectedPaymentMethod")
+//            }
         }
 
         Button(
+            enabled = amount.isNotEmpty() && selectedPaymentMethod != null,
             onClick = {
-                onNavigateToSelectPayment(email, amount)
+                var cardId: Int? = 0
+                val paymentType = when (selectedPaymentMethod) {
+                    is SelectedOption.WalletOption -> PaymentType.BALANCE.toString()
+                    is SelectedOption.CardOption -> {
+                        cardId = (selectedPaymentMethod as SelectedOption.CardOption).card.cardId
+                        PaymentType.CARD.toString()
+                    }
+                    is SelectedOption.LinkOption -> PaymentType.LINK.toString()
+                    null -> return@Button
+                }
+
+                onNavigateToSelectPayment(email, amount, paymentType, cardId)
             },
             colors = ButtonColors(
                 containerColor = MaterialTheme.colorScheme.secondary,
@@ -225,7 +252,9 @@ fun AmountTextField(whole: String, cents: String, setWhole: (String) -> Unit, se
                         fontSize = 45.sp))
             },
             singleLine = true,
-            modifier = Modifier.padding(bottom = 8.dp).weight(0.75f),
+            modifier = Modifier
+                .padding(bottom = 8.dp)
+                .weight(0.75f),
             visualTransformation = AmountTransformation(),
         )
         TextField(
@@ -258,7 +287,9 @@ fun AmountTextField(whole: String, cents: String, setWhole: (String) -> Unit, se
                         fontSize = 30.sp))
             },
             singleLine = true,
-            modifier = Modifier.padding(bottom = 8.dp).weight(0.25f),
+            modifier = Modifier
+                .padding(bottom = 8.dp)
+                .weight(0.25f),
         )
     }
 

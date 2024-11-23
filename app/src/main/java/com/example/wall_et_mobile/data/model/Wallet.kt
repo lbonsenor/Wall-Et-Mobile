@@ -7,6 +7,7 @@ class Wallet(
     val cbu : String,
     val alias : String
 ) {
-
-
+    fun getWalletBalance() : Double {
+        return this.balance
+    }
 }
