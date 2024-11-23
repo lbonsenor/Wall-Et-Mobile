@@ -2,6 +2,7 @@ package com.example.wall_et_mobile.data.network.api
 
 
 import android.content.Context
+import ip
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -18,9 +19,7 @@ object RetrofitClient {
     As an example: IPAddress.kt contains: const val ip : String = "10.0.2.2"
 
     It is just for commit security and efficiency reasons.
-     */
-
-    
+     */    
 
     private const val BASE_URL = "http://${ip}:8080/api/"
 
