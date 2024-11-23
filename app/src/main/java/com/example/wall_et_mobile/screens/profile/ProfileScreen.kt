@@ -30,6 +30,12 @@ fun ProfileScreen(
     var showAliasDialog by remember { mutableStateOf(false) }
     var newAlias by remember { mutableStateOf("") }
 
+    LaunchedEffect(uiState.isAuthenticated) {
+        if (!uiState.isAuthenticated) {
+            onNavigateToLogin()
+        }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()

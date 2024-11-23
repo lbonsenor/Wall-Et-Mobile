@@ -97,7 +97,7 @@ fun AppNavHost(
             composable(Screen.SeeMore.route){}
             composable(Screen.Profile.route) {
                 ProfileScreen(
-                    onNavigateToLogin = { navigateTo(navController, Screen.Login.route) }
+                    onNavigateToLogin = { navigateToLogin(navController) }
                 )
             }
             composable(Screen.Transfer.route) {
@@ -244,5 +244,12 @@ fun navigateTo(navController : NavHostController, route: String){
         popUpTo(navController.graph.findStartDestination().id) {saveState = true}
         launchSingleTop = true
         restoreState = true
+    }
+}
+
+fun navigateToLogin(navController: NavHostController) {
+    navController.navigate(Screen.Login.route) {
+        popUpTo(0)
+        launchSingleTop = true
     }
 }
