@@ -139,5 +139,11 @@
     <string name="account">Cuenta</string>
     <string name="theme">Tema</string>
     <string name="system_default">Sistema (por defecto)</string>
+    <string name="add_new_card">Agregar nueva tarjeta</string>
+    <string name="card_number">Número de tarjeta</string>
+    <string name="card_holder">Dueño de la tarjeta</string>
+    <string name="card_date">MM/AA</string>
+    <string name="cancel">Cancelar</string>
+    <string name="accept">Aceptar</string>
 
 </resources>

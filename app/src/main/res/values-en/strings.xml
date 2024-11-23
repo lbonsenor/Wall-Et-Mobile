@@ -120,4 +120,10 @@
     <string name="account">Account</string>
     <string name="theme">Theme</string>
     <string name="system_default">System (by default)</string>
+    <string name="add_new_card">Add new card</string>
+    <string name="card_number">Card number</string>
+    <string name="card_holder">Card holder</string>
+    <string name="card_date">MM/YY</string>
+    <string name="cancel">Cancel</string>
+    <string name="accept">Accept</string>
 </resources>

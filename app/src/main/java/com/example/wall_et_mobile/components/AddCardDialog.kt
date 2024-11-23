@@ -24,6 +24,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -77,15 +78,15 @@ fun AddCardDialog(
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     Text(
-                        "Add New Card",
+                        text = stringResource(R.string.add_new_card),
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Bold
                     )
                     OutlinedTextField(
                         value = number,
                         onValueChange = {if (it.length <= 16) number = it},
-//                        visualTransformation = CardNumberTransformation(),
-                        label = { Text("Card Number") },
+//                      visualTransformation = CardNumberTransformation(),
+                        label = { Text(stringResource(R.string.card_number)) },
                         maxLines = 1,
                         modifier = Modifier.fillMaxWidth(),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
@@ -105,7 +106,7 @@ fun AddCardDialog(
                     OutlinedTextField(
                         value = fullName,
                         onValueChange = { fullName = it },
-                        label = { Text("Card Holder") },
+                        label = { Text(stringResource(R.string.card_holder)) },
                         maxLines = 1,
                         modifier = Modifier.fillMaxWidth(),
                         singleLine = true,
@@ -125,7 +126,7 @@ fun AddCardDialog(
                         OutlinedTextField(
                             value = expirationDate,
                             onValueChange = { if (it.length < 5) expirationDate = it },
-                            label = { Text("MM/YY") },
+                            label = { Text(stringResource(R.string.card_date)) },
                             maxLines = 1,
                             modifier = Modifier.weight(1f),
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
@@ -170,7 +171,7 @@ fun AddCardDialog(
                                 contentColor = MaterialTheme.colorScheme.onBackground
                             )
                         ) {
-                            Text("Cancel")
+                            Text(stringResource(R.string.cancel))
                         }
                         Button(
                             onClick = {
@@ -192,7 +193,7 @@ fun AddCardDialog(
                             },
                             enabled = isEnabled
                         ) {
-                            Text("Add Card")
+                            Text(stringResource(R.string.accept))
                         }
                     }
                 }
