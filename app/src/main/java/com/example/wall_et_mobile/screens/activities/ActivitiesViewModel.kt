@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.wall_et_mobile.MyApplication
-import com.example.wall_et_mobile.SessionManager
 import com.example.wall_et_mobile.data.DataSourceException
 import com.example.wall_et_mobile.data.repository.TransactionRepository
 import kotlinx.coroutines.Job
@@ -18,17 +17,15 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class ActivitiesViewModel(
-    sessionManager: SessionManager,
     private val transactionRepository: TransactionRepository
 ) : ViewModel() {
     private var paymentsStreamJob : Job? = null
-    private val _uiState = MutableStateFlow(ActivitiesUiState(isAuthenticated = sessionManager.loadAuthToken() != null))
+    private val _uiState = MutableStateFlow(ActivitiesUiState())
     val uiState: StateFlow<ActivitiesUiState> = _uiState.asStateFlow()
 
     init {
-        if (uiState.value.isAuthenticated) {
-            observePaymentsStream()
-        }
+        observePaymentsStream()
+
     }
 
     private fun observePaymentsStream(){
@@ -78,7 +75,6 @@ class ActivitiesViewModel(
             @Suppress("UNCHECKED_CAST")
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 return ActivitiesViewModel(
-                    application.sessionManager,
                     application.transactionRepository
                 ) as T
             }

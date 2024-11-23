@@ -20,7 +20,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -39,7 +38,6 @@ import com.example.wall_et_mobile.components.CustomButton
 import com.example.wall_et_mobile.data.model.Transaction
 import com.example.wall_et_mobile.data.model.User
 import com.example.wall_et_mobile.data.model.Wallet
-import com.example.wall_et_mobile.screens.login.LoginViewModel
 
 
 @Composable
@@ -50,17 +48,9 @@ fun HomeScreen(
     onNavigateToLoginScreen: () -> Unit,
     onNavigateToProfile: () -> Unit,
     viewModel: HomeViewModel = viewModel(factory = HomeViewModel.provideFactory(LocalContext.current.applicationContext as MyApplication)),
-    // temporary
-    loginViewModel: LoginViewModel = viewModel(factory = LoginViewModel.provideFactory(LocalContext.current.applicationContext as MyApplication)),
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    val loginUiState = loginViewModel.uiState
 
-    LaunchedEffect(loginUiState.isAuthenticated) {
-        if (!uiState.isAuthenticated) {
-            onNavigateToLoginScreen()
-        }
-    }
     Column (
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween,

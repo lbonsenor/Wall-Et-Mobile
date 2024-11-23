@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.wall_et_mobile.MyApplication
-import com.example.wall_et_mobile.SessionManager
 import com.example.wall_et_mobile.data.DataSourceException
 import com.example.wall_et_mobile.data.repository.TransactionRepository
 import com.example.wall_et_mobile.data.repository.UserRepository
@@ -20,7 +19,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class HomeViewModel (
-    sessionManager: SessionManager,
     private val userRepository: UserRepository,
     private val walletRepository: WalletRepository,
     private val transactionRepository: TransactionRepository
@@ -28,15 +26,14 @@ class HomeViewModel (
 
     private var walletStreamJob : Job? = null
     private var paymentsStreamJob : Job? = null
-    private val _uiState = MutableStateFlow(HomeUiState(isAuthenticated = sessionManager.loadAuthToken() != null))
+    private val _uiState = MutableStateFlow(HomeUiState())
     val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
 
     init {
-        if (uiState.value.isAuthenticated) {
-            observeWalletStream()
-            observePaymentsStream()
-            fetchUserData()
-        }
+        observeWalletStream()
+        observePaymentsStream()
+        fetchUserData()
+
     }
 
     private fun fetchUserData() {
@@ -107,7 +104,6 @@ class HomeViewModel (
             @Suppress("UNCHECKED_CAST")
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 return HomeViewModel(
-                    application.sessionManager,
                     application.userRepository,
                     application.walletRepository,
                     application.transactionRepository
