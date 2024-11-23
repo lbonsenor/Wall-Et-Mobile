@@ -20,6 +20,7 @@ import com.example.wall_et_mobile.screens.forgotPassword.VerificationCodeScreen
 import com.example.wall_et_mobile.screens.home.HomeScreen
 import com.example.wall_et_mobile.screens.home.HomeScreenLandscape
 import com.example.wall_et_mobile.screens.login.LoginScreen
+import com.example.wall_et_mobile.screens.profile.ProfileScreen
 import com.example.wall_et_mobile.screens.signup.SignupScreen
 import com.example.wall_et_mobile.screens.signup.SignupSuccessScreen
 import com.example.wall_et_mobile.screens.signup.VerificationScreen
@@ -89,10 +90,17 @@ fun AppNavHost(
                     { navigateTo(navController, Screen.Activities.route) },
                     { navigateTo(navController, Screen.Login.route) },
                     { navigateTo(navController, Screen.TopUp.route) },
-                    )}
+                    { navigateTo(navController, Screen.Profile.route) }
+                )
+            }
             composable(Screen.Cards.route){ CardsScreen(innerPadding) }
             composable(Screen.Activities.route){ ActivitiesScreen(innerPadding) }
             composable(Screen.SeeMore.route){}
+            composable(Screen.Profile.route) {
+                ProfileScreen(
+                    onNavigateToLogin = { navigateToLogin(navController) }
+                )
+            }
             composable(Screen.Transfer.route) {
                 SelectDestinataryScreen(
                     innerPadding = innerPadding,
@@ -204,6 +212,7 @@ fun LandscapeAppNavHost(
                     { navigateTo(navController, Screen.Transfer.route) },
                     { navigateTo(navController, Screen.Activities.route) },
                     { navigateTo(navController, Screen.TopUp.route) },
+                    { navigateTo(navController, Screen.Profile.route) }
                 )}
             composable(Screen.Cards.route){ CardsScreen(innerPadding) }
             composable(Screen.Activities.route){ ActivitiesScreen(innerPadding) }
@@ -264,5 +273,12 @@ fun navigateTo(navController : NavHostController, route: String){
         popUpTo(navController.graph.findStartDestination().id) {saveState = true}
         launchSingleTop = true
         restoreState = true
+    }
+}
+
+fun navigateToLogin(navController: NavHostController) {
+    navController.navigate(Screen.Login.route) {
+        popUpTo(0)
+        launchSingleTop = true
     }
 }

@@ -22,7 +22,7 @@ import com.example.wall_et_mobile.ui.theme.DarkerGrotesque
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CustomTopAppBar(user: User) {
+fun CustomTopAppBar(user: User, onNavigateToProfile: () -> Unit) {
     Row (
         horizontalArrangement = Arrangement.spacedBy(5.dp, Alignment.End),
         verticalAlignment = Alignment.CenterVertically,
@@ -40,12 +40,12 @@ fun CustomTopAppBar(user: User) {
         )
 
         IconButton(
-            onClick = {  },
+            onClick = { onNavigateToProfile() },
             colors = IconButtonDefaults.iconButtonColors(
                 containerColor = MaterialTheme.colorScheme.onSecondary,
                 contentColor = MaterialTheme.colorScheme.secondary
             ),
-            content = { Icon(Icons.Filled.Person, "") },
+            content = { Icon(Icons.Filled.Person, "Navigate to Profile") },
         )
     }
 }

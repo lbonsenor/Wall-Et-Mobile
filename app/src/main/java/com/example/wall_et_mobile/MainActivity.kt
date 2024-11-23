@@ -109,6 +109,11 @@ fun ScaffoldPortrait(navController: NavHostController, qrScanner: QRScanner){
                         onBackClick = { navController.navigateUp() },
                         title = stringResource(R.string.title_activity)
                     )
+                    Screen.Profile.route -> SecondaryTopAppBar(
+                        canGoBack = true,
+                        onBackClick = { navController.navigateUp() },
+                        title = stringResource(R.string.account)
+                    )
                     SeeMore.route -> SecondaryTopAppBar(
                         canGoBack = true,
                         onBackClick = { navController.navigateUp() },

@@ -32,5 +32,6 @@ sealed class Screen(
     object SelectAmount : Screen(route = "select_amount")
     object SelectPaymentMethod : Screen(route = "select_payment_method")
     object TopUp : Screen(route = "top_up")
+    object Profile : Screen(route = "profile", labelInt = R.string.account)
 }
 
