@@ -114,7 +114,6 @@ fun AppNavHost(
                         navigateTo(navController, "${Screen.SelectPaymentMethod.route}/${email}/${amount}")
                     },
                     onChangeDestination = {
-                        // Navigate back to destination selection
                         navigateTo(navController, Screen.Transfer.route)
                     }
                 )
