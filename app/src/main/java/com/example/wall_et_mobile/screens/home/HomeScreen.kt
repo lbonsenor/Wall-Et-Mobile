@@ -61,7 +61,8 @@ fun HomeScreen(
             onNavigateToTopUp = onNavigateToTopUp,
             wallet = uiState.wallet,
             isFetching = uiState.isFetching,
-            error = uiState.error
+            error = uiState.error,
+            user = uiState.user
         )
 
         Column(
@@ -82,6 +83,7 @@ fun BalanceCard(
     wallet: Wallet?,
     isFetching: Boolean,
     error: Error?,
+    user: User?
 ){
     Column(
         modifier = Modifier
@@ -91,9 +93,7 @@ fun BalanceCard(
             .background(MaterialTheme.colorScheme.primary)
 
     ) {
-        CustomTopAppBar(User(
-            1, "test", "test", "test", "test",
-        ))
+        CustomTopAppBar(user?: User(1, "test", "test", "test", "test"))
         Balance(
             wallet = wallet,
             isFetching = isFetching,
@@ -189,7 +189,7 @@ fun HomeScreenLandscape(
         verticalAlignment = Alignment.CenterVertically
     )
     {
-        BalanceCardLandscape(onNavigateToTransfer, innerPadding, onNavigateToTopUp, uiState.wallet, uiState.isFetching, uiState.error)
+        BalanceCardLandscape(onNavigateToTransfer, innerPadding, onNavigateToTopUp, uiState.wallet, uiState.isFetching, uiState.error, uiState.user)
         Column (
             modifier = Modifier
                 .fillMaxWidth()
@@ -206,7 +206,8 @@ fun BalanceCardLandscape(
     onNavigateToTopUp: () -> Unit,
     wallet: Wallet?,
     isFetching: Boolean,
-    error: Error?
+    error: Error?,
+    user: User?
 ){
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -221,7 +222,7 @@ fun BalanceCardLandscape(
         Balance(
             wallet = wallet,
             isFetching = isFetching,
-            error = error
+            error = error,
         )
 
         Row (

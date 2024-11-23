@@ -35,6 +35,22 @@ class HomeViewModel (
         if (uiState.value.isAuthenticated) {
             observeWalletStream()
             observePaymentsStream()
+            fetchUserData()
+        }
+    }
+
+    private fun fetchUserData() {
+        viewModelScope.launch {
+            try {
+                val user = userRepository.getCurrentUser(refresh = true)
+                _uiState.update { currentState ->
+                    currentState.copy(user = user)
+                }
+            } catch (e: Exception) {
+                _uiState.update { currentState ->
+                    currentState.copy(error = handleError(e))
+                }
+            }
         }
     }
 
