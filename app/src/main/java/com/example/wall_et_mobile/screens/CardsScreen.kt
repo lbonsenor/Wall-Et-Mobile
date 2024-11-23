@@ -1,6 +1,7 @@
 package com.example.wall_et_mobile.screens
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -17,6 +18,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -35,6 +37,7 @@ import com.example.wall_et_mobile.data.mock.MockCards
 
 @Composable
 fun CardsScreen(innerPadding: PaddingValues) {
+    var showDialog by remember { mutableStateOf(false) }
 
     // despues habria que cambiarlo de esta forma:
 //    fun CardsScreen(viewModel: CardsViewModel) {
@@ -47,58 +50,67 @@ fun CardsScreen(innerPadding: PaddingValues) {
 //            }
 //        )
 //    }
-    val scrollState = rememberScrollState()
-    var showDialog by remember { mutableStateOf(false) }
 
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .padding(innerPadding)
-            .fillMaxSize()
-            .verticalScroll(scrollState)
-    ) {
-        CardList(cards = MockCards.sampleCards, onDeleteCard = { cardToDelete ->
-//            MockCards.delete(cardToDelete)
-        })
-        AddCardButton {
-            showDialog = true
+Scaffold(
+    modifier = Modifier.padding(innerPadding),
+    bottomBar = {
+        Box(
+            modifier = Modifier.padding(bottom = 24.dp)
+        ) {
+            AddCardButton {
+                showDialog = true
+            }
         }
-        AddCardDialog(showDialog = showDialog, onDismiss = { showDialog = false }, onSubmit = {
-//            MockCards.add(it)
-        })
+    }
+) { paddingValues ->
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(paddingValues)
+    ) {
+        CardList(
+            cards = MockCards.sampleCards,
+            onDeleteCard = { cardToDelete ->
+                // MockCards.delete(cardToDelete)
+            }
+        )
+
+        AddCardDialog(
+            showDialog = showDialog,
+            onDismiss = { showDialog = false },
+            onSubmit = {
+                // MockCards.add(it)
+            }
+        )
     }
 }
+}
 
-// to change later!! sorry im lazy rn its 6am
 @Composable
 fun AddCardButton(onClick: () -> Unit) {
     androidx.compose.material3.OutlinedButton(
         onClick = { onClick() },
         Modifier
-            .padding(15.dp)
             .fillMaxWidth()
-            .padding(bottom = 24.dp),
+            .padding(horizontal = 16.dp, vertical = 8.dp),
         shape = CircleShape,
         contentPadding = PaddingValues(16.dp),
         colors = ButtonDefaults.outlinedButtonColors(
-                contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                //containerColor = MaterialTheme.colorScheme.primary,
-            ),
+            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        ),
         border = BorderStroke(
             width = 1.dp,
             color = MaterialTheme.colorScheme.onPrimaryContainer
         )
-
     ) {
         Icon(
             imageVector = Icons.Default.Add,
             contentDescription = null,
             modifier = Modifier.size(24.dp),
-            //tint = MaterialTheme.colorScheme.onPrimary
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text(
-            text = stringResource(R.string.add_card),
+            text = stringResource(R.string.add_card)
         )
     }
 }

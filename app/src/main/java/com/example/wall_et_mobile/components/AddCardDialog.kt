@@ -1,9 +1,11 @@
 package com.example.wall_et_mobile.components
 
+import android.content.res.Configuration
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -23,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
@@ -45,6 +48,9 @@ fun AddCardDialog(
     onDismiss: () -> Unit,
     onSubmit: (Card) -> Unit
 ) {
+    val configuration = LocalConfiguration.current
+    val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+
     var number by remember { mutableStateOf("") }
     var fullName by remember { mutableStateOf("") }
     var cvv by remember { mutableStateOf("") }
@@ -96,12 +102,11 @@ fun AddCardDialog(
         ) {
             Card(
                 modifier = Modifier
-                    .fillMaxWidth(0.95f)
-                    .padding(16.dp),
+                    .fillMaxWidth(if (isLandscape) 0.6f else 0.95f),
                 shape = RoundedCornerShape(16.dp)
             ) {
                 Column(
-                    modifier = Modifier.padding(20.dp),
+                    modifier = Modifier.padding(16.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Text(
