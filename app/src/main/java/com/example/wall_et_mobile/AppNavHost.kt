@@ -161,7 +161,7 @@ fun LandscapeAppNavHost(
     innerPadding: PaddingValues,
     modifier: Modifier,
     navController: NavHostController = rememberNavController(),
-    startDestination: String = Screen.Home.route
+    startDestination: String = Screen.Login.route
 ){
     NavHost(
         navController = navController,
