@@ -101,15 +101,6 @@ fun SelectDestinataryScreen(
         )
         Button (
             onClick = {
-//                val user : User? = (contactValue.matches("\\d+".toRegex()) == true){
-//                    MockContacts.getUserByEmail(contactValue)
-//                } else {
-//                    MockContacts.getUserByPhoneNo(contactValue)
-//                }
-                //val user = MockContacts.getUserByEmail(contactValue)
-
-                //if (user == null) { showErrorDialog = true }
-                //else
                     onNavigateToSelectAmount(contactValue)
             },
             colors = ButtonColors(
