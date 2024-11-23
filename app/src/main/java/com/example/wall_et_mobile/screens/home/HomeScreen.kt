@@ -15,13 +15,11 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -40,7 +38,6 @@ import com.example.wall_et_mobile.components.CustomButton
 import com.example.wall_et_mobile.data.model.Transaction
 import com.example.wall_et_mobile.data.model.User
 import com.example.wall_et_mobile.data.model.Wallet
-import com.example.wall_et_mobile.screens.login.LoginViewModel
 
 
 @Composable
@@ -49,19 +46,11 @@ fun HomeScreen(
     onNavigateToActivity: () -> Unit,
     onNavigateToTopUp: () -> Unit,
     onNavigateToLoginScreen: () -> Unit,
+    onNavigateToProfile: () -> Unit,
     viewModel: HomeViewModel = viewModel(factory = HomeViewModel.provideFactory(LocalContext.current.applicationContext as MyApplication)),
-    // temporary
-    loginViewModel: LoginViewModel = viewModel(factory = LoginViewModel.provideFactory(LocalContext.current.applicationContext as MyApplication))
-
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    val loginUiState = loginViewModel.uiState
 
-    LaunchedEffect(loginUiState.isAuthenticated) {
-        if (!uiState.isAuthenticated) {
-            onNavigateToLoginScreen()
-        }
-    }
     Column (
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween,
@@ -73,6 +62,7 @@ fun HomeScreen(
         BalanceCard(
             onNavigateToTransfer = onNavigateToTransfer,
             onNavigateToTopUp = onNavigateToTopUp,
+            onNavigateToProfile = onNavigateToProfile,
             wallet = uiState.wallet,
             isFetching = uiState.isFetching,
             error = uiState.error,
@@ -85,21 +75,16 @@ fun HomeScreen(
                 .fillMaxWidth()
         ) {
             ActivityCard(onNavigateToActivity, uiState.transactions)
-            Button(
-                onClick = { loginViewModel.logout() }
-            ) {
-                Text("Logout")
-            }
         }
 
     }
-   // }
 }
 
 @Composable
 fun BalanceCard(
     onNavigateToTransfer: () -> Unit,
     onNavigateToTopUp: () -> Unit,
+    onNavigateToProfile: () -> Unit,
     wallet: Wallet?,
     isFetching: Boolean,
     error: Error?,
@@ -113,7 +98,8 @@ fun BalanceCard(
             .background(MaterialTheme.colorScheme.primary)
 
     ) {
-        CustomTopAppBar(user?: User(1, "test", "test", "test", "test"))
+        CustomTopAppBar(user ?: User(1, "test", "test", "test", "test"), onNavigateToProfile)
+
         Balance(
             wallet = wallet,
             isFetching = isFetching,
@@ -199,6 +185,7 @@ fun HomeScreenLandscape(
     onNavigateToTransfer: () -> Unit,
     onNavigateToActivity: () -> Unit,
     onNavigateToTopUp: () -> Unit,
+    onNavigateToProfile: () -> Unit,
     viewModel: HomeViewModel = viewModel(factory = HomeViewModel.provideFactory(LocalContext.current.applicationContext as MyApplication))
 ){
     val uiState by viewModel.uiState.collectAsState()
@@ -211,7 +198,7 @@ fun HomeScreenLandscape(
         verticalAlignment = Alignment.CenterVertically
     )
     {
-        BalanceCardLandscape(onNavigateToTransfer, innerPadding, onNavigateToTopUp, uiState.wallet, uiState.isFetching, uiState.error, uiState.user)
+        BalanceCardLandscape(onNavigateToTransfer, innerPadding, onNavigateToTopUp, onNavigateToProfile, uiState.wallet, uiState.isFetching, uiState.error, uiState.user)
         Column (
             modifier = Modifier
                 .fillMaxWidth()
@@ -226,6 +213,7 @@ fun BalanceCardLandscape(
     onNavigateToTransfer: () -> Unit,
     innerPadding: PaddingValues,
     onNavigateToTopUp: () -> Unit,
+    onNavigateToProfile: () -> Unit,
     wallet: Wallet?,
     isFetching: Boolean,
     error: Error?,

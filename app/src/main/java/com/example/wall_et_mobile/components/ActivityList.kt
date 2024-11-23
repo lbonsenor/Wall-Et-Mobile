@@ -1,5 +1,6 @@
 package com.example.wall_et_mobile.components
 
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -11,8 +12,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.wall_et_mobile.data.model.Transaction
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 @Composable
 fun ActivityList(activities: List<Transaction>) {
@@ -28,19 +27,21 @@ fun ActivityList(activities: List<Transaction>) {
 fun ActivityListWithDates(activities: List<Transaction>){
     val groupedActivities = activities
         .groupBy { activity ->
-            activity.createdAt.toString().split(" ")[0] // Obs i changed this because of API constraints
+            activity.createdAt // Obs i changed this because of API constraints
         }
         .toSortedMap(compareByDescending { it })
 
     Column (
         modifier = Modifier.verticalScroll(rememberScrollState())
     ) {
-        groupedActivities.forEach { (dateStr, activities) ->
-            val date = LocalDate.parse(dateStr)
-            val formattedDate = date.format(DateTimeFormatter.ofPattern("MMMM d, yyyy"))
-                .replaceFirstChar { it.uppercase() }
+        groupedActivities.forEach { (date, activities) ->
+            Log.e("Date", date.toString())
 
-            DateSeparator(formattedDate)
+            val dateStr =
+                date.toString().split(" ")[1] + " " +
+                date.toString().split(" ")[2] + " "
+
+            DateSeparator(dateStr)
             Column() {
                 activities.forEach { activity ->
                     ActivityItem(transaction = activity)

@@ -44,7 +44,7 @@
     <string name="action_send">Send</string>
     <string name="balance">Balance</string>
     <string name="last_year">Last year</string>
-    <string name="max">Max.</string>
+    <string name="max">All</string>
     <string name="valid_thru">Valid Thru</string>
     <string name="add_card">Add new card</string>
     <string name="invest">Invest</string>
@@ -109,4 +109,25 @@
     <string name="new_password">New password</string>
     <string name="account_created">Account created!</string>
     <string name="account_success">Your account has been created successfully!</string>
+    <string name="alias">Alias</string>
+    <string name="cbu">CBU</string>
+    <string name="log_out_confirmation">Are you sure you want to log out?</string>
+    <string name="modify_alias">Modify alias</string>
+    <string name="new_alias">New alias</string>
+    <string name="update">Update</string>
+    <string name="log_out">Log out</string>
+    <string name="reset_password">Reset password</string>
+    <string name="account">Account</string>
+    <string name="theme">Theme</string>
+    <string name="system_default">System (by default)</string>
+    <string name="add_new_card">Add new card</string>
+    <string name="card_number">Card number</string>
+    <string name="card_holder">Card holder</string>
+    <string name="card_date">MM/YY</string>
+    <string name="cancel">Cancel</string>
+    <string name="accept">Accept</string>
+    <string name="card_number_error">Card number must be 16 digits</string>
+    <string name="card_holder_error">Enter full name</string>
+    <string name="expiration_date_error">Invalid expiration date</string>
+    <string name="cvv_error">CVV must be 3 digits</string>
 </resources>

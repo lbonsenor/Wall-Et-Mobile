@@ -18,9 +18,7 @@ object RetrofitClient {
     As an example: IPAddress.kt contains: const val ip : String = "10.0.2.2"
 
     It is just for commit security and efficiency reasons.
-     */
-
-    
+     */    
 
     private const val BASE_URL = "http://${ip}:8080/api/"
 

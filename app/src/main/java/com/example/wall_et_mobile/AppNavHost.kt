@@ -1,5 +1,6 @@
 package com.example.wall_et_mobile
 
+import SeeMoreScreen
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -11,8 +12,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.wall_et_mobile.data.model.Screen
-import com.example.wall_et_mobile.screens.ActivitiesScreen
 import com.example.wall_et_mobile.screens.CardsScreen
+import com.example.wall_et_mobile.screens.activities.ActivitiesScreen
 import com.example.wall_et_mobile.screens.forgotPassword.ForgotPasswordScreen
 import com.example.wall_et_mobile.screens.forgotPassword.NewPasswordScreen
 import com.example.wall_et_mobile.screens.forgotPassword.PasswordSuccessScreen
@@ -20,6 +21,7 @@ import com.example.wall_et_mobile.screens.forgotPassword.VerificationCodeScreen
 import com.example.wall_et_mobile.screens.home.HomeScreen
 import com.example.wall_et_mobile.screens.home.HomeScreenLandscape
 import com.example.wall_et_mobile.screens.login.LoginScreen
+import com.example.wall_et_mobile.screens.profile.ProfileScreen
 import com.example.wall_et_mobile.screens.signup.SignupScreen
 import com.example.wall_et_mobile.screens.signup.SignupSuccessScreen
 import com.example.wall_et_mobile.screens.signup.VerificationScreen
@@ -67,7 +69,8 @@ fun AppNavHost(
             composable(Screen.ForgotPassword.route){ ForgotPasswordScreen(
                 onNavigateToLogin = { navigateTo(navController, Screen.Login.route) },
                 onNavigateToVerification = { navigateTo(navController, Screen.VerificationCode.route) }
-            ) }
+            ) 
+        }
             composable(Screen.NewPassword.route) {
                 NewPasswordScreen(
                     { navigateTo(navController, Screen.PasswordSuccess.route) },
@@ -89,10 +92,23 @@ fun AppNavHost(
                     { navigateTo(navController, Screen.Activities.route) },
                     { navigateTo(navController, Screen.Login.route) },
                     { navigateTo(navController, Screen.TopUp.route) },
-                    )}
+                    { navigateTo(navController, Screen.Profile.route) }
+                )
+            }
             composable(Screen.Cards.route){ CardsScreen(innerPadding) }
             composable(Screen.Activities.route){ ActivitiesScreen(innerPadding) }
-            composable(Screen.SeeMore.route){}
+            composable(Screen.SeeMore.route) {
+                SeeMoreScreen(
+                    innerPadding = innerPadding,
+                    onThemeChanged = { /* TODO: Implement theme change */ },
+                    onLanguageChanged = { /* TODO: Implement language change */ }
+                )
+            }
+            composable(Screen.Profile.route) {
+                ProfileScreen(
+                    onNavigateToLogin = { navigateToLogin(navController) }
+                )
+            }
             composable(Screen.Transfer.route) {
                 SelectDestinataryScreen(
                     innerPadding = innerPadding,
@@ -113,9 +129,6 @@ fun AppNavHost(
                     onNavigateToSelectPayment = { email, amount ->
                         navigateTo(navController, "${Screen.SelectPaymentMethod.route}/${email}/${amount}")
                     },
-                    onChangeDestination = {
-                        navigateTo(navController, Screen.Transfer.route)
-                    }
                 )
             }
             composable(
@@ -148,7 +161,7 @@ fun LandscapeAppNavHost(
     innerPadding: PaddingValues,
     modifier: Modifier,
     navController: NavHostController = rememberNavController(),
-    startDestination: String = Screen.Home.route
+    startDestination: String = Screen.Login.route
 ){
     NavHost(
         navController = navController,
@@ -203,10 +216,17 @@ fun LandscapeAppNavHost(
                     { navigateTo(navController, Screen.Transfer.route) },
                     { navigateTo(navController, Screen.Activities.route) },
                     { navigateTo(navController, Screen.TopUp.route) },
+                    { navigateTo(navController, Screen.Profile.route) }
                 )}
             composable(Screen.Cards.route){ CardsScreen(innerPadding) }
             composable(Screen.Activities.route){ ActivitiesScreen(innerPadding) }
-            composable(Screen.SeeMore.route){}
+            composable(Screen.SeeMore.route) {
+                SeeMoreScreen(
+                    innerPadding = innerPadding,
+                    onThemeChanged = { /* TODO: Implement theme change */ },
+                    onLanguageChanged = { /* TODO: Implement language change */ }
+                )
+            }
             composable(Screen.Transfer.route) {
                 SelectDestinataryScreen(
                     innerPadding = innerPadding,
@@ -227,10 +247,6 @@ fun LandscapeAppNavHost(
                     onNavigateToSelectPayment = { email, amount ->
                         navigateTo(navController, "${Screen.SelectPaymentMethod.route}/${email}/${amount}")
                     },
-                    onChangeDestination = {
-                        // Navigate back to destination selection
-                        navigateTo(navController, Screen.Transfer.route)
-                    }
                 )
             }
             composable(
@@ -263,5 +279,12 @@ fun navigateTo(navController : NavHostController, route: String){
         popUpTo(navController.graph.findStartDestination().id) {saveState = true}
         launchSingleTop = true
         restoreState = true
+    }
+}
+
+fun navigateToLogin(navController: NavHostController) {
+    navController.navigate(Screen.Login.route) {
+        popUpTo(0)
+        launchSingleTop = true
     }
 }

@@ -1,9 +1,11 @@
 package com.example.wall_et_mobile.components
 
+import android.content.res.Configuration
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -23,7 +25,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -44,22 +48,52 @@ fun AddCardDialog(
     onDismiss: () -> Unit,
     onSubmit: (Card) -> Unit
 ) {
+    val configuration = LocalConfiguration.current
+    val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+
     var number by remember { mutableStateOf("") }
     var fullName by remember { mutableStateOf("") }
     var cvv by remember { mutableStateOf("") }
     var expirationDate by remember { mutableStateOf("") }
     var type by remember { mutableStateOf("") }
 
-    val isEnabled = number.length == 16 && fullName.isNotEmpty() && expirationDate.length == 4 && cvv.length == 3
+    fun validateCardNumber(number: String): Boolean {
+        return number.length == 16 && number.all { it.isDigit() }
+    }
 
-    Log.d("AddCardDialog", """
-    Button enabled: $isEnabled
-    Number (${number.length}): $number
-    Name: $fullName
-    Expiration (${expirationDate.length}): $expirationDate
-    CVV (${cvv.length}): $cvv
-""".trimIndent())
+    fun validateCardHolder(name: String): Boolean {
+        return name.isNotEmpty() && name.trim().split(" ").size >= 2
+    }
 
+    fun validateCvv(cvv: String): Boolean {
+        return cvv.length == 3 && cvv.all { it.isDigit() }
+    }
+
+    fun validateExpirationDate(date: String): Boolean {
+        if (date.length != 4) return false
+        if (!date.all { it.isDigit() }) return false
+        
+        val month = date.substring(0, 2).toInt()
+        val year = date.substring(2, 4).toInt()
+        
+        if (month < 1 || month > 12) return false
+        
+        val currentYear = java.time.LocalDate.now().year % 100
+        val currentMonth = java.time.LocalDate.now().monthValue
+        
+        return when {
+            year < currentYear -> false
+            year == currentYear -> month >= currentMonth
+            else -> true
+        }
+    }
+
+    val isEnabled = remember(number, fullName, cvv, expirationDate) {
+        validateCardNumber(number) && 
+        validateCardHolder(fullName) && 
+        validateExpirationDate(expirationDate) && 
+        validateCvv(cvv)
+    }
 
     if (showDialog) {
         Dialog(
@@ -68,28 +102,36 @@ fun AddCardDialog(
         ) {
             Card(
                 modifier = Modifier
-                    .fillMaxWidth(0.95f)
-                    .padding(16.dp),
+                    .fillMaxWidth(if (isLandscape) 0.6f else 0.95f),
                 shape = RoundedCornerShape(16.dp)
             ) {
                 Column(
-                    modifier = Modifier.padding(20.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                    modifier = Modifier.padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     Text(
-                        "Add New Card",
+                        text = stringResource(R.string.add_new_card),
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Bold
                     )
+                    
                     OutlinedTextField(
                         value = number,
-                        onValueChange = {if (it.length <= 16) number = it},
-//                        visualTransformation = CardNumberTransformation(),
-                        label = { Text("Card Number") },
+                        onValueChange = { if (it.length <= 16) number = it },
+                        label = { Text(stringResource(R.string.card_number)) },
                         maxLines = 1,
                         modifier = Modifier.fillMaxWidth(),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         trailingIcon = { painterResource(R.drawable.credit_card) },
+                        isError = number.isNotEmpty() && !validateCardNumber(number),
+                        supportingText = {
+                            if (number.isNotEmpty() && !validateCardNumber(number)) {
+                                Text(
+                                    text = stringResource(R.string.card_number_error),
+                                    color = MaterialTheme.colorScheme.error
+                                )
+                            }
+                        },
                         colors = OutlinedTextFieldDefaults.colors(
                             focusedBorderColor = MaterialTheme.colorScheme.secondary,
                             focusedLabelColor = MaterialTheme.colorScheme.secondary,
@@ -97,18 +139,28 @@ fun AddCardDialog(
                             focusedPlaceholderColor = MaterialTheme.colorScheme.onBackground.copy(0.8f),
                             unfocusedPlaceholderColor = MaterialTheme.colorScheme.onBackground.copy(0.8f),
                             unfocusedLabelColor = MaterialTheme.colorScheme.onBackground.copy(0.8f),
-                            unfocusedLeadingIconColor = MaterialTheme.colorScheme.onBackground.copy(0.8f),
-                            focusedLeadingIconColor = MaterialTheme.colorScheme.secondary
+                            errorBorderColor = MaterialTheme.colorScheme.error,
+                            errorLabelColor = MaterialTheme.colorScheme.error
                         ),
                         visualTransformation = CardNumberTransformation()
                     )
+
                     OutlinedTextField(
                         value = fullName,
                         onValueChange = { fullName = it },
-                        label = { Text("Card Holder") },
+                        label = { Text(stringResource(R.string.card_holder)) },
                         maxLines = 1,
                         modifier = Modifier.fillMaxWidth(),
                         singleLine = true,
+                        isError = fullName.isNotEmpty() && !validateCardHolder(fullName),
+                        supportingText = {
+                            if (fullName.isNotEmpty() && !validateCardHolder(fullName)) {
+                                Text(
+                                    text = stringResource(R.string.card_holder_error),
+                                    color = MaterialTheme.colorScheme.error
+                                )
+                            }
+                        },
                         colors = OutlinedTextFieldDefaults.colors(
                             focusedBorderColor = MaterialTheme.colorScheme.secondary,
                             focusedLabelColor = MaterialTheme.colorScheme.secondary,
@@ -116,21 +168,32 @@ fun AddCardDialog(
                             focusedPlaceholderColor = MaterialTheme.colorScheme.onBackground.copy(0.8f),
                             unfocusedPlaceholderColor = MaterialTheme.colorScheme.onBackground.copy(0.8f),
                             unfocusedLabelColor = MaterialTheme.colorScheme.onBackground.copy(0.8f),
+                            errorBorderColor = MaterialTheme.colorScheme.error,
+                            errorLabelColor = MaterialTheme.colorScheme.error
                         )
                     )
+
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         OutlinedTextField(
                             value = expirationDate,
-                            onValueChange = { if (it.length < 5) expirationDate = it },
-                            label = { Text("MM/YY") },
+                            onValueChange = { if (it.length <= 4) expirationDate = it },
+                            label = { Text(stringResource(R.string.card_date)) },
                             maxLines = 1,
                             modifier = Modifier.weight(1f),
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                             singleLine = true,
-                            visualTransformation = ExpirationDateTransformation(),
+                            isError = expirationDate.isNotEmpty() && !validateExpirationDate(expirationDate),
+                            supportingText = {
+                                if (expirationDate.isNotEmpty() && !validateExpirationDate(expirationDate)) {
+                                    Text(
+                                        text = stringResource(R.string.expiration_date_error),
+                                        color = MaterialTheme.colorScheme.error
+                                    )
+                                }
+                            },
                             colors = OutlinedTextFieldDefaults.colors(
                                 focusedBorderColor = MaterialTheme.colorScheme.secondary,
                                 focusedLabelColor = MaterialTheme.colorScheme.secondary,
@@ -138,8 +201,12 @@ fun AddCardDialog(
                                 focusedPlaceholderColor = MaterialTheme.colorScheme.onBackground.copy(0.8f),
                                 unfocusedPlaceholderColor = MaterialTheme.colorScheme.onBackground.copy(0.8f),
                                 unfocusedLabelColor = MaterialTheme.colorScheme.onBackground.copy(0.8f),
-                            )
+                                errorBorderColor = MaterialTheme.colorScheme.error,
+                                errorLabelColor = MaterialTheme.colorScheme.error
+                            ),
+                            visualTransformation = ExpirationDateTransformation()
                         )
+
                         OutlinedTextField(
                             value = cvv,
                             onValueChange = { if (it.length <= 3) cvv = it },
@@ -148,7 +215,15 @@ fun AddCardDialog(
                             modifier = Modifier.weight(1f),
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                             singleLine = true,
-                            visualTransformation = PasswordVisualTransformation(),
+                            isError = cvv.isNotEmpty() && !validateCvv(cvv),
+                            supportingText = {
+                                if (cvv.isNotEmpty() && !validateCvv(cvv)) {
+                                    Text(
+                                        text = stringResource(R.string.cvv_error),
+                                        color = MaterialTheme.colorScheme.error
+                                    )
+                                }
+                            },
                             colors = OutlinedTextFieldDefaults.colors(
                                 focusedBorderColor = MaterialTheme.colorScheme.secondary,
                                 focusedLabelColor = MaterialTheme.colorScheme.secondary,
@@ -156,21 +231,25 @@ fun AddCardDialog(
                                 focusedPlaceholderColor = MaterialTheme.colorScheme.onBackground.copy(0.8f),
                                 unfocusedPlaceholderColor = MaterialTheme.colorScheme.onBackground.copy(0.8f),
                                 unfocusedLabelColor = MaterialTheme.colorScheme.onBackground.copy(0.8f),
-                            )
+                                errorBorderColor = MaterialTheme.colorScheme.error,
+                                errorLabelColor = MaterialTheme.colorScheme.error
+                            ),
+                            visualTransformation = PasswordVisualTransformation()
                         )
                     }
+
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.End,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        TextButton (
+                        TextButton(
                             onClick = onDismiss,
                             colors = ButtonDefaults.textButtonColors(
                                 contentColor = MaterialTheme.colorScheme.onBackground
                             )
                         ) {
-                            Text("Cancel")
+                            Text(stringResource(R.string.cancel))
                         }
                         Button(
                             onClick = {
@@ -192,7 +271,7 @@ fun AddCardDialog(
                             },
                             enabled = isEnabled
                         ) {
-                            Text("Add Card")
+                            Text(stringResource(R.string.accept))
                         }
                     }
                 }
@@ -200,6 +279,7 @@ fun AddCardDialog(
         }
     }
 }
+
 class ExpirationDateTransformation : VisualTransformation {
     override fun filter(text: AnnotatedString): TransformedText {
         var out = text.text

@@ -55,7 +55,7 @@
 
     <!-- Registration and login -->
     <string name="welcome">¡Bienvenido a Wall-Et!</string>
-    <string name="email" translatable="false">Correo electrónico</string>
+    <string name="email">Correo electrónico</string>
     <string name="password">Contraseña</string>
     <string name="log_in">Iniciar sesión</string>
     <string name="sign_up">Registrarme</string>
@@ -77,7 +77,7 @@
     <string name="change">Cambiar</string>
     <string name="balance">Saldo Disponible</string>
     <string name="last_year">Último año</string>
-    <string name="max">Max.</string>
+    <string name="max">Todo</string>
     <string name="valid_thru">Válido Hasta</string>
     <string name="add_card">Agregar nueva tarjeta</string>
     <string name="invest">Invertir</string>
@@ -128,5 +128,26 @@
     <string name="new_password">Nueva contraseña</string>
     <string name="account_created">¡Cuenta creada!</string>
     <string name="account_success">¡Tu cuenta ha sido creada exitosamente!</string>
+    <string name="alias">Alias</string>
+    <string name="cbu">CBU</string>
+    <string name="log_out_confirmation">¿Está seguro de que desea cerrar sesión?</string>
+    <string name="modify_alias">Modificar alias</string>
+    <string name="new_alias">Nuevo alias</string>
+    <string name="update">Actualizar</string>
+    <string name="log_out">Cerrar sesión</string>
+    <string name="reset_password">Resetear contraseña</string>
+    <string name="account">Cuenta</string>
+    <string name="theme">Tema</string>
+    <string name="system_default">Sistema (por defecto)</string>
+    <string name="add_new_card">Agregar nueva tarjeta</string>
+    <string name="card_number">Número de tarjeta</string>
+    <string name="card_holder">Dueño de la tarjeta</string>
+    <string name="card_date">MM/AA</string>
+    <string name="cancel">Cancelar</string>
+    <string name="accept">Aceptar</string>
+    <string name="card_number_error">El número de la tarjeta debe tener 16 dígitos</string>
+    <string name="card_holder_error">Ingrese el nombre completo</string>
+    <string name="expiration_date_error">Fecha de expiración inválida</string>
+    <string name="cvv_error">El CVV debe tener tres dígitos</string>
 
 </resources>
