@@ -1,7 +1,6 @@
 package com.example.wall_et_mobile.screens.transfer
 
-import android.icu.util.Currency
-import android.icu.util.CurrencyAmount
+import ContactCard
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
@@ -25,7 +24,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.PlayArrow
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
@@ -33,7 +31,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -49,6 +46,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -58,18 +56,16 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.wall_et_mobile.MyApplication
 import com.example.wall_et_mobile.R
+import com.example.wall_et_mobile.components.ErrorDialog
 import com.example.wall_et_mobile.components.SuccessDialog
 import com.example.wall_et_mobile.components.TransferProgress
 import com.example.wall_et_mobile.data.model.BalancePayment
+import com.example.wall_et_mobile.data.model.CardPayment
+import com.example.wall_et_mobile.data.model.LinkPayment
 import com.example.wall_et_mobile.data.model.PaymentType
-import com.example.wall_et_mobile.data.model.Transaction
 import com.example.wall_et_mobile.data.model.TransactionRequest
-import com.example.wall_et_mobile.data.model.User
-import com.example.wall_et_mobile.screens.LoadingScreen
 import com.example.wall_et_mobile.ui.theme.DarkerGrotesque
 import kotlinx.coroutines.delay
-import java.time.Instant
-import java.util.Date
 import kotlin.math.roundToInt
 
 // should change name to last section screen or smth
@@ -78,6 +74,8 @@ fun SelectPaymentScreen(
     innerPadding: PaddingValues,
     email: String,
     amount: String,
+    paymentType: String,
+    cardId: Int?,
     onPaymentComplete: () -> Unit = {},
     onChangeDestination: () -> Unit = {},
     onEditAmount: () -> Unit = {},
@@ -87,6 +85,14 @@ fun SelectPaymentScreen(
     val uiState = viewModel.uiState
     var note by remember { mutableStateOf("") }
     var showSuccess by remember { mutableStateOf(false) }
+
+    LaunchedEffect(uiState.isFetching) {
+        Log.d("SelectPaymentScreen", "isFetching: ${uiState.isFetching}")
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.getBalance()
+    }
 
     LaunchedEffect(uiState.error) {
         if (uiState.error != null) {
@@ -140,19 +146,27 @@ fun SelectPaymentScreen(
                 AmountDisplay(amount, onEditAmount)
             }
 
-            OutlinedTextField(
-                value = note,
-                onValueChange = { note = it },
-                placeholder = { Text(stringResource(R.string.add_note)) },
-                shape = RoundedCornerShape(12.dp),
-                colors = OutlinedTextFieldDefaults.colors(
-                    unfocusedBorderColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.5f),
-                    focusedBorderColor = MaterialTheme.colorScheme.secondary
-                ),
-                modifier = Modifier.fillMaxWidth(),
-                maxLines = 3
-            )
+            Section(title = stringResource(R.string.payment_method)) {
+                PaymentMethodDisplay(PaymentType.valueOf(paymentType), cardId, uiState.balance)
+            }
+
+            Section(title = "Message") {
+
+                OutlinedTextField(
+                    value = note,
+                    onValueChange = { note = it },
+                    placeholder = { Text(stringResource(R.string.add_note)) },
+                    shape = RoundedCornerShape(12.dp),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        unfocusedBorderColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.5f),
+                        focusedBorderColor = MaterialTheme.colorScheme.secondary
+                    ),
+                    modifier = Modifier.fillMaxWidth(),
+                    maxLines = 3
+                )
+            }
         }
+
         SwipeToSendButton(
             onSwipeComplete = {
                 if (!uiState.isFetching) {
@@ -168,12 +182,14 @@ fun SelectPaymentScreen(
                                 throw IllegalArgumentException("Receiver email is required")
                             }
                             else -> {
-                                val payment = BalancePayment(
+                                val transaction = createTransactionRequest(
+                                    paymentType = PaymentType.valueOf(paymentType),
                                     amount = parsedAmount,
-                                    description = note.ifEmpty { "Payment to $email" },
-                                    receiverEmail = email
+                                    email = email,
+                                    note = note,
+                                    cardId = cardId
                                 )
-                                viewModel.makePayment(payment)
+                                viewModel.makePayment(transaction)
                                 showSuccess = true
                             }
                         }
@@ -421,6 +437,7 @@ private fun AmountDisplay(amount: String, onEditAmount: () -> Unit) {
     }
 }
 
+
 @Composable
 private fun Section(
     title: String,
@@ -437,22 +454,81 @@ private fun Section(
 }
 
 
+
+
+
 @Composable
-fun ErrorDialog(
-    visible: Boolean,
-    message: String,
-    onDismiss: () -> Unit
-) {
-    if (visible) {
-        AlertDialog(
-            onDismissRequest = onDismiss,
-            title = { Text("Error") },
-            text = { Text(message) },
-            confirmButton = {
-                TextButton(onClick = onDismiss) {
-                    Text("OK")
-                }
+private fun PaymentMethodDisplay(paymentType: PaymentType, cardId: Int?, balance: Double? = null) {
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            painter = when (paymentType) {
+                PaymentType.BALANCE -> painterResource(R.drawable.person)
+                PaymentType.CARD -> painterResource(R.drawable.credit_card)
+                PaymentType.LINK -> painterResource(R.drawable.transfer)
+            },
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.secondary
+        )
+
+        Column {
+            Text(
+                text = when (paymentType) {
+                    PaymentType.BALANCE -> stringResource(R.string.wallet_balance)
+                    PaymentType.CARD -> stringResource(R.string.card)
+                    PaymentType.LINK -> stringResource(R.string.link)
+                },
+                style = MaterialTheme.typography.titleMedium
+            )
+
+            if (paymentType == PaymentType.CARD && cardId != null) {
+                Text(
+                    text = stringResource(R.string.card_number, cardId.toString()),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
             }
+
+            if (paymentType == PaymentType.BALANCE) {
+                Text(
+                    text = "$${balance}",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        }
+    }
+}
+
+private fun createTransactionRequest(
+    paymentType: PaymentType,
+    amount: Double,
+    email: String,
+    note: String,
+    cardId: Int?
+): TransactionRequest {
+    val description = note.ifEmpty { "Payment to $email" }
+
+    return when (paymentType) {
+        PaymentType.BALANCE -> BalancePayment(
+            amount = amount,
+            description = description,
+            receiverEmail = email
+        )
+        PaymentType.CARD -> {
+            require(cardId != null) { "Card ID is required for card payments" }
+            CardPayment(
+                amount = amount,
+                description = description,
+                cardId = cardId.toLong(),
+                receiverEmail = email
+            )
+        }
+        PaymentType.LINK -> LinkPayment(
+            amount = amount,
+            description = description
         )
     }
 }

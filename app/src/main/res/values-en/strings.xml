@@ -109,6 +109,8 @@
     <string name="new_password">New password</string>
     <string name="account_created">Account created!</string>
     <string name="account_success">Your account has been created successfully!</string>
+    <string name="link">Link</string>
+    <string name="card_number">"Card that finishes in "</string>
     <string name="alias">Alias</string>
     <string name="cbu">CBU</string>
     <string name="log_out_confirmation">Are you sure you want to log out?</string>

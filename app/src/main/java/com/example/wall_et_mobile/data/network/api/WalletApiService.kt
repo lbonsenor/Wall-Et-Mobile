@@ -4,6 +4,7 @@ package com.example.wall_et_mobile.data.network.api
 import com.example.wall_et_mobile.data.network.model.NetworkAliasUpdate
 import com.example.wall_et_mobile.data.network.model.NetworkBalanceResponse
 import com.example.wall_et_mobile.data.network.model.NetworkCard
+import com.example.wall_et_mobile.data.network.model.NetworkCardRequest
 import com.example.wall_et_mobile.data.network.model.NetworkWallet
 
 import kotlin.Unit
@@ -20,7 +21,7 @@ interface WalletApiService {
     suspend fun getCards(): Response<List<NetworkCard>>
 
     @POST("wallet/cards")
-    suspend fun addCard(@Body card: NetworkCard): Response<NetworkCard>
+    suspend fun addCard(@Body card: NetworkCardRequest): Response<NetworkCard>
 
     @DELETE("wallet/cards/{cardId}")
     suspend fun deleteCard(@Path("cardId") cardId: Int) : Response<Unit>

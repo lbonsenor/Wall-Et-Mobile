@@ -128,6 +128,8 @@
     <string name="new_password">Nueva contraseña</string>
     <string name="account_created">¡Cuenta creada!</string>
     <string name="account_success">¡Tu cuenta ha sido creada exitosamente!</string>
+    <string name="link">Enlace</string>
+    <string name="card_number">Tarjeta terminada en</string>
     <string name="alias">Alias</string>
     <string name="cbu">CBU</string>
     <string name="log_out_confirmation">¿Está seguro de que desea cerrar sesión?</string>
