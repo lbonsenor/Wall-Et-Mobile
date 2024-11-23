@@ -1,6 +1,7 @@
 package com.example.wall_et_mobile
 
 import SeeMoreScreen
+import SelectAmountScreen
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -17,6 +18,7 @@ import com.example.wall_et_mobile.screens.activities.ActivitiesScreen
 import com.example.wall_et_mobile.screens.forgotPassword.ForgotPasswordScreen
 import com.example.wall_et_mobile.screens.forgotPassword.NewPasswordScreen
 import com.example.wall_et_mobile.screens.forgotPassword.PasswordSuccessScreen
+import com.example.wall_et_mobile.screens.forgotPassword.PasswordVerificationScreen
 import com.example.wall_et_mobile.screens.home.HomeScreen
 import com.example.wall_et_mobile.screens.home.HomeScreenLandscape
 import com.example.wall_et_mobile.screens.login.LoginScreen
