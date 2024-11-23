@@ -20,7 +20,7 @@ object RetrofitClient {
     It is just for commit security and efficiency reasons.
      */
 
-    const val ip = "192.168.1.154"
+    
 
     private const val BASE_URL = "http://${ip}:8080/api/"
 
