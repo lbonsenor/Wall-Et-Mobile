@@ -115,18 +115,18 @@
     <string name="already_have_account">¿Ya tienes una cuenta?</string>
     <string name="welcome_back">¡Bienvenido de vuelta a Wall-Et!</string>
     <string name="dont_have_account">¿No estas registrado?</string>
-    <string name="no_worries">No te preocupes, nosotros te ayudamos.</string>
+    <string name="no_worries">Ingresá el correo asociado a la cuenta</string>
     <string name="send_code">Enviar código</string>
     <string name="back_to_login">¿Volver a iniciar sesión?</string>
     <string name="verification">Verificación</string>
-    <string name="enter_code">Ingresá el código para continuar.</string>
-    <string name="set_new_password">Establecer Nueva Contraseña</string>
-    <string name="password_changed">¡Contraseña Cambiada!</string>
-    <string name="no_hassle">Sin más complicaciones.</string>
+    <string name="enter_code">Ingresá el código para continuar</string>
+    <string name="set_new_password">Establecer nueva contraseña</string>
+    <string name="password_changed">¡Contraseña cambiada!</string>
+    <string name="no_hassle">Sin más complicaciones</string>
     <string name="password_reset_successful">¡Tu contraseña ha sido restablecida exitosamente!</string>
-    <string name="create_new_password_string">Crea una contraseña única.</string>
-    <string name="new_password">Nueva Contraseña</string>
-    <string name="account_created">¡Cuenta Creada!</string>
+    <string name="create_new_password_string">Creá una contraseña única</string>
+    <string name="new_password">Nueva contraseña</string>
+    <string name="account_created">¡Cuenta creada!</string>
     <string name="account_success">¡Tu cuenta ha sido creada exitosamente!</string>
 
 </resources>

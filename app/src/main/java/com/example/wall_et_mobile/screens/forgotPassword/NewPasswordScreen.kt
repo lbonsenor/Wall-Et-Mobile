@@ -53,7 +53,7 @@ fun NewPasswordScreen(
                 text = stringResource(R.string.set_new_password),
                 color = MaterialTheme.colorScheme.secondary,
                 style = MaterialTheme.typography.headlineLarge,
-                textAlign = TextAlign.Left,
+                textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Bold
             )
             Text(
