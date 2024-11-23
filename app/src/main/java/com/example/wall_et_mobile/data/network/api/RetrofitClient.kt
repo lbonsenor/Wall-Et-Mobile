@@ -2,6 +2,7 @@ package com.example.wall_et_mobile.data.network.api
 
 
 import android.content.Context
+import ip
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient

@@ -81,7 +81,7 @@ fun SignupScreen(
         user.firstName.isNotEmpty() &&
                 user.lastName.isNotEmpty() &&
                 validateEmail(user.email) &&
-                validatePassword(user.password ?: "") &&
+                validatePassword(user.password) &&
                 user.password == confirmPassword
     }
 
@@ -132,7 +132,7 @@ fun SignupScreen(
                         .fillMaxSize()
                         .padding(horizontal = 24.dp, vertical = 16.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                    verticalArrangement = Arrangement.Center
                 ) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),

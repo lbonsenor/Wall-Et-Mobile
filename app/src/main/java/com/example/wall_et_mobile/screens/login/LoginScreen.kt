@@ -114,7 +114,7 @@ fun LoginScreen(
                         .fillMaxSize()
                         .padding(horizontal = 24.dp, vertical = 16.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                    verticalArrangement = Arrangement.Center
                 ) {
                     if (uiState.isFetching) {
                         CircularProgressIndicator(
