@@ -29,25 +29,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.wall_et_mobile.R
+import com.example.wall_et_mobile.components.CustomTextField
 import com.example.wall_et_mobile.components.EndFormButton
-import com.example.wall_et_mobile.components.PasswordField
 
 @Composable
-fun NewPasswordScreen(
-    onNavigateToSuccess: () -> Unit,
+fun PasswordVerificationScreen(
+    onNavigateToSetNewPassword: () -> Unit
 ) {
-    var password by remember { mutableStateOf("") }
-    var confirmPassword by remember { mutableStateOf("") }
+    var code by remember { mutableStateOf("") }
     val configuration = LocalConfiguration.current
     val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
-    fun validatePassword(password: String): Boolean {
-        val passwordPattern = "^(?=.*\\d)(?=.*[A-Z])(?=.*[@#$%^&+=!])[A-Za-z\\d@#$%^&+=!]{8,}$"
-        return password.matches(passwordPattern.toRegex())
-    }
-
-    val isFormValid = remember(password, confirmPassword) {
-        validatePassword(password) && password == confirmPassword
+    val isFormValid = remember(code) {
+        code.isNotEmpty()
     }
 
     if (isLandscape) {
@@ -68,14 +62,14 @@ fun NewPasswordScreen(
                 verticalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = stringResource(R.string.set_new_password),
+                    text = stringResource(R.string.verification),
                     color = MaterialTheme.colorScheme.secondary,
                     style = MaterialTheme.typography.headlineLarge,
                     textAlign = TextAlign.Center,
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    text = stringResource(R.string.create_new_password_string),
+                    text = stringResource(R.string.enter_code),
                     color = MaterialTheme.colorScheme.onBackground,
                     style = MaterialTheme.typography.bodyMedium,
                     textAlign = TextAlign.Center
@@ -99,33 +93,16 @@ fun NewPasswordScreen(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        PasswordField(
-                            password = password,
-                            onPasswordChange = { password = it },
-                            modifier = Modifier.weight(1f),
-                            label = R.string.new_password,
-                            errorMessage = stringResource(R.string.password_format),
-                            validate = { newPassword -> validatePassword(newPassword) }
-                        )
-
-                        PasswordField(
-                            password = confirmPassword,
-                            onPasswordChange = { confirmPassword = it },
-                            modifier = Modifier.weight(1f),
-                            isRepeatPassword = true,
-                            originalPassword = password,
-                            label = R.string.repeat_password,
-                            errorMessage = stringResource(R.string.passwords_dont_match)
-                        )
-                    }
+                    CustomTextField(
+                        value = code,
+                        onValueChange = { code = it },
+                        labelResourceId = R.string.verification_code,
+                        modifier = Modifier.fillMaxWidth()
+                    )
 
                     EndFormButton(
-                        textResourceId = R.string.confirm,
-                        onClick = onNavigateToSuccess,
+                        textResourceId = R.string.validate,
+                        onClick = onNavigateToSetNewPassword,
                         enabled = isFormValid,
                         modifier = Modifier.padding(top = 8.dp)
                     )
@@ -141,14 +118,14 @@ fun NewPasswordScreen(
             verticalArrangement = Arrangement.Center
         ) {
             Text(
-                text = stringResource(R.string.set_new_password),
+                text = stringResource(R.string.verification),
                 color = MaterialTheme.colorScheme.secondary,
                 style = MaterialTheme.typography.headlineLarge,
-                textAlign = TextAlign.Center,
+                textAlign = TextAlign.Left,
                 fontWeight = FontWeight.Bold
             )
             Text(
-                text = stringResource(R.string.create_new_password_string),
+                text = stringResource(R.string.enter_code),
                 color = MaterialTheme.colorScheme.onBackground,
                 style = MaterialTheme.typography.bodyMedium,
                 textAlign = TextAlign.Left
@@ -169,28 +146,16 @@ fun NewPasswordScreen(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    PasswordField(
-                        password = password,
-                        onPasswordChange = { password = it },
-                        modifier = Modifier.fillMaxWidth(),
-                        label = R.string.new_password,
-                        errorMessage = stringResource(R.string.password_format),
-                        validate = { newPassword -> validatePassword(newPassword) }
-                    )
-
-                    PasswordField(
-                        password = confirmPassword,
-                        onPasswordChange = { confirmPassword = it },
-                        modifier = Modifier.fillMaxWidth(),
-                        isRepeatPassword = true,
-                        originalPassword = password,
-                        label = R.string.repeat_password,
-                        errorMessage = stringResource(R.string.passwords_dont_match)
+                    CustomTextField(
+                        value = code,
+                        onValueChange = { code = it },
+                        labelResourceId = R.string.verification_code,
+                        modifier = Modifier.fillMaxWidth()
                     )
 
                     EndFormButton(
-                        textResourceId = R.string.confirm,
-                        onClick = onNavigateToSuccess,
+                        textResourceId = R.string.validate,
+                        onClick = onNavigateToSetNewPassword,
                         enabled = isFormValid
                     )
                 }
