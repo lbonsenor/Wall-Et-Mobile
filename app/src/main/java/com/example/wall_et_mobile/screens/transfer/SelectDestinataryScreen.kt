@@ -68,7 +68,7 @@ fun SelectDestinataryScreen(
         OutlinedTextField(
             value = contactValue,
             onValueChange = { contactValue = it  },
-            isError = !isValidEmail(contactValue),
+            isError = contactValue.isNotEmpty() && !isValidEmail(contactValue),
             placeholder = {
                 Text(
                     stringResource(R.string.transfer_to_1),

@@ -87,6 +87,7 @@ fun AppNavHost(
                 HomeScreen(
                     { navigateTo(navController, Screen.Transfer.route) },
                     { navigateTo(navController, Screen.Activities.route) },
+                    { navigateTo(navController, Screen.Login.route) },
                     { navigateTo(navController, Screen.TopUp.route) },
                     )}
             composable(Screen.Cards.route){ CardsScreen(innerPadding) }
@@ -109,7 +110,14 @@ fun AppNavHost(
                 SelectAmountScreen(
                     innerPadding = innerPadding,
                     email = backStackEntry.arguments?.getString("email")!!,
-                ){ email, amount -> navigateTo(navController, "${Screen.SelectPaymentMethod.route}/${email}/${amount}") }
+                    onNavigateToSelectPayment = { email, amount ->
+                        navigateTo(navController, "${Screen.SelectPaymentMethod.route}/${email}/${amount}")
+                    },
+                    onChangeDestination = {
+                        // Navigate back to destination selection
+                        navigateTo(navController, Screen.Transfer.route)
+                    }
+                )
             }
             composable(
                 route = "${Screen.SelectPaymentMethod.route}/{email}/{amount}",
@@ -122,7 +130,14 @@ fun AppNavHost(
                     }
                 )
             ){ backStackEntry ->
-                SelectPaymentScreen(innerPadding, backStackEntry.arguments?.getString("email")!!, backStackEntry.arguments?.getString("amount")!!)
+                SelectPaymentScreen(
+                    innerPadding = innerPadding,
+                    onPaymentComplete = { navigateTo(navController, Screen.Home.route) },
+                    email = backStackEntry.arguments?.getString("email")!!,
+                    amount = backStackEntry.arguments?.getString("amount")!!,
+                    onChangeDestination = { navigateTo(navController, Screen.Transfer.route) },
+                    onEditAmount = { navigateTo(navController, "${Screen.SelectAmount.route}/${backStackEntry.arguments?.getString("email")}") }
+                )
             }
             composable(route = Screen.TopUp.route){ TopUpScreen(innerPadding) }
         }
@@ -210,7 +225,14 @@ fun LandscapeAppNavHost(
                 SelectAmountScreen(
                     innerPadding = innerPadding,
                     email = backStackEntry.arguments?.getString("email")!!,
-                ){ email, amount -> navigateTo(navController, "${Screen.SelectPaymentMethod.route}/${email}/${amount}") }
+                    onNavigateToSelectPayment = { email, amount ->
+                        navigateTo(navController, "${Screen.SelectPaymentMethod.route}/${email}/${amount}")
+                    },
+                    onChangeDestination = {
+                        // Navigate back to destination selection
+                        navigateTo(navController, Screen.Transfer.route)
+                    }
+                )
             }
             composable(
                 route = "${Screen.SelectPaymentMethod.route}/{email}/{amount}",
@@ -223,7 +245,14 @@ fun LandscapeAppNavHost(
                     }
                 )
             ){ backStackEntry ->
-                SelectPaymentScreen(innerPadding, backStackEntry.arguments?.getString("email")!!, backStackEntry.arguments?.getString("amount")!!)
+                SelectPaymentScreen(
+                    innerPadding = innerPadding,
+                    onPaymentComplete = { navigateTo(navController, Screen.Home.route) },
+                    email = backStackEntry.arguments?.getString("email")!!,
+                    amount = backStackEntry.arguments?.getString("amount")!!,
+                    onChangeDestination = { navigateTo(navController, Screen.Transfer.route) },
+                    onEditAmount = { navigateTo(navController, "${Screen.SelectAmount.route}/${backStackEntry.arguments?.getString("email")}") }
+                )
             }
             composable(route = Screen.TopUp.route){ TopUpScreen(innerPadding) }
         }

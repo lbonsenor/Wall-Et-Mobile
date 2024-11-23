@@ -26,6 +26,11 @@ class LoginViewModel (
         { state, _ -> state.copy(isAuthenticated = true) }
     )
 
+    fun logout() = runOnViewModelScope(
+        { userRepository.logout() },
+        { state, _ -> state.copy(isAuthenticated = false) }
+    )
+
     private fun <R> runOnViewModelScope(
         block: suspend () -> R,
         updateState: (LoginUiState, R) -> LoginUiState

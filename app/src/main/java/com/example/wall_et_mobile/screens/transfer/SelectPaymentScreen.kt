@@ -2,6 +2,7 @@ package com.example.wall_et_mobile.screens.transfer
 
 import android.icu.util.Currency
 import android.icu.util.CurrencyAmount
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
@@ -23,12 +25,15 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.PlayArrow
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -39,6 +44,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
@@ -54,11 +60,14 @@ import com.example.wall_et_mobile.MyApplication
 import com.example.wall_et_mobile.R
 import com.example.wall_et_mobile.components.SuccessDialog
 import com.example.wall_et_mobile.components.TransferProgress
+import com.example.wall_et_mobile.data.model.BalancePayment
 import com.example.wall_et_mobile.data.model.PaymentType
 import com.example.wall_et_mobile.data.model.Transaction
 import com.example.wall_et_mobile.data.model.TransactionRequest
 import com.example.wall_et_mobile.data.model.User
+import com.example.wall_et_mobile.screens.LoadingScreen
 import com.example.wall_et_mobile.ui.theme.DarkerGrotesque
+import kotlinx.coroutines.delay
 import java.time.Instant
 import java.util.Date
 import kotlin.math.roundToInt
@@ -66,25 +75,53 @@ import kotlin.math.roundToInt
 // should change name to last section screen or smth
 @Composable
 fun SelectPaymentScreen(
-    innerPadding : PaddingValues, email: String, amount: String,
-    viewModel: TransferViewModel = viewModel(factory = TransferViewModel.provideFactory(LocalContext.current.applicationContext as MyApplication))
+    innerPadding: PaddingValues,
+    email: String,
+    amount: String,
+    onPaymentComplete: () -> Unit = {},
+    onChangeDestination: () -> Unit = {},
+    onEditAmount: () -> Unit = {},
+    viewModel: TransferViewModel = viewModel(
+        factory = TransferViewModel.provideFactory(LocalContext.current.applicationContext as MyApplication))
 ){
     val uiState = viewModel.uiState
-
     var note by remember { mutableStateOf("") }
     var showSuccess by remember { mutableStateOf(false) }
+
+    LaunchedEffect(uiState.error) {
+        if (uiState.error != null) {
+            showSuccess = false
+        }
+    }
+
+    LaunchedEffect(uiState.isFetching, uiState.error, showSuccess) {
+        if (!uiState.isFetching && uiState.error == null && showSuccess) {
+            delay(1500)
+            onPaymentComplete()
+        }
+    }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp),
         modifier = Modifier.fillMaxWidth().verticalScroll(rememberScrollState())
     ) {
-
-        SuccessDialog(
-            visible = showSuccess,
-            message = stringResource(R.string.payment_success),
-            onDismiss = { showSuccess = false }
-        )
+        when {
+            uiState.error != null -> {
+                ErrorDialog(
+                    visible = true,
+                    message = uiState.error.message ?: "There has been an error in the transaction.",
+                    onDismiss = viewModel::clearError
+                )
+            }
+            showSuccess && !uiState.isFetching -> {
+                SuccessDialog(
+                    visible = true,
+                    message = stringResource(R.string.payment_success),
+                    onDismiss = { showSuccess = false }
+                )
+            }
+        }
 
         Column(
             horizontalAlignment = Alignment.Start,
@@ -96,13 +133,11 @@ fun SelectPaymentScreen(
             TransferProgress(2)
 
             Section(title = stringResource(R.string.transfer_to)) {
-                ContactCard((email), Modifier.fillMaxWidth(), onClick = {
-
-                })
+                ContactCard((email), Modifier.fillMaxWidth(), onChangeDestination)
             }
 
             Section(title = stringResource(R.string.transfer_amount)) {
-                AmountDisplay(amount)
+                AmountDisplay(amount, onEditAmount)
             }
 
             OutlinedTextField(
@@ -121,16 +156,34 @@ fun SelectPaymentScreen(
         SwipeToSendButton(
             onSwipeComplete = {
                 if (!uiState.isFetching) {
-                    viewModel.makePayment(TransactionRequest(
-                        amount = CurrencyAmount(amount.toDouble(), Currency.getInstance("ARS")),
-                        description = note,
-                        type = PaymentType.BALANCE,
-                        receiverEmail = email
-                    ))
-                    showSuccess = true
+                    Log.d("SwipeToSendButton", "onSwipeComplete called")
+                    Log.d("SwipeToSendButton", "email: $email, amount: $amount, note: $note")
+                    try {
+                        val parsedAmount = amount.toDoubleOrNull()
+                        when {
+                            parsedAmount == null || parsedAmount <= 0 -> {
+                                throw IllegalArgumentException("Invalid amount")
+                            }
+                            email.isEmpty() -> {
+                                throw IllegalArgumentException("Receiver email is required")
+                            }
+                            else -> {
+                                val payment = BalancePayment(
+                                    amount = parsedAmount,
+                                    description = note.ifEmpty { "Payment to $email" },
+                                    receiverEmail = email
+                                )
+                                viewModel.makePayment(payment)
+                                showSuccess = true
+                            }
+                        }
+                    } catch (e: Exception) {
+                        viewModel.handleError(e)
+                    }
                 }
                  },
-            isCompleted = showSuccess,
+            isCompleted = showSuccess && !uiState.isFetching && uiState.error == null,
+            isLoading = uiState.isFetching,
             modifier = Modifier
                 .padding(horizontal = 24.dp)
                 .padding(WindowInsets.navigationBars.asPaddingValues())
@@ -144,6 +197,7 @@ fun SelectPaymentScreen(
 fun SwipeToSendButton(
     onSwipeComplete: () -> Unit,
     isCompleted: Boolean = false,
+    isLoading: Boolean = false,
     modifier: Modifier = Modifier
 ) {
     var offsetX by remember { mutableFloatStateOf(0f) }
@@ -151,76 +205,185 @@ fun SwipeToSendButton(
     val density = LocalDensity.current
 
 
+    LaunchedEffect(isLoading) {
+        if (isLoading) {
+            offsetX = 0f
+        }
+    }
+
     LaunchedEffect(isCompleted) {
         if (isCompleted) {
-            offsetX = width - with(density) { 56.dp.toPx() }
+            offsetX = width - with(density) { 64.dp.toPx() }
         }
     }
 
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .height(60.dp)
-            .clip(RoundedCornerShape(16.dp))
+            .height(68.dp)
+            .clip(RoundedCornerShape(20.dp))
             .background(MaterialTheme.colorScheme.secondary)
             .onSizeChanged { width = it.width }
     ) {
-        Text(
-            text = stringResource(R.string.swipe_to_send),
-            modifier = Modifier.align(Alignment.Center),
-            color = MaterialTheme.colorScheme.onSecondary.copy(alpha = 0.7f)
-        )
-
         Box(
             modifier = Modifier
-                .offset { IntOffset(offsetX.roundToInt(), 0) }
-                .size(60.dp)
-                .padding(8.dp)
-                .clip(RoundedCornerShape(12.dp))
-                .background(MaterialTheme.colorScheme.onSecondary)
-                .pointerInput(Unit) {
-                    detectHorizontalDragGestures(
-                        onDragEnd = {
-                            if (offsetX > width * 0.5f) {
-                                offsetX = width - with(density) { 56.dp.toPx() }
-                                onSwipeComplete()
-                            } else {
-                                offsetX = 0f
+                .fillMaxSize()
+                .background(
+                    brush = Brush.horizontalGradient(
+                        colors = listOf(
+                            MaterialTheme.colorScheme.secondary,
+                            MaterialTheme.colorScheme.secondary.copy(alpha = 0.8f),
+                            MaterialTheme.colorScheme.secondary
+                        )
+                    )
+                )
+        )
+
+        if (isLoading) {
+            CircularProgressIndicator(
+                modifier = Modifier
+                    .size(32.dp)
+                    .align(Alignment.Center),
+                color = MaterialTheme.colorScheme.onSecondary
+            )
+        } else {
+            Text(
+                text = stringResource(R.string.swipe_to_send),
+                modifier = Modifier.align(Alignment.Center),
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onSecondary.copy(alpha = 0.9f)
+            )
+
+            // Swipe handle
+            Box(
+                modifier = Modifier
+                    .offset { IntOffset(offsetX.roundToInt(), 0) }
+                    .size(64.dp)
+                    .padding(8.dp)
+                    .clip(RoundedCornerShape(16.dp))
+                    .background(
+                        brush = Brush.verticalGradient(
+                            colors = listOf(
+                                MaterialTheme.colorScheme.onSecondary,
+                                MaterialTheme.colorScheme.onSecondary.copy(alpha = 0.9f)
+                            )
+                        )
+                    )
+                    .then(
+                        if (!isLoading) {
+                            Modifier.pointerInput(Unit) {
+                                detectHorizontalDragGestures(
+                                    onDragEnd = {
+                                        if (offsetX > width * 0.5f) {
+                                            offsetX = width - with(density) { 64.dp.toPx() }
+                                            onSwipeComplete()
+                                        } else {
+                                            offsetX = 0f
+                                        }
+                                    },
+                                    onDragCancel = {
+                                        if (!isCompleted) offsetX = 0f
+                                    },
+                                    onHorizontalDrag = { change, dragAmount ->
+                                        if (!isCompleted && !isLoading) {
+                                            change.consume()
+                                            offsetX = (offsetX + dragAmount).coerceIn(
+                                                0f,
+                                                width - with(density) { 64.dp.toPx() }
+                                            )
+                                        }
+                                    }
+                                )
                             }
-                        },
-                        onDragCancel = {
-                            if (!isCompleted) offsetX = 0f
-                        },
-                        onHorizontalDrag  = { change, dragAmount ->
-                            if (!isCompleted) {
-                                change.consume()
-                                offsetX = (offsetX + dragAmount).coerceIn(0f, width - with(density) { 56.dp.toPx() })
-                            }
-                        }
+                        } else Modifier
+                    )
+            ) {
+                Icon(
+                    imageVector = Icons.Rounded.PlayArrow,
+                    contentDescription = stringResource(R.string.swipe),
+                    modifier = Modifier
+                        .size(32.dp)
+                        .align(Alignment.Center),
+                    tint = MaterialTheme.colorScheme.secondary
+                )
+            }
+
+            Row(
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
+                    .padding(end = 24.dp),
+                horizontalArrangement = Arrangement.spacedBy(2.dp)
+            ) {
+                repeat(3) {
+                    Text(
+                        text = "›",
+                        style = TextStyle(
+                            fontSize = 24.sp,
+                            fontWeight = FontWeight.Bold
+                        ),
+                        color = MaterialTheme.colorScheme.onSecondary.copy(alpha = 0.7f)
                     )
                 }
-        ) {
-            Icon(
-                imageVector = Icons.Rounded.PlayArrow,
-                contentDescription = stringResource(R.string.swipe),
-                modifier = Modifier.align(Alignment.Center),
-                tint = MaterialTheme.colorScheme.secondary
-            )
+            }
         }
-
-        Text(
-            text = "⟫",
-            modifier = Modifier
-                .align(Alignment.CenterEnd)
-                .padding(end = 16.dp),
-            color = MaterialTheme.colorScheme.onSecondary.copy(alpha = 0.7f)
-        )
     }
-}
+    }
+//        Text(
+//            text = stringResource(R.string.swipe_to_send),
+//            modifier = Modifier.align(Alignment.Center),
+//            color = MaterialTheme.colorScheme.onSecondary.copy(alpha = 0.7f)
+//        )
+//
+//        Box(
+//            modifier = Modifier
+//                .offset { IntOffset(offsetX.roundToInt(), 0) }
+//                .size(60.dp)
+//                .padding(8.dp)
+//                .clip(RoundedCornerShape(12.dp))
+//                .background(MaterialTheme.colorScheme.onSecondary)
+//                .pointerInput(Unit) {
+//                    detectHorizontalDragGestures(
+//                        onDragEnd = {
+//                            if (offsetX > width * 0.5f) {
+//                                offsetX = width - with(density) { 56.dp.toPx() }
+//                                onSwipeComplete()
+//                            } else {
+//                                offsetX = 0f
+//                            }
+//                        },
+//                        onDragCancel = {
+//                            if (!isCompleted) offsetX = 0f
+//                        },
+//                        onHorizontalDrag  = { change, dragAmount ->
+//                            if (!isCompleted) {
+//                                change.consume()
+//                                offsetX = (offsetX + dragAmount).coerceIn(0f, width - with(density) { 56.dp.toPx() })
+//                            }
+//                        }
+//                    )
+//                }
+//        ) {
+//            Icon(
+//                imageVector = Icons.Rounded.PlayArrow,
+//                contentDescription = stringResource(R.string.swipe),
+//                modifier = Modifier.align(Alignment.Center),
+//                tint = MaterialTheme.colorScheme.secondary
+//            )
+//        }
+//
+//        Text(
+//            text = "⟫",
+//            modifier = Modifier
+//                .align(Alignment.CenterEnd)
+//                .padding(end = 16.dp),
+//            color = MaterialTheme.colorScheme.onSecondary.copy(alpha = 0.7f)
+//        )
+//    }
+//}
 
 
 @Composable
-private fun AmountDisplay(amount: String) {
+private fun AmountDisplay(amount: String, onEditAmount: () -> Unit) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
@@ -270,5 +433,26 @@ private fun Section(
             color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
         )
         content()
+    }
+}
+
+
+@Composable
+fun ErrorDialog(
+    visible: Boolean,
+    message: String,
+    onDismiss: () -> Unit
+) {
+    if (visible) {
+        AlertDialog(
+            onDismissRequest = onDismiss,
+            title = { Text("Error") },
+            text = { Text(message) },
+            confirmButton = {
+                TextButton(onClick = onDismiss) {
+                    Text("OK")
+                }
+            }
+        )
     }
 }

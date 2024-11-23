@@ -80,12 +80,16 @@ class TransferViewModel (
         }
     }
 
-    private fun handleError(e: Throwable): Error {
+    fun handleError(e: Throwable): Error {
         return if (e is DataSourceException) {
             Error(e.message ?: "")
         } else {
             Error(e.message ?: "")
         }
+    }
+
+    fun clearError() {
+        uiState = uiState.copy(error = null)
     }
 
     companion object {

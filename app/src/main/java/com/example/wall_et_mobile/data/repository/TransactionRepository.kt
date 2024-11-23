@@ -1,9 +1,13 @@
 package com.example.wall_et_mobile.data.repository
 
 
+import com.example.wall_et_mobile.data.model.BalancePayment
+import com.example.wall_et_mobile.data.model.CardPayment
+import com.example.wall_et_mobile.data.model.LinkPayment
 import com.example.wall_et_mobile.data.model.Transaction
 import com.example.wall_et_mobile.data.model.TransactionLinkRequest
 import com.example.wall_et_mobile.data.model.TransactionRequest
+import com.example.wall_et_mobile.data.model.asNetworkModel
 import com.example.wall_et_mobile.data.network.TransactionRemoteDataSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -64,6 +68,7 @@ class TransactionRepository(
             this.transactions = emptyList()
         }
     }
+
     suspend fun getPaymentLinkInfo(linkUuid : String) : Transaction{
         return remoteDataSource.getPaymentLinkInfo(linkUuid).asModel()
     }
