@@ -121,7 +121,9 @@ fun BalanceCard(
                 CustomButton(
                     stringResource(R.string.invest),
                     R.drawable.invest,
-                    onClick = {})
+                    onClick = {},
+                    enabled = false
+                )
             }
         }
     }

@@ -24,15 +24,16 @@ import com.example.wall_et_mobile.R
 import com.example.wall_et_mobile.ui.theme.WallEtTheme
 
 @Composable
-fun CustomButton(text: String, icon: Int, onClick: () -> Unit) {
+fun CustomButton(text: String, icon: Int, onClick: () -> Unit, enabled: Boolean? = true ) {
     Button (
         onClick = { onClick() },
         colors = ButtonColors(
             containerColor = MaterialTheme.colorScheme.surfaceContainer,
             contentColor = MaterialTheme.colorScheme.onPrimary,
-            disabledContainerColor = MaterialTheme.colorScheme.onSurfaceVariant,
-            disabledContentColor = MaterialTheme.colorScheme.onSurfaceVariant
+            disabledContainerColor = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.5f),
+            disabledContentColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.5f)
         ),
+        enabled = enabled ?: true,
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(20.dp))
@@ -54,7 +55,7 @@ fun CustomButton(text: String, icon: Int, onClick: () -> Unit) {
 @Composable
 fun PreviewCustomButton() {
     WallEtTheme {
-        CustomButton(text = "Transferir", icon = R.drawable.payments, onClick = {})
+        CustomButton(text = "Transferir", icon = R.drawable.payments, onClick = {}, enabled = false )
     }
 
 }
