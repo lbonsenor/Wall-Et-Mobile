@@ -162,7 +162,7 @@ fun LoginScreen(
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(stringResource(R.string.dont_have_account))
+                    Text(stringResource(R.string.dont_have_account), color = MaterialTheme.colorScheme.onBackground)
                     TextButton(
                         onClick = onNavigateToSignUp
                     ) {

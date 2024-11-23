@@ -43,14 +43,14 @@ fun SignupSuccessScreen(
         Text(
             text = stringResource(R.string.account_created),
             style = MaterialTheme.typography.headlineMedium,
-            color = MaterialTheme.colorScheme.primary,
-            fontWeight = FontWeight.Bold
+            color = MaterialTheme.colorScheme.secondary,
+            fontWeight = FontWeight.Bold,
         )
 
         Text(
             text = stringResource(R.string.welcome),
             style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
+            color = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier.padding(top = 8.dp, bottom = 16.dp)
         )
 
@@ -58,7 +58,7 @@ fun SignupSuccessScreen(
                 modifier = Modifier
                     .size(80.dp)
                     .background(
-                        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
+                        color = MaterialTheme.colorScheme.secondary.copy(alpha = 0.1f),
                         shape = CircleShape
                     )
                     .padding(16.dp)
@@ -68,7 +68,7 @@ fun SignupSuccessScreen(
                 Icon(
                     imageVector = Icons.Rounded.Check,
                     contentDescription = "Success",
-                    tint = MaterialTheme.colorScheme.primary,
+                    tint = MaterialTheme.colorScheme.secondary,
                     modifier = Modifier.size(40.dp)
                 )
             }
@@ -88,7 +88,7 @@ fun SignupSuccessScreen(
                 .height(56.dp),
             shape = RoundedCornerShape(16.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.primary
+                containerColor = MaterialTheme.colorScheme.secondary
             )
         ) {
             Text(

@@ -178,7 +178,7 @@ fun SignupScreen(
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(stringResource(R.string.already_have_account))
+                    Text(stringResource(R.string.already_have_account), color = MaterialTheme.colorScheme.onBackground)
                     TextButton(
                         onClick = onNavigateUp
                     ) {
