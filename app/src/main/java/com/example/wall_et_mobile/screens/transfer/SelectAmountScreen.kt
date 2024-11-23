@@ -17,6 +17,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -48,6 +49,7 @@ import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.wall_et_mobile.MyApplication
 import com.example.wall_et_mobile.R
+import com.example.wall_et_mobile.components.ErrorDialog
 import com.example.wall_et_mobile.components.SelectedOption
 import com.example.wall_et_mobile.components.TransferCardSlider
 import com.example.wall_et_mobile.components.TransferProgress
@@ -72,9 +74,12 @@ fun SelectAmountScreen(
     var cents by remember { mutableStateOf("00") }
     var selectedPaymentMethod by remember { mutableStateOf<SelectedOption?>(null) }
 
+    var isEnabled by remember { mutableStateOf(true) }
+
     LaunchedEffect(Unit) {
         viewModel.getWallet()
         viewModel.getBalance()
+        viewModel.getCards()
     }
 
     Column(
@@ -115,16 +120,23 @@ fun SelectAmountScreen(
         }
 
         Button(
-            enabled = amount.isNotEmpty() && selectedPaymentMethod != null,
+            enabled = amount.isNotEmpty() && selectedPaymentMethod != null && isEnabled,
             onClick = {
                 var cardId: Int? = 0
-                val paymentType = when (selectedPaymentMethod) {
-                    is SelectedOption.WalletOption -> PaymentType.BALANCE.toString()
+                var paymentType: String
+                when (selectedPaymentMethod) {
+                    is SelectedOption.WalletOption ->
+                    {
+                        paymentType = PaymentType.BALANCE.toString()
+
+                    }
                     is SelectedOption.CardOption -> {
                         cardId = (selectedPaymentMethod as SelectedOption.CardOption).card.cardId
-                        PaymentType.CARD.toString()
+                        paymentType = PaymentType.CARD.toString()
                     }
-                    is SelectedOption.LinkOption -> PaymentType.LINK.toString()
+                    is SelectedOption.LinkOption -> {
+                        paymentType = PaymentType.LINK.toString()
+                    }
                     null -> return@Button
                 }
 
@@ -133,8 +145,8 @@ fun SelectAmountScreen(
             colors = ButtonColors(
                 containerColor = MaterialTheme.colorScheme.secondary,
                 contentColor = MaterialTheme.colorScheme.onSecondary,
-                disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant,
-                disabledContentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                disabledContainerColor = Color.Gray.copy(0.7f),
+                disabledContentColor = MaterialTheme.colorScheme.onBackground.copy(0.5f)
             ),
             shape = RoundedCornerShape(10.dp),
             modifier = Modifier
@@ -142,6 +154,20 @@ fun SelectAmountScreen(
             contentPadding = PaddingValues(16.dp),
         ) {
             Text(stringResource(R.string.continue_button))
+        }
+
+        if (selectedPaymentMethod is SelectedOption.WalletOption && amount.isNotEmpty()) {
+            if (uiState.balance!! < amount.toDouble() ) {
+                isEnabled = false
+                Text(
+                    text = stringResource(R.string.insufficient_funds),
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.labelMedium,
+                    modifier = Modifier.padding(vertical = 8.dp)
+                )
+            } else {
+                isEnabled = true
+            }
         }
     }
 
@@ -202,10 +228,10 @@ fun ContactCard(email: String, modifier : Modifier, onClick : () -> Unit) {
         FilledTonalButton (
             onClick = onClick,
             shape = CircleShape,
-//            colors = ButtonDefaults.outlinedButtonColors(
-//                contentColor = MaterialTheme.colorScheme.onSecondary,
-//                containerColor = MaterialTheme.colorScheme.secondary,
-//            ),
+            colors = ButtonDefaults.outlinedButtonColors(
+                contentColor = MaterialTheme.colorScheme.onSecondary,
+                containerColor = MaterialTheme.colorScheme.secondary.copy(0.8f),
+            ),
             //border = BorderStroke(1.dp, MaterialTheme.colorScheme.secondary)
         ) {
             Text(text = stringResource(R.string.change))

@@ -129,7 +129,7 @@
     <string name="account_created">¡Cuenta creada!</string>
     <string name="account_success">¡Tu cuenta ha sido creada exitosamente!</string>
     <string name="link">Enlace</string>
-    <string name="card_number">Tarjeta terminada en</string>
+    <string name="card_number_finish">Terminada en</string>
     <string name="alias">Alias</string>
     <string name="cbu">CBU</string>
     <string name="log_out_confirmation">¿Está seguro de que desea cerrar sesión?</string>
@@ -151,5 +151,6 @@
     <string name="card_holder_error">Ingrese el nombre completo</string>
     <string name="expiration_date_error">Fecha de expiración inválida</string>
     <string name="cvv_error">El CVV debe tener tres dígitos</string>
+    <string name="insufficient_funds">Saldo insuficiente</string>
 
 </resources>

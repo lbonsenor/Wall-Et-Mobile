@@ -92,6 +92,7 @@ fun SelectPaymentScreen(
 
     LaunchedEffect(Unit) {
         viewModel.getBalance()
+        viewModel.getCards()
     }
 
     LaunchedEffect(uiState.error) {
@@ -213,7 +214,7 @@ fun SelectPaymentScreen(
 fun SwipeToSendButton(
     onSwipeComplete: () -> Unit,
     isCompleted: Boolean = false,
-    isLoading: Boolean = false,
+    isLoading: Boolean,
     modifier: Modifier = Modifier
 ) {
     var offsetX by remember { mutableFloatStateOf(0f) }
@@ -344,59 +345,6 @@ fun SwipeToSendButton(
         }
     }
     }
-//        Text(
-//            text = stringResource(R.string.swipe_to_send),
-//            modifier = Modifier.align(Alignment.Center),
-//            color = MaterialTheme.colorScheme.onSecondary.copy(alpha = 0.7f)
-//        )
-//
-//        Box(
-//            modifier = Modifier
-//                .offset { IntOffset(offsetX.roundToInt(), 0) }
-//                .size(60.dp)
-//                .padding(8.dp)
-//                .clip(RoundedCornerShape(12.dp))
-//                .background(MaterialTheme.colorScheme.onSecondary)
-//                .pointerInput(Unit) {
-//                    detectHorizontalDragGestures(
-//                        onDragEnd = {
-//                            if (offsetX > width * 0.5f) {
-//                                offsetX = width - with(density) { 56.dp.toPx() }
-//                                onSwipeComplete()
-//                            } else {
-//                                offsetX = 0f
-//                            }
-//                        },
-//                        onDragCancel = {
-//                            if (!isCompleted) offsetX = 0f
-//                        },
-//                        onHorizontalDrag  = { change, dragAmount ->
-//                            if (!isCompleted) {
-//                                change.consume()
-//                                offsetX = (offsetX + dragAmount).coerceIn(0f, width - with(density) { 56.dp.toPx() })
-//                            }
-//                        }
-//                    )
-//                }
-//        ) {
-//            Icon(
-//                imageVector = Icons.Rounded.PlayArrow,
-//                contentDescription = stringResource(R.string.swipe),
-//                modifier = Modifier.align(Alignment.Center),
-//                tint = MaterialTheme.colorScheme.secondary
-//            )
-//        }
-//
-//        Text(
-//            text = "⟫",
-//            modifier = Modifier
-//                .align(Alignment.CenterEnd)
-//                .padding(end = 16.dp),
-//            color = MaterialTheme.colorScheme.onSecondary.copy(alpha = 0.7f)
-//        )
-//    }
-//}
-
 
 @Composable
 private fun AmountDisplay(amount: String, onEditAmount: () -> Unit) {

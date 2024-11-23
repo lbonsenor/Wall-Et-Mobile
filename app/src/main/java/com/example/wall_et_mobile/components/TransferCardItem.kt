@@ -23,11 +23,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.wall_et_mobile.R
 import com.example.wall_et_mobile.data.model.Card
 import com.example.wall_et_mobile.data.model.CardBrand
+import com.example.wall_et_mobile.data.model.CardType
 import com.example.wall_et_mobile.ui.theme.WallEtTheme
+import java.time.Instant
+import java.util.Date
 
 
 @Composable
@@ -37,7 +42,7 @@ fun TransferCardItem(
     onSelect: () -> Unit,
     enabled: Boolean = false,
 ) {
-    val maskedNumber = card.cardNumber.replace(Regex(".{14}(.{4})"), "Termina en$1")
+    val maskedNumber = "${stringResource(R.string.card_number_finish)} ${card.cardNumber.takeLast(4)}"
     Card(
         colors = CardColors(
             containerColor = Color.Transparent,
@@ -93,7 +98,17 @@ fun TransferCardItem(
 fun TransferCardItemPreview() {
     WallEtTheme {
         Column {
-
+            val card = Card(
+                cardId = 1,
+                cardNumber = "1234567890123456",
+                createdAt = Date.from(Instant.now()),
+                cardExpiration = "04/28",
+                cardType = CardType.CREDIT_CARD,
+                cardCvv = "123",
+                cardHolder = "Johnathon Klemp",
+                updatedAt = Date.from(Instant.now())
+            )
+            TransferCardItem(card, isSelected = false, onSelect = {}, enabled = true)
         }
     }
 }
