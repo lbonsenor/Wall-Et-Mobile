@@ -12,3 +12,4 @@ local.properties
 /.kotlin/sessions/kotlin-compiler-9737001918162291380.salive
 app/src/main/java/com/example/wall_et_mobile/data/network/api/IPAddress.kt
 *.salive
+/.kotlin
