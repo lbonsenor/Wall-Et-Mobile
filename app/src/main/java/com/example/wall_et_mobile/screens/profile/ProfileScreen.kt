@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.wall_et_mobile.MyApplication
 import com.example.wall_et_mobile.R
+import com.example.wall_et_mobile.components.EndFormButton
 
 @Composable
 fun ProfileScreen(
@@ -63,7 +64,7 @@ fun ProfileScreen(
                         Text(
                             text = stringResource(R.string.name),
                             style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.primary
+                            color = MaterialTheme.colorScheme.secondary
                         )
                         Text(
                             text = uiState.user?.name ?: "",
@@ -76,7 +77,7 @@ fun ProfileScreen(
                         Text(
                             text = stringResource(R.string.last_name),
                             style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.primary
+                            color = MaterialTheme.colorScheme.secondary
                         )
                         Text(
                             text = uiState.user?.lastName ?: "",
@@ -89,7 +90,7 @@ fun ProfileScreen(
                         Text(
                             text = stringResource(R.string.email),
                             style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.primary
+                            color = MaterialTheme.colorScheme.secondary
                         )
                         Text(
                             text = uiState.user?.email ?: "",
@@ -102,7 +103,7 @@ fun ProfileScreen(
                         Text(
                             text = stringResource(R.string.cbu),
                             style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.primary
+                            color = MaterialTheme.colorScheme.secondary
                         )
                         Text(
                             text = uiState.wallet?.cbu ?: "",
@@ -112,11 +113,6 @@ fun ProfileScreen(
                     }
 
                     Column {
-                        Text(
-                            text = stringResource(R.string.alias),
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.primary
-                        )
                         Column {
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
@@ -124,6 +120,11 @@ fun ProfileScreen(
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Column {
+                                    Text(
+                                        text = stringResource(R.string.alias),
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        color = MaterialTheme.colorScheme.secondary
+                                    )
                                     Text(
                                         text = uiState.wallet?.alias ?: "",
                                         style = MaterialTheme.typography.bodyLarge,
@@ -148,30 +149,23 @@ fun ProfileScreen(
                 }
             }
 
-            Button(
-                onClick = {
-                    viewModel.logout()
-                    onNavigateToLogin()
-                },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.error,
-                    contentColor = MaterialTheme.colorScheme.onError
-                ),
-                shape = RoundedCornerShape(10.dp)
-            ) {
-                Text(stringResource(R.string.forgot_password))
-            }
+            EndFormButton(
+                onClick = { },
+                textResourceId = R.string.reset_password
+            )
 
             Button(
                 onClick = { showLogoutDialog = true },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp),
+                shape = RoundedCornerShape(20.dp),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.error,
-                    contentColor = MaterialTheme.colorScheme.onError
-                ),
-                shape = RoundedCornerShape(10.dp)
+                    contentColor = MaterialTheme.colorScheme.onSecondary,
+                )
             ) {
-                Text(stringResource(R.string.exit))
+                Text(text = stringResource(R.string.sign_out))
             }
         }
 
@@ -192,7 +186,10 @@ fun ProfileScreen(
                 },
                 confirmButton = {
                     Button(
-                        onClick = { onNavigateToLogin() },
+                        onClick = {
+                            viewModel.logout()
+                            onNavigateToLogin()
+                        },
                         colors = ButtonDefaults.buttonColors(
                             containerColor = MaterialTheme.colorScheme.error,
                             contentColor = MaterialTheme.colorScheme.onError

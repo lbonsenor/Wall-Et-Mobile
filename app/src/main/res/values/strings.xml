@@ -135,5 +135,7 @@
     <string name="new_alias">Nuevo alias</string>
     <string name="update">Actualizar</string>
     <string name="sign_out">Cerrar sesión</string>
+    <string name="reset_password">Resetear contraseña</string>
+    <string name="account">Cuenta</string>
 
 </resources>

@@ -116,4 +116,6 @@
     <string name="new_alias">New alias</string>
     <string name="update">Update</string>
     <string name="sign_out">Sing out</string>
+    <string name="reset_password">Reset password</string>
+    <string name="account">Account</string>
 </resources>
