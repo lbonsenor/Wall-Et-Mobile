@@ -131,7 +131,10 @@ fun ProfileScreen(
                                     )
                                 }
                                 IconButton(
-                                    onClick = { showAliasDialog = true }
+                                    onClick = { 
+                                        newAlias = uiState.wallet?.alias ?: ""
+                                        showAliasDialog = true
+                                    }
                                 ) {
                                     Icon(
                                         Icons.Default.Edit,
