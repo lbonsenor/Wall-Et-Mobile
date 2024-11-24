@@ -29,6 +29,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -107,8 +108,8 @@ fun SelectDestinataryScreen(
             colors = ButtonColors(
                 containerColor = MaterialTheme.colorScheme.secondary,
                 contentColor = MaterialTheme.colorScheme.onSecondary,
-                disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant,
-                disabledContentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                disabledContainerColor = Color.Gray.copy(0.7f),
+                disabledContentColor = MaterialTheme.colorScheme.onBackground.copy(0.5f)
             ),
             shape = RoundedCornerShape(10.dp),
             enabled = contactValue.isNotEmpty() && isValidEmail(contactValue),
@@ -232,8 +233,8 @@ fun SelectDestinataryScreenLandscape(
                     colors = ButtonColors(
                         containerColor = MaterialTheme.colorScheme.secondary,
                         contentColor = MaterialTheme.colorScheme.onSecondary,
-                        disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant,
-                        disabledContentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                        disabledContainerColor = Color.Gray.copy(0.7f),
+                        disabledContentColor = MaterialTheme.colorScheme.onBackground.copy(0.5f)
                     ),
                     shape = RoundedCornerShape(10.dp),
                     enabled = contactValue.isNotEmpty() && isValidEmail(contactValue),
