@@ -7,8 +7,15 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.FabPosition
 import androidx.compose.material.Scaffold
 import androidx.compose.material3.MaterialTheme
@@ -141,18 +148,12 @@ fun ScaffoldPortrait(
     val statusBarColor = MaterialTheme.colorScheme.primary
     val systemNavColor = MaterialTheme.colorScheme.primary
 
-    val scope = rememberCoroutineScope()
-    val snackbarHostState = remember { SnackbarHostState() }
-
     SideEffect {
         systemUiController.setStatusBarColor(statusBarColor)
         systemUiController.setNavigationBarColor(systemNavColor)
     }
     
     Scaffold (
-        snackbarHost = {
-            SnackbarHost(hostState = snackbarHostState)
-        },
         bottomBar = {
             when (currentRoute(navController)) {
                 Home.route -> CustomAppBar(navController)
@@ -263,7 +264,6 @@ fun ScaffoldLandscape(
     }
 
     Scaffold2(
-
     )
     { innerPadding ->
         Row {
@@ -274,16 +274,82 @@ fun ScaffoldLandscape(
                 SeeMore.route -> NavBarLandscape(navController, qrScanner)
                 else -> {}
             }
-            LandscapeAppNavHost(
-                innerPadding = innerPadding,
-                modifier = Modifier,
-                navController = navController,
-                startDestination = startDestination,
-                onThemeChanged = onThemeChanged,
-                onLanguageChanged = onLanguageChanged,
-                qrScanner = qrScanner
-            )
+            Column(
+            ) {
+                val route = currentRoute(navController)?.split("/")?.first()
 
+                val noTopBarRoutes = listOf(
+                    Home.route,
+                    Screen.Login.route,
+                    Screen.Signup.route,
+                    Screen.SignUpSuccess.route,
+                    Screen.ForgotPassword.route,
+                    Screen.EmailVerification.route,
+                    Screen.PasswordVerification.route,
+                    Screen.NewPassword.route,
+                    Screen.PasswordSuccess.route,
+                    Screen.Cards.route,
+                    Screen.Activities.route,
+                    Screen.SeeMore.route,
+                )
+
+                val navBarRoutes = listOf(
+                    Home.route,
+                    Cards.route,
+                    Activities.route,
+                    SeeMore.route
+                )
+
+                if (!noTopBarRoutes.contains(route)) {
+                    when (route) {
+                        Cards.route -> SecondaryTopAppBarLandscape(
+                            canGoBack = false,
+                            onBackClick = { navController.navigateUp() },
+                            title = stringResource(R.string.title_cards)
+                        )
+
+                        Activities.route -> SecondaryTopAppBarLandscape(
+                            canGoBack = false,
+                            onBackClick = { navController.navigateUp() },
+                            title = stringResource(R.string.title_activity)
+                        )
+
+                        Screen.Profile.route -> SecondaryTopAppBarLandscape(
+                            canGoBack = true,
+                            onBackClick = { navController.navigateUp() },
+                            title = stringResource(R.string.account)
+                        )
+
+                        SeeMore.route -> SecondaryTopAppBarLandscape(
+                            canGoBack = false,
+                            onBackClick = { navController.navigateUp() },
+                            title = stringResource(R.string.see_more)
+                        )
+
+                        else -> {
+                            val canGoBack =
+                                navController.previousBackStackEntry != null && !navBarRoutes.contains(
+                                    route
+                                )
+
+                            SecondaryTopAppBarLandscape(
+                                canGoBack = canGoBack,
+                                onBackClick = { navController.navigateUp() },
+                                title = stringResource(getScreen(route ?: "").labelInt)
+                            )
+                        }
+                    }
+                }
+                LandscapeAppNavHost(
+                    innerPadding = innerPadding,
+                    modifier = Modifier,
+                    navController = navController,
+                    startDestination = startDestination,
+                    onThemeChanged = onThemeChanged,
+                    onLanguageChanged = onLanguageChanged,
+                    qrScanner = qrScanner
+                )
+            }
         }
     }
 }
