@@ -58,6 +58,10 @@ class LoginViewModel(
         }
     }
 
+    fun clearError() {
+        uiState = uiState.copy(error = null)
+    }
+
     companion object {
         const val TAG = "UI Layer"
 
