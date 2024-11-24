@@ -162,5 +162,6 @@
     <string name="debit_card">Tarjeta de Débito</string>
     <string name="your_name">TU NOMBRE</string>
     <string name="expires">Expira en</string>
+    <string name="swipe_to_delete_card">Desliza la tarjeta a la derecha para eliminarla</string>
 
 </resources>
