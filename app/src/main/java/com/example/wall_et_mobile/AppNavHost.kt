@@ -115,7 +115,7 @@ fun AppNavHost(
             }
             composable(Screen.Profile.route) {
                 ProfileScreen(
-                    onNavigateToLogin = { navigateToLogin(navController) }
+                    onNavigateToLogin = { navigateToLogin(navController) },
                 )
             }
             composable(Screen.Transfer.route) {

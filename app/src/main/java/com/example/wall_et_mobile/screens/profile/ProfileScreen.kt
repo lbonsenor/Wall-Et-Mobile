@@ -334,8 +334,9 @@ fun ProfileScreen(
             dismissButton = {
                 TextButton(
                     onClick = {
-                        showAliasDialog = false
-                        newAlias = ""
+                        showResetPassword = false
+                        newPassword = ""
+                        confirmPassword = ""
                     }
                 ) {
                     Text(
