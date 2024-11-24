@@ -50,7 +50,6 @@ class MainActivity : ComponentActivity() {
         languagePreference = LanguagePreference(applicationContext)
         sessionManager = (applicationContext as MyApplication).sessionManager
 
-        // Set initial locale
         val locale = Locale(languagePreference.getLanguage())
         val config = resources.configuration
         config.setLocale(locale)
