@@ -419,8 +419,10 @@ private fun PaymentMethodDisplay(paymentType: PaymentType, cardDigits: String?, 
             contentDescription = null,
             tint = MaterialTheme.colorScheme.secondary,
             modifier = Modifier
+                .size(50.dp)
                 .border(2.dp, MaterialTheme.colorScheme.surfaceVariant, shape = CircleShape)
                 .padding(10.dp)
+            ,
         )
 
         Column {
@@ -436,7 +438,7 @@ private fun PaymentMethodDisplay(paymentType: PaymentType, cardDigits: String?, 
 
             if (paymentType == PaymentType.CARD && cardDigits != null) {
                 Text(
-                    text = "${stringResource(R.string.card_number_finish)} cardDigits",
+                    text = "${stringResource(R.string.card_number_finish)} ${cardDigits}",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -444,7 +446,7 @@ private fun PaymentMethodDisplay(paymentType: PaymentType, cardDigits: String?, 
 
             if (paymentType == PaymentType.BALANCE) {
                 Text(
-                    text = "$${balance}",
+                    text = "$${balance} ${stringResource(R.string.available_balance)}",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
