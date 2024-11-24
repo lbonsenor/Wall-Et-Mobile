@@ -35,7 +35,8 @@ fun AppNavHost(
     modifier: Modifier,
     navController: NavHostController,
     startDestination: String = Screen.Login.route,
-    onThemeChanged: (ThemeMode) -> Unit
+    onThemeChanged: (ThemeMode) -> Unit,
+    onLanguageChanged: (String) -> Unit
 ){
     NavHost(
         navController = navController,
@@ -97,7 +98,7 @@ fun AppNavHost(
                 SeeMoreScreen(
                     innerPadding = innerPadding,
                     onThemeChanged = onThemeChanged,
-                    onLanguageChanged = { /* TODO: Implement language change */ }
+                    onLanguageChanged = onLanguageChanged
                 )
             }
             composable(Screen.Profile.route) {
@@ -169,7 +170,8 @@ fun LandscapeAppNavHost(
     modifier: Modifier,
     navController: NavHostController,
     startDestination: String = Screen.Login.route,
-    onThemeChanged: (ThemeMode) -> Unit
+    onThemeChanged: (ThemeMode) -> Unit,
+    onLanguageChanged: (String) -> Unit
 ){
     NavHost(
         navController = navController,
@@ -232,7 +234,7 @@ fun LandscapeAppNavHost(
                 SeeMoreScreen(
                     innerPadding = innerPadding,
                     onThemeChanged = onThemeChanged,
-                    onLanguageChanged = { /* TODO: Implement language change */ }
+                    onLanguageChanged = onLanguageChanged
                 )
             }
             composable(Screen.Profile.route) {

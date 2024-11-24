@@ -1,11 +1,10 @@
 package com.example.wall_et_mobile
 
-//noinspection UsingMaterialAndMaterial3Libraries
-//noinspection UsingMaterialAndMaterial3Libraries
 import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.systemBarsPadding
@@ -15,14 +14,15 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.wall_et_mobile.data.model.Screen
@@ -30,18 +30,29 @@ import com.example.wall_et_mobile.data.model.Screen.Activities
 import com.example.wall_et_mobile.data.model.Screen.Cards
 import com.example.wall_et_mobile.data.model.Screen.Home
 import com.example.wall_et_mobile.data.model.Screen.SeeMore
+import com.example.wall_et_mobile.data.preferences.LanguagePreference
 import com.example.wall_et_mobile.data.preferences.ThemePreference
 import com.example.wall_et_mobile.ui.theme.WallEtTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import java.util.Locale
 import androidx.compose.material3.Scaffold as Scaffold2
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 class MainActivity : ComponentActivity() {
     private lateinit var themePreference: ThemePreference
+    private lateinit var languagePreference: LanguagePreference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         themePreference = ThemePreference(applicationContext)
+        languagePreference = LanguagePreference(applicationContext)
+
+        // Set initial locale
+        val locale = Locale(languagePreference.getLanguage())
+        val config = resources.configuration
+        config.setLocale(locale)
+        resources.updateConfiguration(config, resources.displayMetrics)
 
         setContent {
             val (orientation, setOrientation) = remember { mutableIntStateOf(Configuration.ORIENTATION_PORTRAIT) }
@@ -78,6 +89,14 @@ class MainActivity : ComponentActivity() {
                         onThemeChanged = { newTheme ->
                             themePreference.setThemeMode(newTheme)
                             currentTheme.value = newTheme
+                        },
+                        onLanguageChanged = { newLanguage ->
+                            languagePreference.setLanguage(newLanguage)
+                            val newLocale = Locale(newLanguage)
+                            val newConfig = resources.configuration
+                            newConfig.setLocale(newLocale)
+                            resources.updateConfiguration(newConfig, resources.displayMetrics)
+                            recreate()
                         }
                     )
                     else -> ScaffoldLandscape(
@@ -86,6 +105,14 @@ class MainActivity : ComponentActivity() {
                         onThemeChanged = { newTheme ->
                             themePreference.setThemeMode(newTheme)
                             currentTheme.value = newTheme
+                        },
+                        onLanguageChanged = { newLanguage ->
+                            languagePreference.setLanguage(newLanguage)
+                            val newLocale = Locale(newLanguage)
+                            val newConfig = resources.configuration
+                            newConfig.setLocale(newLocale)
+                            resources.updateConfiguration(newConfig, resources.displayMetrics)
+                            recreate()
                         }
                     )
                 }
@@ -95,7 +122,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun ScaffoldPortrait(navController: NavHostController, qrScanner: QRScanner, onThemeChanged: (ThemeMode) -> Unit){
+fun ScaffoldPortrait(navController: NavHostController, qrScanner: QRScanner, onThemeChanged: (ThemeMode) -> Unit, onLanguageChanged: (String) -> Unit) {
     val systemUiController = rememberSystemUiController()
 
     val statusBarColor = MaterialTheme.colorScheme.primary
@@ -185,12 +212,12 @@ fun ScaffoldPortrait(navController: NavHostController, qrScanner: QRScanner, onT
         modifier = Modifier.systemBarsPadding()
 
     ) { innerPadding ->
-        AppNavHost(innerPadding, modifier = Modifier, navController = navController, onThemeChanged = onThemeChanged)
+        AppNavHost(innerPadding, modifier = Modifier, navController = navController, onThemeChanged = onThemeChanged, onLanguageChanged = onLanguageChanged)
     }
 }
 
 @Composable
-fun ScaffoldLandscape(navController: NavHostController, qrScanner: QRScanner, onThemeChanged: (ThemeMode) -> Unit){
+fun ScaffoldLandscape(navController: NavHostController, qrScanner: QRScanner, onThemeChanged: (ThemeMode) -> Unit, onLanguageChanged: (String) -> Unit) {
     val systemUiController = rememberSystemUiController()
 
     val statusBarColor = MaterialTheme.colorScheme.primary
@@ -212,7 +239,7 @@ fun ScaffoldLandscape(navController: NavHostController, qrScanner: QRScanner, on
                 SeeMore.route -> NavBarLandscape(navController, qrScanner)
                 else -> {}
             }
-            LandscapeAppNavHost(innerPadding, modifier = Modifier, navController = navController, onThemeChanged = onThemeChanged)
+            LandscapeAppNavHost(innerPadding, modifier = Modifier, navController = navController, onThemeChanged = onThemeChanged, onLanguageChanged = onLanguageChanged)
         }
     }
 }
