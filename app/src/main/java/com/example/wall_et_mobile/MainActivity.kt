@@ -1,6 +1,7 @@
 package com.example.wall_et_mobile
 
 //noinspection UsingMaterialAndMaterial3Libraries
+import androidx.compose.foundation.isSystemInDarkTheme
 //noinspection UsingMaterialAndMaterial3Libraries
 import android.content.res.Configuration
 import android.os.Bundle
@@ -16,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
@@ -35,13 +37,17 @@ import java.util.Locale
 import androidx.compose.material3.Scaffold as Scaffold2
 
 class MainActivity : ComponentActivity() {
+    private lateinit var themePreference: ThemePreference
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        themePreference = ThemePreference(applicationContext)
+
         setContent {
             val (orientation, setOrientation) = remember { mutableIntStateOf(Configuration.ORIENTATION_PORTRAIT) }
             val configuration = LocalConfiguration.current
             val navController = rememberNavController()
+            var currentTheme by remember { mutableStateOf(themePreference.getThemeMode()) }
 
             LaunchedEffect(configuration) {
                 snapshotFlow { configuration.orientation }
@@ -57,19 +63,38 @@ class MainActivity : ComponentActivity() {
                 }
             }
 
-            WallEtTheme {
-                when (orientation){
-                    Configuration.ORIENTATION_PORTRAIT -> ScaffoldPortrait(navController, qrScanner)
-                    else -> ScaffoldLandscape(navController, qrScanner)
+            WallEtTheme(
+                darkTheme = when (currentTheme) {
+                    ThemeMode.LIGHT -> false
+                    ThemeMode.DARK -> true
+                    ThemeMode.SYSTEM -> isSystemInDarkTheme()
                 }
-
+            ) {
+                when (orientation) {
+                    Configuration.ORIENTATION_PORTRAIT -> ScaffoldPortrait(
+                        navController = navController,
+                        qrScanner = qrScanner,
+                        onThemeChanged = { newTheme ->
+                            themePreference.setThemeMode(newTheme)
+                            currentTheme = newTheme
+                        }
+                    )
+                    else -> ScaffoldLandscape(
+                        navController = navController,
+                        qrScanner = qrScanner,
+                        onThemeChanged = { newTheme ->
+                            themePreference.setThemeMode(newTheme)
+                            currentTheme = newTheme
+                        }
+                    )
+                }
             }
         }
     }
 }
 
 @Composable
-fun ScaffoldPortrait(navController: NavHostController, qrScanner: QRScanner){
+fun ScaffoldPortrait(navController: NavHostController, qrScanner: QRScanner, onThemeChanged: (ThemeMode) -> Unit){
     val systemUiController = rememberSystemUiController()
 
     val statusBarColor = MaterialTheme.colorScheme.background
@@ -159,12 +184,12 @@ fun ScaffoldPortrait(navController: NavHostController, qrScanner: QRScanner){
         modifier = Modifier.systemBarsPadding()
 
     ) { innerPadding ->
-        AppNavHost(innerPadding, modifier = Modifier, navController = navController)
+        AppNavHost(innerPadding, modifier = Modifier, navController = navController, onThemeChanged = onThemeChanged)
     }
 }
 
 @Composable
-fun ScaffoldLandscape(navController: NavHostController, qrScanner: QRScanner){
+fun ScaffoldLandscape(navController: NavHostController, qrScanner: QRScanner, onThemeChanged: (ThemeMode) -> Unit){
     val systemUiController = rememberSystemUiController()
 
     val statusBarColor = MaterialTheme.colorScheme.primary
@@ -186,7 +211,7 @@ fun ScaffoldLandscape(navController: NavHostController, qrScanner: QRScanner){
                 SeeMore.route -> NavBarLandscape(navController, qrScanner)
                 else -> {}
             }
-            LandscapeAppNavHost(innerPadding, modifier = Modifier, navController = navController)
+            LandscapeAppNavHost(innerPadding, modifier = Modifier, navController = navController, onThemeChanged = onThemeChanged)
         }
     }
 }
