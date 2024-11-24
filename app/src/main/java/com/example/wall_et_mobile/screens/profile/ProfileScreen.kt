@@ -1,5 +1,6 @@
 package com.example.wall_et_mobile.screens.profile
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -11,6 +12,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -31,6 +33,8 @@ fun ProfileScreen(
     var showLogoutDialog by remember { mutableStateOf(false) }
     var showAliasDialog by remember { mutableStateOf(false) }
     var newAlias by remember { mutableStateOf("") }
+    val configuration = LocalConfiguration.current
+    val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
     LaunchedEffect(uiState.isAuthenticated) {
         if (!uiState.isAuthenticated) {
@@ -51,84 +55,91 @@ fun ProfileScreen(
         )
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-            .padding(16.dp)
-            .verticalScroll(rememberScrollState()),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        if (uiState.isFetching) {
-            CircularProgressIndicator(color = MaterialTheme.colorScheme.secondary)
-        } else {
-            Card(
-                shape = RoundedCornerShape(20.dp),
-                elevation = CardDefaults.cardElevation(defaultElevation = 10.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.background
-                ),
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(16.dp)
+    if (isLandscape) {
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background)
+                .padding(64.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            if (uiState.isFetching) {
+                CircularProgressIndicator(color = MaterialTheme.colorScheme.secondary)
+            } else {
+                Card(
+                    modifier = Modifier.weight(0.6f),
+                    shape = RoundedCornerShape(20.dp),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 10.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.background
+                    ),
                 ) {
-                    Column {
-                        Text(
-                            text = stringResource(R.string.name),
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.secondary
-                        )
-                        Text(
-                            text = uiState.user?.name ?: "",
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
-                    }
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(24.dp)
+                        ) {
+                            // Name
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    text = stringResource(R.string.name),
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = MaterialTheme.colorScheme.secondary
+                                )
+                                Text(
+                                    text = uiState.user?.name ?: "",
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    color = MaterialTheme.colorScheme.onSurface
+                                )
+                            }
+                
+                            // Last Name
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    text = stringResource(R.string.last_name),
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = MaterialTheme.colorScheme.secondary
+                                )
+                                Text(
+                                    text = uiState.user?.lastName ?: "",
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    color = MaterialTheme.colorScheme.onSurface
+                                )
+                            }
+                        }
 
-                    Column {
-                        Text(
-                            text = stringResource(R.string.last_name),
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.secondary
-                        )
-                        Text(
-                            text = uiState.user?.lastName ?: "",
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
-                    }
+                        Column {
+                            Text(
+                                text = stringResource(R.string.email),
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.secondary
+                            )
+                            Text(
+                                text = uiState.user?.email ?: "",
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                        }
 
-                    Column {
-                        Text(
-                            text = stringResource(R.string.email),
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.secondary
-                        )
-                        Text(
-                            text = uiState.user?.email ?: "",
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
-                    }
+                        Column {
+                            Text(
+                                text = stringResource(R.string.cbu),
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.secondary
+                            )
+                            Text(
+                                text = uiState.wallet?.cbu ?: "",
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                        }
 
-                    Column {
-                        Text(
-                            text = stringResource(R.string.cbu),
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.secondary
-                        )
-                        Text(
-                            text = uiState.wallet?.cbu ?: "",
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
-                    }
-
-                    Column {
                         Column {
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
@@ -163,102 +174,244 @@ fun ProfileScreen(
                         }
                     }
                 }
-            }
 
-            EndFormButton(
-                onClick = { },
-                textResourceId = R.string.reset_password
-            )
-
-            Button(
-                onClick = { showLogoutDialog = true },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(50.dp),
-                shape = RoundedCornerShape(20.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.error,
-                    contentColor = MaterialTheme.colorScheme.onSecondary,
-                )
-            ) {
-                Text(text = stringResource(R.string.log_out))
-            }
-        }
-
-        if (showLogoutDialog) {
-            ConfirmationDialog(
-                title = stringResource(R.string.log_out),
-                text = stringResource(R.string.log_out_confirmation),
-                onConfirm = {
-                    showLogoutDialog = false
-                    viewModel.logout()
-                    onNavigateToLogin()
-                },
-                onDismiss = { showLogoutDialog = false },
-                confirmText = stringResource(R.string.exit),
-                dismissText = stringResource(android.R.string.cancel)
-            )
-        }
-
-        if (showAliasDialog) {
-            AlertDialog(
-                onDismissRequest = {
-                    showAliasDialog = false
-                    newAlias = ""
-                },
-                title = {
-                    Text(
-                        text = stringResource(R.string.modify_alias),
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                },
-                text = {
-                    OutlinedTextField(
-                        value = newAlias,
-                        onValueChange = { newAlias = it },
-                        label = { Text(stringResource(R.string.new_alias)) },
-                        singleLine = true,
+                Column(
+                    modifier = Modifier
+                        .weight(0.4f)
+                        .padding(vertical = 16.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    EndFormButton(
+                        onClick = { },
+                        textResourceId = R.string.reset_password,
                         modifier = Modifier.fillMaxWidth()
                     )
-                },
-                confirmButton = {
+
                     Button(
-                        onClick = {
-                            if (newAlias.isNotEmpty()) {
-                                viewModel.updateAlias(newAlias)
-                                showAliasDialog = false
-                                newAlias = ""
-                            }
-                        },
+                        onClick = { showLogoutDialog = true },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(50.dp),
+                        shape = RoundedCornerShape(20.dp),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.secondary
+                            containerColor = MaterialTheme.colorScheme.error,
+                            contentColor = MaterialTheme.colorScheme.onSecondary,
                         )
                     ) {
-                        Text(stringResource(R.string.update))
+                        Text(text = stringResource(R.string.log_out))
                     }
-                },
-                dismissButton = {
-                    TextButton(
-                        onClick = {
+                }
+            }
+        }
+    } else {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background)
+                .padding(16.dp)
+                .verticalScroll(rememberScrollState()),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            if (uiState.isFetching) {
+                CircularProgressIndicator(color = MaterialTheme.colorScheme.secondary)
+            } else {
+                Card(
+                    shape = RoundedCornerShape(20.dp),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 10.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.background
+                    ),
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp),
+                        verticalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        Column {
+                            Text(
+                                text = stringResource(R.string.name),
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.secondary
+                            )
+                            Text(
+                                text = uiState.user?.name ?: "",
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                        }
+
+                        Column {
+                            Text(
+                                text = stringResource(R.string.last_name),
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.secondary
+                            )
+                            Text(
+                                text = uiState.user?.lastName ?: "",
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                        }
+
+                        Column {
+                            Text(
+                                text = stringResource(R.string.email),
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.secondary
+                            )
+                            Text(
+                                text = uiState.user?.email ?: "",
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                        }
+
+                        Column {
+                            Text(
+                                text = stringResource(R.string.cbu),
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.secondary
+                            )
+                            Text(
+                                text = uiState.wallet?.cbu ?: "",
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                        }
+
+                        Column {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Column {
+                                    Text(
+                                        text = stringResource(R.string.alias),
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        color = MaterialTheme.colorScheme.secondary
+                                    )
+                                    Text(
+                                        text = uiState.wallet?.alias ?: "",
+                                        style = MaterialTheme.typography.bodyLarge,
+                                        color = MaterialTheme.colorScheme.onSurface
+                                    )
+                                }
+                                IconButton(
+                                    onClick = { 
+                                        newAlias = uiState.wallet?.alias ?: ""
+                                        showAliasDialog = true
+                                    }
+                                ) {
+                                    Icon(
+                                        Icons.Default.Edit,
+                                        contentDescription = "Edit alias",
+                                        tint = MaterialTheme.colorScheme.secondary
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+
+                EndFormButton(
+                    onClick = { },
+                    textResourceId = R.string.reset_password
+                )
+
+                Button(
+                    onClick = { showLogoutDialog = true },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(50.dp),
+                    shape = RoundedCornerShape(20.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.error,
+                        contentColor = MaterialTheme.colorScheme.onSecondary,
+                    )
+                ) {
+                    Text(text = stringResource(R.string.log_out))
+                }
+            }
+        }
+    }
+
+    if (showLogoutDialog) {
+        ConfirmationDialog(
+            title = stringResource(R.string.log_out),
+            text = stringResource(R.string.log_out_confirmation),
+            onConfirm = {
+                showLogoutDialog = false
+                viewModel.logout()
+                onNavigateToLogin()
+            },
+            onDismiss = { showLogoutDialog = false },
+            confirmText = stringResource(R.string.exit),
+            dismissText = stringResource(android.R.string.cancel)
+        )
+    }
+
+    if (showAliasDialog) {
+        AlertDialog(
+            onDismissRequest = {
+                showAliasDialog = false
+                newAlias = ""
+            },
+            title = {
+                Text(
+                    text = stringResource(R.string.modify_alias),
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            },
+            text = {
+                OutlinedTextField(
+                    value = newAlias,
+                    onValueChange = { newAlias = it },
+                    label = { Text(stringResource(R.string.new_alias)) },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        if (newAlias.isNotEmpty()) {
+                            viewModel.updateAlias(newAlias)
                             showAliasDialog = false
                             newAlias = ""
                         }
-                    ) {
-                        Text(
-                            stringResource(android.R.string.cancel),
-                            color = MaterialTheme.colorScheme.secondary
-                        )
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.secondary
+                    )
+                ) {
+                    Text(stringResource(R.string.update))
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = {
+                        showAliasDialog = false
+                        newAlias = ""
                     }
-                },
-                containerColor = MaterialTheme.colorScheme.surface,
-                shape = RoundedCornerShape(16.dp)
-            )
-        }
+                ) {
+                    Text(
+                        stringResource(android.R.string.cancel),
+                        color = MaterialTheme.colorScheme.secondary
+                    )
+                }
+            },
+            containerColor = MaterialTheme.colorScheme.surface,
+            shape = RoundedCornerShape(16.dp)
+        )
     }
 }
 
 @Preview
 @Composable
-fun ProfilePreview(){
+fun ProfilePreview() {
     ProfileScreen(onNavigateToLogin = {})
 }
