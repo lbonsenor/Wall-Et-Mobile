@@ -1,5 +1,7 @@
 package com.example.wall_et_mobile
 
+//noinspection UsingMaterialAndMaterial3Libraries
+//noinspection UsingMaterialAndMaterial3Libraries
 import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -7,9 +9,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.systemBarsPadding
-//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.FabPosition
-//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.Scaffold
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -21,6 +21,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.wall_et_mobile.data.model.Screen
@@ -48,6 +49,13 @@ class MainActivity : ComponentActivity() {
             }
 
             var qrScanner = QRScanner(appContext = applicationContext)
+            var qrResults = qrScanner.barCodeResults.collectAsStateWithLifecycle()
+
+            LaunchedEffect(qrResults.value) {
+                if (qrResults.value != null) {
+                    navigateTo(navController, Screen.SeeMore.route)
+                }
+            }
 
             WallEtTheme {
                 when (orientation){
