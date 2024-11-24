@@ -190,8 +190,8 @@ fun ProfileScreen(
                 title = stringResource(R.string.log_out),
                 text = stringResource(R.string.log_out_confirmation),
                 onConfirm = {
+                    showLogoutDialog = false
                     viewModel.logout()
-                    onNavigateToLogin()
                 },
                 onDismiss = { showLogoutDialog = false },
                 confirmText = stringResource(R.string.exit),

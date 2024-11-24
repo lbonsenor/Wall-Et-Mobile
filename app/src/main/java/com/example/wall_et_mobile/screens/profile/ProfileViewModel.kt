@@ -77,11 +77,19 @@ class ProfileViewModel(
             )
         }
     }
-    
-    fun logout() = runOnViewModelScope(
-        { userRepository.logout() },
-        { state, _ -> state.copy(isAuthenticated = false) }
-    )
+
+    fun logout() = viewModelScope.launch {
+        try {
+            uiState = uiState.copy(isFetching = true, error = null)
+            userRepository.logout()
+            uiState = uiState.copy(isAuthenticated = false, isFetching = false)
+        } catch (e: Exception) {
+            uiState = uiState.copy(
+                isFetching = false,
+                error = handleError(e)
+            )
+        }
+    }
 
     private fun <R> runOnViewModelScope(
         block: suspend () -> R,
