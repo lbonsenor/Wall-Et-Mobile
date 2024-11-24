@@ -36,7 +36,7 @@ fun SeeMoreScreen(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         SettingsItem(
-            icon = painterResource(R.drawable.ic_launcher_foreground),
+            icon = painterResource(R.drawable.android),
             title = stringResource(R.string.theme),
             onClick = { showThemeDialog = true }
         )
@@ -78,7 +78,7 @@ fun SeeMoreScreen(
                         }
                     )
                     ThemeOption(
-                        icon = painterResource(R.drawable.ic_launcher_foreground),
+                        icon = painterResource(R.drawable.android),
                         text = stringResource(R.string.system_default),
                         onClick = {
                             onThemeChanged(ThemeMode.SYSTEM)
