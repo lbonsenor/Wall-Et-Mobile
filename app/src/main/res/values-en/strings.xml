@@ -50,7 +50,7 @@
     <string name="invest">Invest</string>
     <string name="destinatary">Destinatary</string>
     <string name="amount">Amount</string>
-    <string name="payment_method">Method</string>
+    <string name="payment_method">Payment Method</string>
     <string name="search_contact">Search contact</string>
     <string name="continue_button">Continue</string>
     <string name="error">Error</string>
