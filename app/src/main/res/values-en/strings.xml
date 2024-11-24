@@ -2,8 +2,8 @@
 <resources>
     <string name="title_home">Home</string>
     <string name="title_add_fund">Top-Up</string>
-    <string name="subtitle_recent_activities">Recent Activities</string>
-    <string name="see_more">See More</string>
+    <string name="subtitle_recent_activities">Recent activities</string>
+    <string name="see_more">See more</string>
     <string name="greeting">"Hello, "</string>
     <string name="title_cards">Cards</string>
     <string name="debit">Debit</string>
@@ -11,7 +11,7 @@
     <string name="edit">Edit</string>
     <string name="title_activity">Activity</string>
     <string name="choose_dates">Choose date/s</string>
-    <string name="offline_payment">On-Site payment</string>
+    <string name="offline_payment">On-site payment</string>
     <string name="transfer_received">Transfer received</string>
     <string name="transfer_sent">Transfer sent</string>
     <string name="card">Card</string>
@@ -22,12 +22,12 @@
     <string name="recent_contacts">Recent</string>
     <string name="favorite_contacts">Favorites</string>
     <string name="title_profile">Profile</string>
-    <string name="update_profile">Update Profile</string>
+    <string name="update_profile">Update profile</string>
     <string name="notifications">Notifications</string>
     <string name="language">Language</string>
     <string name="faq">FAQ</string>
-    <string name="dark_mode">Dark Mode</string>
-    <string name="light_mode">Light Mode</string>
+    <string name="dark_mode">Dark mode</string>
+    <string name="light_mode">Light mode</string>
     <string name="exit">Exit</string>
     <string name="add">Add</string>
     <string name="delete">Delete</string>
@@ -45,7 +45,7 @@
     <string name="balance">Balance</string>
     <string name="last_year">Last year</string>
     <string name="max">All</string>
-    <string name="valid_thru">Valid Thru</string>
+    <string name="valid_thru">Valid thru</string>
     <string name="add_card">Add new card</string>
     <string name="invest">Invest</string>
     <string name="destinatary">Destinatary</string>
@@ -56,14 +56,14 @@
     <string name="error">Error</string>
     <string name="user_not_found">User doesn\'t exist</string>
     <string name="max_amount">Max. amount:</string>
-    <string name="wallet_balance">Wall · Et Balance</string>
+    <string name="wallet_balance">Wall · Et balance</string>
     <string name="welcome">Welcome to Wall · Et!</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="log_in">Log in</string>
     <string name="sign_up">Sign up</string>
     <string name="forgot_password">Forgot Password?</string>
-    <string name="name">First Name</string>
+    <string name="name">First name</string>
     <string name="username">Username</string>
     <string name="repeat_password">Repeat password</string>
     <string name="already_have_account">Already have an account?</string>
@@ -90,8 +90,8 @@
     <string name="add_funds_success">Funds added successfully!</string>
     <string name="delete_card">Delete card</string>
     <string name="delete_card_check">Are you sure you want to delete this card?</string>
-    <string name="last_name">Last Name</string>
-    <string name="verify_email">Verify Email</string>
+    <string name="last_name">Last name</string>
+    <string name="verify_email">Verify email</string>
     <string name="create_account">Create account</string>
     <string name="signup_to_continue">Sign up to continue</string>
     <string name="welcome_back">Welcome back to Wall · Et!</string>
@@ -139,9 +139,11 @@
     <string name="email_exists">There already is an account with the entered email</string>
     <string name="invalid_code">Incorrect code</string>
     <string name="invalid_alias">Invalid alias</string>
-    <string name="credit_card">Credit Card</string>
-    <string name="debit_card">Debit Card</string>
+    <string name="credit_card">Credit card</string>
+    <string name="debit_card">Debit card</string>
     <string name="your_name">YOUR NAME</string>
     <string name="expires">Expires</string>
     <string name="swipe_to_delete_card">Swipe card to right to delete</string>
+    <string name="no_activities">No activities available</string>
+    <string name="no_cards">No cards available</string>
 </resources>

@@ -4,8 +4,8 @@
     <string name="title_home">Inicio</string>
     <string name="action_send">Transferir</string>
     <string name="title_add_fund">Ingresar</string>
-    <string name="subtitle_recent_activities">Actividades Recientes</string>
-    <string name="see_more">Ver Más</string>
+    <string name="subtitle_recent_activities">Actividades recientes</string>
+    <string name="see_more">Ver más</string>
     <string name="greeting">Hola, </string>
 
 
@@ -46,12 +46,12 @@
 
     <!--    Profile    -->
     <string name="title_profile">Perfil</string>
-    <string name="update_profile">Actualizar Datos</string>
+    <string name="update_profile">Actualizar datos</string>
     <string name="notifications">Notificaciones</string>
     <string name="language">Idioma</string>
     <string name="faq">Preguntas Frecuentes</string>
-    <string name="dark_mode">Modo Oscuro</string>
-    <string name="light_mode">Modo Claro</string>
+    <string name="dark_mode">Modo oscuro</string>
+    <string name="light_mode">Modo claro</string>
 
     <!-- Registration and login -->
     <string name="welcome">¡Bienvenido a Wall · Et!</string>
@@ -75,15 +75,15 @@
     <string name="delete">Borrar</string>
     <string name="available_amount">Disponible</string>
     <string name="change">Cambiar</string>
-    <string name="balance">Saldo Disponible</string>
+    <string name="balance">Saldo disponible</string>
     <string name="last_year">Último año</string>
     <string name="max">Todo</string>
-    <string name="valid_thru">Válido Hasta</string>
+    <string name="valid_thru">Válido hasta</string>
     <string name="add_card">Agregar nueva tarjeta</string>
     <string name="invest">Invertir</string>
     <string name="destinatary">Destinatario</string>
     <string name="amount">Monto</string>
-    <string name="payment_method">Medio de Pago</string>
+    <string name="payment_method">Medio de pago</string>
     <string name="search_contact">Buscar contacto</string>
     <string name="continue_button">Continuar</string>
     <string name="error">Error</string>
@@ -158,10 +158,12 @@
     <string name="email_exists">Ya existe una cuenta con el correo asociado</string>
     <string name="invalid_code">Código incorrecto</string>
     <string name="invalid_alias">Alias inválido</string>
-    <string name="credit_card">Tarjeta de Crédito</string>
-    <string name="debit_card">Tarjeta de Débito</string>
+    <string name="credit_card">Tarjeta de crédito</string>
+    <string name="debit_card">Tarjeta de débito</string>
     <string name="your_name">TU NOMBRE</string>
     <string name="expires">Expira en</string>
     <string name="swipe_to_delete_card">Desliza la tarjeta a la derecha para eliminarla</string>
+    <string name="no_activities">No hay actividades disponibles</string>
+    <string name="no_cards">No hay tarjetas disponibles</string>
 
 </resources>
