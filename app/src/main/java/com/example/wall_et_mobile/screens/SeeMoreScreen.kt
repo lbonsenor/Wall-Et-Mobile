@@ -54,7 +54,7 @@ fun SeeMoreScreen(
             title = {
                 Text(
                     text = stringResource(R.string.theme),
-                    color = MaterialTheme.colorScheme.secondary
+                    color = MaterialTheme.colorScheme.onBackground
                 )
             },
             text = {
@@ -194,7 +194,7 @@ private fun ThemeOption(
             Text(
                 text = text,
                 style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.secondary
+                color = MaterialTheme.colorScheme.onBackground
             )
         }
     }
