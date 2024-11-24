@@ -39,8 +39,8 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             val (orientation, setOrientation) = remember { mutableIntStateOf(Configuration.ORIENTATION_PORTRAIT) }
-
             val configuration = LocalConfiguration.current
+            val navController = rememberNavController()
 
             LaunchedEffect(configuration) {
                 snapshotFlow { configuration.orientation }
@@ -48,9 +48,8 @@ class MainActivity : ComponentActivity() {
             }
 
             var qrScanner = QRScanner(appContext = applicationContext)
-            WallEtTheme {
-                val navController = rememberNavController()
 
+            WallEtTheme {
                 when (orientation){
                     Configuration.ORIENTATION_PORTRAIT -> ScaffoldPortrait(navController, qrScanner)
                     else -> ScaffoldLandscape(navController, qrScanner)
@@ -152,7 +151,7 @@ fun ScaffoldPortrait(navController: NavHostController, qrScanner: QRScanner){
         modifier = Modifier.systemBarsPadding()
 
     ) { innerPadding ->
-        AppNavHost(innerPadding, modifier = Modifier, navController)
+        AppNavHost(innerPadding, modifier = Modifier, navController = navController)
     }
 }
 
@@ -167,9 +166,8 @@ fun ScaffoldLandscape(navController: NavHostController, qrScanner: QRScanner){
         systemUiController.setStatusBarColor(statusBarColor)
         systemUiController.setNavigationBarColor(systemNavColor)
     }
-    Scaffold2(
 
-    )
+    Scaffold2()
     { innerPadding ->
         Row()
         {
@@ -180,7 +178,7 @@ fun ScaffoldLandscape(navController: NavHostController, qrScanner: QRScanner){
                 SeeMore.route -> NavBarLandscape(navController, qrScanner)
                 else -> {}
             }
-            LandscapeAppNavHost(innerPadding, modifier = Modifier, navController)
+            LandscapeAppNavHost(innerPadding, modifier = Modifier, navController = navController)
         }
     }
 }

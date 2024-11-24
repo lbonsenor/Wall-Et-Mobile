@@ -1,6 +1,5 @@
 package com.example.wall_et_mobile.components
 
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -35,8 +34,6 @@ fun ActivityListWithDates(activities: List<Transaction>){
         modifier = Modifier.verticalScroll(rememberScrollState())
     ) {
         groupedActivities.forEach { (date, activities) ->
-            Log.e("Date", date.toString())
-
             val dateStr =
                 date.toString().split(" ")[1] + " " +
                 date.toString().split(" ")[2] + " "
