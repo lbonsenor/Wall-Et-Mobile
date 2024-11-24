@@ -17,6 +17,6 @@ enum class FilterDateType (
     MAX(R.string.max, LocalDate.MIN);
 
     fun inRange(date: Date): Boolean{
-        return minDate.isBefore(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()) || minDate == date
+        return minDate.isBefore(date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()) || minDate.equals(date)
     }
 }
