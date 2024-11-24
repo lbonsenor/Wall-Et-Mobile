@@ -45,7 +45,6 @@ fun HomeScreen(
     onNavigateToTransfer: () -> Unit,
     onNavigateToActivity: () -> Unit,
     onNavigateToTopUp: () -> Unit,
-    onNavigateToLoginScreen: () -> Unit,
     onNavigateToProfile: () -> Unit,
     viewModel: HomeViewModel = viewModel(factory = HomeViewModel.provideFactory(LocalContext.current.applicationContext as MyApplication)),
 ) {

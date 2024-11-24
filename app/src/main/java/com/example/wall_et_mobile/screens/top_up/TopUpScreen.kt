@@ -2,7 +2,6 @@ package com.example.wall_et_mobile.screens.top_up
 
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -64,8 +63,6 @@ fun TopUpScreen(
             message = stringResource(R.string.add_funds_success),
             onDismiss = { showSuccess = false }
         )
-
-        Text(text = stringResource(R.string.add_funds), style = MaterialTheme.typography.titleLarge)
 
         TextField(
             supportingText = {Text("${stringResource(R.string.max_amount)} $6,000,000.00")},
