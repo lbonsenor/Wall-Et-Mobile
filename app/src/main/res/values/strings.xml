@@ -158,5 +158,9 @@
     <string name="email_exists">Ya existe una cuenta con el correo asociado</string>
     <string name="invalid_code">Código incorrecto</string>
     <string name="invalid_alias">Alias inválido</string>
+    <string name="credit_card">Tarjeta de Crédito</string>
+    <string name="debit_card">Tarjeta de Débito</string>
+    <string name="your_name">TU NOMBRE</string>
+    <string name="expires">Expira en</string>
 
 </resources>

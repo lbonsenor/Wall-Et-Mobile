@@ -2,20 +2,37 @@ package com.example.wall_et_mobile.components
 
 import android.content.res.Configuration
 import android.util.Log
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.AddCircle
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -25,10 +42,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.OffsetMapping
@@ -46,7 +66,7 @@ import com.example.wall_et_mobile.data.model.CardType
 fun AddCardDialog(
     showDialog: Boolean,
     onDismiss: () -> Unit,
-    onSubmit: (Card) -> Unit
+    onSubmit: (Card) -> Unit,
 ) {
     val configuration = LocalConfiguration.current
     val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
@@ -55,7 +75,7 @@ fun AddCardDialog(
     var fullName by remember { mutableStateOf("") }
     var cvv by remember { mutableStateOf("") }
     var expirationDate by remember { mutableStateOf("") }
-    var type by remember { mutableStateOf("") }
+    var isCredit by remember { mutableStateOf(false) }
 
     fun validateCardNumber(number: String): Boolean {
         return number.length == 16 && number.all { it.isDigit() }
@@ -72,15 +92,15 @@ fun AddCardDialog(
     fun validateExpirationDate(date: String): Boolean {
         if (date.length != 4) return false
         if (!date.all { it.isDigit() }) return false
-        
+
         val month = date.substring(0, 2).toInt()
         val year = date.substring(2, 4).toInt()
-        
+
         if (month < 1 || month > 12) return false
-        
+
         val currentYear = java.time.LocalDate.now().year % 100
         val currentMonth = java.time.LocalDate.now().monthValue
-        
+
         return when {
             year < currentYear -> false
             year == currentYear -> month >= currentMonth
@@ -89,10 +109,10 @@ fun AddCardDialog(
     }
 
     val isEnabled = remember(number, fullName, cvv, expirationDate) {
-        validateCardNumber(number) && 
-        validateCardHolder(fullName) && 
-        validateExpirationDate(expirationDate) && 
-        validateCvv(cvv)
+        validateCardNumber(number) &&
+        validateCardHolder(fullName) &&
+        validateExpirationDate(expirationDate) &&
+        validateCvv(cvv) && fullName.isNotBlank()
     }
 
     if (showDialog) {
@@ -102,179 +122,279 @@ fun AddCardDialog(
         ) {
             Card(
                 modifier = Modifier
-                    .fillMaxWidth(if (isLandscape) 0.6f else 0.95f),
-                shape = RoundedCornerShape(16.dp)
+                    .fillMaxWidth(if (isLandscape) 0.5f else 0.9f)
+                    .padding(vertical = 8.dp),
+                shape = RoundedCornerShape(28.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surface
+                ),
+                elevation = CardDefaults.cardElevation(defaultElevation = 6.dp)
             ) {
                 Column(
-                    modifier = Modifier.padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(24.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     Text(
                         text = stringResource(R.string.add_new_card),
                         style = MaterialTheme.typography.headlineSmall,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurface
                     )
-                    
-                    OutlinedTextField(
-                        value = number,
-                        onValueChange = { if (it.length <= 16) number = it },
-                        label = { Text(stringResource(R.string.card_number)) },
-                        maxLines = 1,
-                        modifier = Modifier.fillMaxWidth(),
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                        trailingIcon = { painterResource(R.drawable.credit_card) },
-                        isError = number.isNotEmpty() && !validateCardNumber(number),
-                        supportingText = {
-                            if (number.isNotEmpty() && !validateCardNumber(number)) {
-                                Text(
-                                    text = stringResource(R.string.card_number_error),
-                                    color = MaterialTheme.colorScheme.error
-                                )
-                            }
-                        },
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = MaterialTheme.colorScheme.secondary,
-                            focusedLabelColor = MaterialTheme.colorScheme.secondary,
-                            cursorColor = MaterialTheme.colorScheme.onBackground,
-                            focusedPlaceholderColor = MaterialTheme.colorScheme.onBackground.copy(0.8f),
-                            unfocusedPlaceholderColor = MaterialTheme.colorScheme.onBackground.copy(0.8f),
-                            unfocusedLabelColor = MaterialTheme.colorScheme.onBackground.copy(0.8f),
-                            errorBorderColor = MaterialTheme.colorScheme.error,
-                            errorLabelColor = MaterialTheme.colorScheme.error
-                        ),
-                        visualTransformation = CardNumberTransformation()
-                    )
+                    Surface(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(56.dp),
+                        shape = RoundedCornerShape(16.dp),
+                        color = Color.Transparent
+                    ) {
+                        Row(
+                            modifier = Modifier.fillMaxSize(),
+                            horizontalArrangement = Arrangement.SpaceEvenly,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            SelectableCardType(
+                                isCredit = isCredit,
+                                onSelectionChange = { isCredit = it },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 8.dp)
+                            )
+                        }
+                    }
 
-                    OutlinedTextField(
-                        value = fullName,
-                        onValueChange = { fullName = it },
-                        label = { Text(stringResource(R.string.card_holder)) },
-                        maxLines = 1,
-                        modifier = Modifier.fillMaxWidth(),
-                        singleLine = true,
-                        isError = fullName.isNotEmpty() && !validateCardHolder(fullName),
-                        supportingText = {
-                            if (fullName.isNotEmpty() && !validateCardHolder(fullName)) {
-                                Text(
-                                    text = stringResource(R.string.card_holder_error),
-                                    color = MaterialTheme.colorScheme.error
-                                )
-                            }
-                        },
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = MaterialTheme.colorScheme.secondary,
-                            focusedLabelColor = MaterialTheme.colorScheme.secondary,
-                            cursorColor = MaterialTheme.colorScheme.onBackground,
-                            focusedPlaceholderColor = MaterialTheme.colorScheme.onBackground.copy(0.8f),
-                            unfocusedPlaceholderColor = MaterialTheme.colorScheme.onBackground.copy(0.8f),
-                            unfocusedLabelColor = MaterialTheme.colorScheme.onBackground.copy(0.8f),
-                            errorBorderColor = MaterialTheme.colorScheme.error,
-                            errorLabelColor = MaterialTheme.colorScheme.error
-                        )
-                    )
+                    Surface(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(200.dp),
+                        shape = RoundedCornerShape(20.dp),
+                        color = MaterialTheme.colorScheme.secondaryContainer
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(20.dp)
+                        ) {
+                            Column(
+                                verticalArrangement = Arrangement.SpaceBetween,
+                                modifier = Modifier.fillMaxSize()
+                            ) {
+                                Row(
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    modifier = Modifier.fillMaxWidth()
+                                ) {
+                                    Text(
+                                        text = if (isCredit) stringResource(R.string.credit_card) else stringResource(R.string.debit_card),
+                                        style = MaterialTheme.typography.titleMedium,
+                                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                                    )
+                                    Icon(
+                                        painter = painterResource(R.drawable.credit_card),
+                                        contentDescription = null,
+                                        tint = MaterialTheme.colorScheme.onSecondaryContainer
+                                    )
+                                }
 
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                                Text(
+                                    text = number.ifEmpty { "****************" },
+                                    style = MaterialTheme.typography.headlineMedium,
+                                    fontFamily = FontFamily.Monospace,
+                                    color = MaterialTheme.colorScheme.onSecondaryContainer
+                                )
+
+                                Row(
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    modifier = Modifier.fillMaxWidth()
+                                ) {
+                                    Column {
+                                        Text(
+                                            text = stringResource(R.string.card_holder),
+                                            style = MaterialTheme.typography.labelSmall,
+                                            color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.7f)
+                                        )
+                                        Text(
+                                            text = fullName.ifEmpty { stringResource(R.string.your_name) },
+                                            style = MaterialTheme.typography.titleMedium,
+                                            color = MaterialTheme.colorScheme.onSecondaryContainer
+                                        )
+                                    }
+                                    Column {
+                                        Text(
+                                            text = stringResource(R.string.expires),
+                                            style = MaterialTheme.typography.labelSmall,
+                                            color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.7f)
+                                        )
+                                        Text(
+                                            text = if (expirationDate.length == 4)
+                                                "${expirationDate.substring(0,2)}/${expirationDate.substring(2,4)}"
+                                            else "MM/YY",
+                                            style = MaterialTheme.typography.titleMedium,
+                                            color = MaterialTheme.colorScheme.onSecondaryContainer
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    Column(
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
                         OutlinedTextField(
-                            value = expirationDate,
-                            onValueChange = { if (it.length <= 4) expirationDate = it },
-                            label = { Text(stringResource(R.string.card_date)) },
-                            maxLines = 1,
-                            modifier = Modifier.weight(1f),
+                            value = number,
+                            onValueChange = { if (it.length <= 16) number = it },
+                            label = { Text(stringResource(R.string.card_number)) },
+                            modifier = Modifier.fillMaxWidth(),
+                            shape = RoundedCornerShape(12.dp),
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                             singleLine = true,
-                            isError = expirationDate.isNotEmpty() && !validateExpirationDate(expirationDate),
-                            supportingText = {
-                                if (expirationDate.isNotEmpty() && !validateExpirationDate(expirationDate)) {
-                                    Text(
-                                        text = stringResource(R.string.expiration_date_error),
-                                        color = MaterialTheme.colorScheme.error
-                                    )
-                                }
-                            },
+                            visualTransformation = CardNumberTransformation(),
                             colors = OutlinedTextFieldDefaults.colors(
-                                focusedBorderColor = MaterialTheme.colorScheme.secondary,
-                                focusedLabelColor = MaterialTheme.colorScheme.secondary,
-                                cursorColor = MaterialTheme.colorScheme.onBackground,
-                                focusedPlaceholderColor = MaterialTheme.colorScheme.onBackground.copy(0.8f),
-                                unfocusedPlaceholderColor = MaterialTheme.colorScheme.onBackground.copy(0.8f),
-                                unfocusedLabelColor = MaterialTheme.colorScheme.onBackground.copy(0.8f),
-                                errorBorderColor = MaterialTheme.colorScheme.error,
-                                errorLabelColor = MaterialTheme.colorScheme.error
-                            ),
-                            visualTransformation = ExpirationDateTransformation()
+                                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                                focusedLabelColor = MaterialTheme.colorScheme.primary,
+                                unfocusedBorderColor = MaterialTheme.colorScheme.outline
+                            )
                         )
 
                         OutlinedTextField(
-                            value = cvv,
-                            onValueChange = { if (it.length <= 3) cvv = it },
-                            label = { Text("CVV") },
-                            maxLines = 1,
-                            modifier = Modifier.weight(1f),
-                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                            value = fullName,
+                            onValueChange = { fullName = it },
+                            label = { Text(stringResource(R.string.card_holder)) },
+                            modifier = Modifier.fillMaxWidth(),
+                            shape = RoundedCornerShape(12.dp),
                             singleLine = true,
-                            isError = cvv.isNotEmpty() && !validateCvv(cvv),
-                            supportingText = {
-                                if (cvv.isNotEmpty() && !validateCvv(cvv)) {
-                                    Text(
-                                        text = stringResource(R.string.cvv_error),
-                                        color = MaterialTheme.colorScheme.error
-                                    )
-                                }
-                            },
                             colors = OutlinedTextFieldDefaults.colors(
-                                focusedBorderColor = MaterialTheme.colorScheme.secondary,
-                                focusedLabelColor = MaterialTheme.colorScheme.secondary,
-                                cursorColor = MaterialTheme.colorScheme.onBackground,
-                                focusedPlaceholderColor = MaterialTheme.colorScheme.onBackground.copy(0.8f),
-                                unfocusedPlaceholderColor = MaterialTheme.colorScheme.onBackground.copy(0.8f),
-                                unfocusedLabelColor = MaterialTheme.colorScheme.onBackground.copy(0.8f),
-                                errorBorderColor = MaterialTheme.colorScheme.error,
-                                errorLabelColor = MaterialTheme.colorScheme.error
-                            ),
-                            visualTransformation = PasswordVisualTransformation()
+                                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                                focusedLabelColor = MaterialTheme.colorScheme.primary,
+                                unfocusedBorderColor = MaterialTheme.colorScheme.outline
+                            )
                         )
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            OutlinedTextField(
+                                value = expirationDate,
+                                onValueChange = { if (it.length <= 4) expirationDate = it },
+                                label = { Text("MM/YY") },
+                                modifier = Modifier.weight(1f),
+                                shape = RoundedCornerShape(12.dp),
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                                singleLine = true,
+                                visualTransformation = ExpirationDateTransformation(),
+                                colors = OutlinedTextFieldDefaults.colors(
+                                    focusedBorderColor = MaterialTheme.colorScheme.primary,
+                                    focusedLabelColor = MaterialTheme.colorScheme.primary,
+                                    unfocusedBorderColor = MaterialTheme.colorScheme.outline
+                                )
+                            )
+
+                            OutlinedTextField(
+                                value = cvv,
+                                onValueChange = { if (it.length <= 3) cvv = it },
+                                label = { Text("CVV") },
+                                modifier = Modifier.width(120.dp),
+                                shape = RoundedCornerShape(12.dp),
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                                singleLine = true,
+                                visualTransformation = PasswordVisualTransformation(),
+                                colors = OutlinedTextFieldDefaults.colors(
+                                    focusedBorderColor = MaterialTheme.colorScheme.primary,
+                                    focusedLabelColor = MaterialTheme.colorScheme.primary,
+                                    unfocusedBorderColor = MaterialTheme.colorScheme.outline
+                                )
+                            )
+                        }
                     }
 
                     Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.End,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 8.dp),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        TextButton(
+                        OutlinedButton(
                             onClick = onDismiss,
-                            colors = ButtonDefaults.textButtonColors(
-                                contentColor = MaterialTheme.colorScheme.onBackground
+                            modifier = Modifier.weight(1f).height(48.dp),
+                            shape = RoundedCornerShape(12.dp),
+                            colors = ButtonDefaults.outlinedButtonColors(
+                                contentColor = MaterialTheme.colorScheme.onSurface
                             )
                         ) {
                             Text(stringResource(R.string.cancel))
                         }
+
                         Button(
                             onClick = {
-                                val cardDetails = Card(
-                                    cardNumber = number,
-                                    cardType = CardType.CREDIT_CARD,
-                                    cardHolder = fullName,
-                                    cardExpiration = expirationDate,
+                                val card = Card(
+                                    cardId = null,
+                                    cardType = if (isCredit) CardType.CREDIT_CARD else CardType.DEBIT_CARD,
                                     cardCvv = cvv,
-                                    cardId = 1
+                                    cardExpiration = "${expirationDate.substring(0,2)}/${expirationDate.substring(2,4)}",
+                                    cardHolder = fullName,
+                                    cardNumber = number
                                 )
-                                onSubmit(cardDetails)
-                                number = ""
-                                fullName = ""
-                                expirationDate = ""
-                                cvv = ""
-                                type = ""
+                                onSubmit(card)
                                 onDismiss()
                             },
-                            enabled = isEnabled
+                            enabled = isEnabled,
+                            modifier = Modifier.weight(1f).height(48.dp),
+                            shape = RoundedCornerShape(12.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = MaterialTheme.colorScheme.primary
+                            )
                         ) {
                             Text(stringResource(R.string.accept))
                         }
                     }
                 }
+            }
+        }
+    }
+}
+
+@Composable
+private fun SelectableCardType(
+    isCredit: Boolean,
+    onSelectionChange: (Boolean) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = Modifier
+            .height(40.dp)
+            .clip(RoundedCornerShape(20.dp))
+            .background(MaterialTheme.colorScheme.surfaceVariant.copy(0.1f))
+            .padding(4.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        listOf(false to stringResource(R.string.debit), true to stringResource(R.string.credit)).forEach { (isCardCredit, text) ->
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight()
+                    .clip(RoundedCornerShape(16.dp))
+                    .background(
+                        if (isCredit == isCardCredit)
+                            MaterialTheme.colorScheme.secondary
+                        else
+                            Color.Transparent
+                    )
+                    .clickable { onSelectionChange(isCardCredit) },
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = text,
+                    color = if (isCredit == isCardCredit)
+                        MaterialTheme.colorScheme.onSecondary
+                    else
+                        MaterialTheme.colorScheme.onSurfaceVariant,
+                    style = MaterialTheme.typography.labelLarge,
+                    fontWeight = FontWeight.Medium
+                )
             }
         }
     }

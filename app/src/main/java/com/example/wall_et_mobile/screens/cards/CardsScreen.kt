@@ -18,34 +18,41 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.wall_et_mobile.MyApplication
 import com.example.wall_et_mobile.R
 import com.example.wall_et_mobile.components.AddCardDialog
 import com.example.wall_et_mobile.components.CardList
 import com.example.wall_et_mobile.data.mock.MockCards
 
 @Composable
-fun CardsScreen(innerPadding: PaddingValues) {
+fun CardsScreen(
+    innerPadding: PaddingValues,
+    viewModel: CardsViewModel = viewModel(factory = CardsViewModel.provideFactory(LocalContext.current.applicationContext as MyApplication))
+) {
+    val uiState = viewModel.uiState
+
+    LaunchedEffect(Unit) {
+        viewModel.getCards()
+    }
+
     var showDialog by remember { mutableStateOf(false) }
 
-    // despues habria que cambiarlo de esta forma:
-//    fun CardsScreen(viewModel: CardsViewModel) {
-//        val cards = viewModel.cards.collectAsState().value
-//
-//        CardList(
-//            cards = cards,
-//            onDeleteCard = { card ->
-//                viewModel.deleteCard(card)
-//            }
-//        )
-//    }
+    LaunchedEffect(showDialog) {
+        if (!showDialog) {
+            viewModel.getCards()
+        }
+    }
 
 Scaffold(
     modifier = Modifier.padding(innerPadding),
@@ -65,9 +72,9 @@ Scaffold(
             .padding(paddingValues)
     ) {
         CardList(
-            cards = MockCards.sampleCards,
+            cards = uiState.cards,
             onDeleteCard = { cardToDelete ->
-                // MockCards.delete(cardToDelete)
+                viewModel.deleteCard(cardToDelete.cardId!!)
             }
         )
 
@@ -75,7 +82,7 @@ Scaffold(
             showDialog = showDialog,
             onDismiss = { showDialog = false },
             onSubmit = {
-                // MockCards.add(it)
+                viewModel.addCard(it)
             }
         )
     }
