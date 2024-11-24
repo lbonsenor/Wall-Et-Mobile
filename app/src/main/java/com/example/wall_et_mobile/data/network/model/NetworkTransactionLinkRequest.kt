@@ -6,12 +6,21 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class NetworkTransactionLinkRequest(
     var type: String,
-    var cardId: String? /* if pay with balance then its null */
+    var cardId: Int? /* if pay with balance then its null */
 ){
     fun asModel(): TransactionLinkRequest{
         return TransactionLinkRequest(
             type= type,
             cardId = cardId
         )
+    }
+}
+
+@Serializable
+data class NetworkTransactionLinkResponse(
+    var success: Boolean
+) {
+    fun asModel(): Boolean {
+        return success
     }
 }

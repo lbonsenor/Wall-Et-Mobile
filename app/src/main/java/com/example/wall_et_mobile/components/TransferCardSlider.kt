@@ -32,7 +32,13 @@ import com.example.wall_et_mobile.data.model.Card
 sealed class SelectedOption {
     data class CardOption(val card: Card) : SelectedOption()
     data class WalletOption(val balance: Double) : SelectedOption()
-    data class LinkOption(val link: String) : SelectedOption()
+
+    override fun toString() : String {
+        return when (this) {
+            is SelectedOption.CardOption -> "CARD"
+            is SelectedOption.WalletOption -> "BALANCE"
+        }
+    }
 }
 @Composable
 fun TransferCardSlider(

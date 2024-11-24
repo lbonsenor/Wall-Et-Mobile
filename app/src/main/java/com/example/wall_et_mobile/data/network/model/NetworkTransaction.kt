@@ -28,29 +28,39 @@ data class NetworkTransactionList(
 }
 
 @Serializable
+data class NetworkLinkTransaction(
+    var payment: NetworkTransaction
+) {
+    fun asModel(): Transaction {
+        return payment.asModel()
+    }
+}
+
+@Serializable
 data class NetworkTransaction(
     var id : Int,
     var type: String,
     var amount: Double,
     var balanceBefore: Float,
     var balanceAfter : Float,
-    var receiverBalanceBefore : Float,
-    var receiverBalanceAfter : Float,
+    var receiverBalanceBefore : Float?,
+    var receiverBalanceAfter : Float?,
     var pending: Boolean,
     var linkUuid: String?,
     var createdAt: String, /* turn to local date afterwards*/
     var updatedAt: String,
-    var card : NetworkCard?,
-    var payer : NetworkUser,
-    var receiver : NetworkUser
+    var card : NetworkCard? = null,
+    var payer : NetworkUser? = null,
+    var receiver : NetworkUser,
+    var message : String? = null,
 ){
     fun switched(): NetworkTransaction{
         return NetworkTransaction(
             id = id,
             type = type,
             amount = amount,
-            balanceBefore = receiverBalanceBefore,
-            balanceAfter = receiverBalanceAfter,
+            balanceBefore = receiverBalanceBefore ?: 0f,
+            balanceAfter = receiverBalanceAfter ?: 0f,
             receiverBalanceBefore = balanceBefore,
             receiverBalanceAfter = balanceAfter,
             pending = pending,
@@ -59,7 +69,8 @@ data class NetworkTransaction(
             updatedAt = updatedAt,
             card = card,
             payer = receiver,
-            receiver = payer
+            receiver = payer ?: receiver,
+            message = message
         )
     }
 
@@ -83,7 +94,7 @@ data class NetworkTransaction(
             balanceAfter = balanceAfter,
             pending = pending,
             linkUuid = linkUuid,
-            payer = payer.asModel(),
+            payer = payer?.asModel() ?: receiver.asModel(),
             receiver = receiver.asModel()
         )
     }
@@ -102,12 +113,13 @@ data class NetworkTransaction(
             card = card?.asModel(),
             createdAt = createdAt.let { dateFormat.parse(createdAt) },
             updatedAt = updatedAt.let { dateFormat.parse(updatedAt) },
-            balanceBefore = receiverBalanceBefore,
-            balanceAfter = receiverBalanceAfter,
+            balanceBefore = receiverBalanceBefore ?: 0f,
+            balanceAfter = receiverBalanceAfter ?: 0f,
             pending = pending,
             linkUuid = linkUuid,
             payer = receiver.asModel(),
-            receiver = payer.asModel()
-        )
+            receiver =payer?.asModel() ?: receiver.asModel(),
+
+            )
     }
 }

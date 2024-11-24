@@ -194,7 +194,7 @@ fun AppNavHost(
             ) { backStackEntry ->
                 ConfirmLinkPaymentScreen(
                     innerPadding = innerPadding,
-                    onPaymentComplete = {},
+                    onPaymentComplete = { navigateToNew(navController, Screen.Home.route) },
                     link = backStackEntry.arguments?.getString("link")!!,
                 )
             }
@@ -203,6 +203,7 @@ fun AppNavHost(
     LaunchedEffect(qrResults.value) {
         if (qrResults.value != null) {
             navigateTo(navController, "${Screen.ConfirmLinkPayment.route}/${qrResults.value}")
+            qrScanner.barCodeResults.value = null
         }
     }
 }

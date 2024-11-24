@@ -93,8 +93,6 @@ fun ConfirmPaymentScreen(
     LaunchedEffect(Unit) {
         viewModel.getBalance()
         viewModel.getCards()
-        string ="${email}, ${amount}, ${paymentType}," + (cardId ?: "null")
-        Log.d("ConfirmPaymentScreen", string)
     }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,

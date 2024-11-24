@@ -148,9 +148,6 @@ fun SelectAmountScreen(
                         paymentType = PaymentType.CARD.toString()
                         Log.e("CardId", "$cardId")
                     }
-                    is SelectedOption.LinkOption -> {
-                        paymentType = PaymentType.LINK.toString()
-                    }
                     null -> return@Button
                 }
 
@@ -399,9 +396,6 @@ fun SelectAmountScreenLandscape(
                         is SelectedOption.CardOption -> {
                             cardId = (selectedPaymentMethod as SelectedOption.CardOption).card.cardId
                             paymentType = PaymentType.CARD.toString()
-                        }
-                        is SelectedOption.LinkOption -> {
-                            paymentType = PaymentType.LINK.toString()
                         }
                         null -> return@Button
                     }

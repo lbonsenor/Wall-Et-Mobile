@@ -26,9 +26,9 @@ interface TransactionApiService {
     suspend fun getPayment(@Path("paymentId") paymentId: Int) : Response<NetworkTransaction>
 
     @GET("payment/link/{linkUuid}") /* get the transaction that will execute*/
-    suspend fun getPaymentLinkInfo(@Path("linkUuid") linkUuid : String): Response<NetworkTransaction>
+    suspend fun getPaymentLinkInfo(@Path("linkUuid") linkUuid : String): Response<NetworkLinkTransaction>
 
     @POST("payment/link/{linkUuid}") /* make the link payment itself*/
-    suspend fun settlePaymentLink(@Path("linkUuid") linkUuid: String, @Body paymentInfo : NetworkTransactionLinkRequest) : Response<Unit>
+    suspend fun settlePaymentLink(@Path("linkUuid") linkUuid: String, @Body paymentInfo : NetworkTransactionLinkRequest) : Response<NetworkTransactionLinkResponse>
 
 }

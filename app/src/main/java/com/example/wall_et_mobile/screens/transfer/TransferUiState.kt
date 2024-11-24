@@ -16,6 +16,7 @@ data class TransferUiState(
     val transactions: List<Transaction> = emptyList(),
     val linkPaymentInfo: Transaction? = null,
     val paymentState: PaymentState = PaymentState.Idle,
+    val settleSuccess: Boolean? = false,
 )
 
 

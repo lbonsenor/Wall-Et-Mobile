@@ -19,6 +19,7 @@ import com.example.wall_et_mobile.data.repository.TransactionRepository
 import com.example.wall_et_mobile.data.repository.WalletRepository
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.withLock
 
 sealed class PaymentState {
     object Idle : PaymentState()
@@ -97,12 +98,16 @@ class TransferViewModel (
 
     fun getPaymentLinkInfo(linkUuid : String) = runOnViewModelScope(
         { transactionRepository.getPaymentLinkInfo(linkUuid) },
-        { state, _ -> state.copy() }
+        { state, transaction -> state.copy(
+            transaction = transaction
+        ) }
     )
 
     fun settlePaymentLink(linkUuid: String, requestBody : TransactionLinkRequest) = runOnViewModelScope(
         { transactionRepository.settlePaymentLink(linkUuid,requestBody) },
-        { state, _ -> state.copy() }
+        { state, response -> state.copy(
+            settleSuccess = response
+        ) }
     )
 
     fun getWallet() = runOnViewModelScope(
@@ -119,6 +124,7 @@ class TransferViewModel (
         { transactionRepository.getPayments(false, page,direction,pending,type,range,source,cardId) },
         { state, payments -> state.copy(transactions = payments)  }
     )
+
 
     private fun <R> runOnViewModelScope(
         block: suspend () -> R,

@@ -1,8 +1,11 @@
 package com.example.wall_et_mobile.data.network
 
+import android.util.Log
 import com.example.wall_et_mobile.data.network.api.TransactionApiService
+import com.example.wall_et_mobile.data.network.model.NetworkLinkTransaction
 import com.example.wall_et_mobile.data.network.model.NetworkTransaction
 import com.example.wall_et_mobile.data.network.model.NetworkTransactionLinkRequest
+import com.example.wall_et_mobile.data.network.model.NetworkTransactionLinkResponse
 import com.example.wall_et_mobile.data.network.model.NetworkTransactionList
 import com.example.wall_et_mobile.data.network.model.NetworkTransactionRequest
 import kotlinx.coroutines.delay
@@ -63,13 +66,17 @@ class TransactionRemoteDataSource (private val transactionApiService: Transactio
         return handleApiResponse {  transactionApiService.getPayment(paymentId)}
     }
 
-    suspend fun getPaymentLinkInfo(linkUuid : String) : NetworkTransaction {
-        return handleApiResponse { transactionApiService.getPaymentLinkInfo(linkUuid) }
+    suspend fun getPaymentLinkInfo(linkUuid : String) : NetworkLinkTransaction {
+        Log.d("TransactionRemoteDataSource", "getPaymentLinkInfo called with linkUuid: $linkUuid")
+        val response = handleApiResponse { transactionApiService.getPaymentLinkInfo(linkUuid) }
+        Log.d("TransactionRemoteDataSource", "Response from remoteDataSource: $response")
+        return response
     }
     /* returns success on successful link payment */
-    suspend fun settlePaymentLink(linkUuid: String, requestBody : NetworkTransactionLinkRequest) : Unit{
+    suspend fun settlePaymentLink(linkUuid: String, requestBody : NetworkTransactionLinkRequest) : NetworkTransactionLinkResponse {
         return handleApiResponse { transactionApiService.settlePaymentLink(linkUuid, requestBody) }
     }
+
 
     companion object {
         const val DELAY : Long = 10000

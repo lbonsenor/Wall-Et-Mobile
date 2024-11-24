@@ -17,7 +17,7 @@ data class Transaction(
     var linkUuid: String? = null,
     var createdAt: Date? = null,
     var updatedAt: Date? = null,
-    var payer: User,
+    var payer: User? = null,
     var receiver: User
 ) {
     fun asNetworkModel() : NetworkTransaction{
@@ -32,7 +32,7 @@ data class Transaction(
             linkUuid = linkUuid,
             createdAt = createdAt.toString(),
             updatedAt = updatedAt.toString(),
-            payer = payer.asNetworkModel(),
+            payer = payer?.asNetworkModel(),
             receiver = receiver.asNetworkModel(),
             receiverBalanceBefore = 0f,
             receiverBalanceAfter = 0f

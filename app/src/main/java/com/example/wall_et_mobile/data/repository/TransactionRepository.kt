@@ -1,11 +1,13 @@
 package com.example.wall_et_mobile.data.repository
 
 
+import android.util.Log
 import com.example.wall_et_mobile.data.model.Transaction
 import com.example.wall_et_mobile.data.model.TransactionLinkRequest
 import com.example.wall_et_mobile.data.model.TransactionRequest
 import com.example.wall_et_mobile.data.model.asNetworkModel
 import com.example.wall_et_mobile.data.network.TransactionRemoteDataSource
+import com.example.wall_et_mobile.data.network.model.NetworkLinkTransaction
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.sync.Mutex
@@ -92,16 +94,19 @@ class TransactionRepository(
         }
     }
 
-    suspend fun getPaymentLinkInfo(linkUuid : String) : Transaction{
-        return remoteDataSource.getPaymentLinkInfo(linkUuid).asModel()
+    suspend fun getPaymentLinkInfo(linkUuid : String) : Transaction {
+        Log.d("TransactionRepository", "getPaymentLinkInfo called with linkUuid: $linkUuid")
+        val response =  remoteDataSource.getPaymentLinkInfo(linkUuid).asModel()
+        Log.d("TransactionRepository", "Response from remoteDataSource: $response")
+        return response
     }
-    suspend fun settlePaymentLink(linkUuid: String, requestBody : TransactionLinkRequest){
-        remoteDataSource.settlePaymentLink(linkUuid,requestBody.asNetworkModel())
+    suspend fun settlePaymentLink(linkUuid: String, requestBody : TransactionLinkRequest) : Boolean {
+        val response = remoteDataSource.settlePaymentLink(linkUuid,requestBody.asNetworkModel()).asModel()
         transMutex.withLock {
             this.transactions = emptyList()
         }
+        return response
     }
-
 
 }
 
