@@ -5,7 +5,6 @@ import SelectAmountScreen
 import SelectAmountScreenLandscape
 import ThemeMode
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
@@ -361,6 +360,7 @@ fun LandscapeAppNavHost(
     LaunchedEffect(qrResults.value) {
         if (qrResults.value != null) {
             navigateTo(navController, "${Screen.ConfirmLinkPayment.route}/${qrResults.value}")
+            qrScanner.barCodeResults.value = null
         }
     }
 }
