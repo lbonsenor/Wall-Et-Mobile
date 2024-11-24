@@ -41,12 +41,14 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 class MainActivity : ComponentActivity() {
     private lateinit var themePreference: ThemePreference
     private lateinit var languagePreference: LanguagePreference
+    private lateinit var sessionManager: SessionManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         themePreference = ThemePreference(applicationContext)
         languagePreference = LanguagePreference(applicationContext)
+        sessionManager = (applicationContext as MyApplication).sessionManager
 
         // Set initial locale
         val locale = Locale(languagePreference.getLanguage())
@@ -55,6 +57,14 @@ class MainActivity : ComponentActivity() {
         resources.updateConfiguration(config, resources.displayMetrics)
 
         setContent {
+            val startDestination = remember {
+                if (sessionManager.loadAuthToken() != null) {
+                    Screen.Home.route
+                } else {
+                    Screen.Login.route
+                }
+            }
+
             val (orientation, setOrientation) = remember { mutableIntStateOf(Configuration.ORIENTATION_PORTRAIT) }
             val configuration = LocalConfiguration.current
             val navController = rememberNavController()
@@ -86,6 +96,7 @@ class MainActivity : ComponentActivity() {
                     Configuration.ORIENTATION_PORTRAIT -> ScaffoldPortrait(
                         navController = navController,
                         qrScanner = qrScanner,
+                        startDestination = startDestination,
                         onThemeChanged = { newTheme ->
                             themePreference.setThemeMode(newTheme)
                             currentTheme.value = newTheme
@@ -102,6 +113,7 @@ class MainActivity : ComponentActivity() {
                     else -> ScaffoldLandscape(
                         navController = navController,
                         qrScanner = qrScanner,
+                        startDestination = startDestination,
                         onThemeChanged = { newTheme ->
                             themePreference.setThemeMode(newTheme)
                             currentTheme.value = newTheme
@@ -122,7 +134,13 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun ScaffoldPortrait(navController: NavHostController, qrScanner: QRScanner, onThemeChanged: (ThemeMode) -> Unit, onLanguageChanged: (String) -> Unit) {
+fun ScaffoldPortrait(
+    navController: NavHostController, 
+    qrScanner: QRScanner, 
+    startDestination: String,
+    onThemeChanged: (ThemeMode) -> Unit, 
+    onLanguageChanged: (String) -> Unit
+) {
     val systemUiController = rememberSystemUiController()
 
     val statusBarColor = MaterialTheme.colorScheme.primary
@@ -132,6 +150,7 @@ fun ScaffoldPortrait(navController: NavHostController, qrScanner: QRScanner, onT
         systemUiController.setStatusBarColor(statusBarColor)
         systemUiController.setNavigationBarColor(systemNavColor)
     }
+    
     Scaffold (
         bottomBar = {
             when (currentRoute(navController)) {
@@ -217,14 +236,26 @@ fun ScaffoldPortrait(navController: NavHostController, qrScanner: QRScanner, onT
         },
         backgroundColor = MaterialTheme.colorScheme.background,
         modifier = Modifier.systemBarsPadding()
-
     ) { innerPadding ->
-        AppNavHost(innerPadding, modifier = Modifier, navController = navController, onThemeChanged = onThemeChanged, onLanguageChanged = onLanguageChanged)
+        AppNavHost(
+            innerPadding = innerPadding, 
+            modifier = Modifier, 
+            navController = navController,
+            startDestination = startDestination,
+            onThemeChanged = onThemeChanged, 
+            onLanguageChanged = onLanguageChanged
+        )
     }
 }
 
 @Composable
-fun ScaffoldLandscape(navController: NavHostController, qrScanner: QRScanner, onThemeChanged: (ThemeMode) -> Unit, onLanguageChanged: (String) -> Unit) {
+fun ScaffoldLandscape(
+    navController: NavHostController, 
+    qrScanner: QRScanner,
+    startDestination: String,
+    onThemeChanged: (ThemeMode) -> Unit, 
+    onLanguageChanged: (String) -> Unit
+) {
     val systemUiController = rememberSystemUiController()
 
     val statusBarColor = MaterialTheme.colorScheme.primary
@@ -236,7 +267,8 @@ fun ScaffoldLandscape(navController: NavHostController, qrScanner: QRScanner, on
     }
 
     Scaffold2()
-    { innerPadding ->
+    {
+        innerPadding ->
         Row()
         {
             when (currentRoute(navController)) {
@@ -246,16 +278,14 @@ fun ScaffoldLandscape(navController: NavHostController, qrScanner: QRScanner, on
                 SeeMore.route -> NavBarLandscape(navController, qrScanner)
                 else -> {}
             }
-            LandscapeAppNavHost(innerPadding, modifier = Modifier, navController = navController, onThemeChanged = onThemeChanged, onLanguageChanged = onLanguageChanged)
+            LandscapeAppNavHost(
+                innerPadding = innerPadding, 
+                modifier = Modifier, 
+                navController = navController,
+                startDestination = startDestination,
+                onThemeChanged = onThemeChanged, 
+                onLanguageChanged = onLanguageChanged
+            )
         }
     }
 }
-
-
-
-
-
-
-
-
-
