@@ -62,11 +62,6 @@ fun ProfileScreen(
     ) {
         if (uiState.isFetching) {
             CircularProgressIndicator(color = MaterialTheme.colorScheme.secondary)
-        } else if (uiState.error != null) {
-            Text(
-                text = uiState.error.toString(),
-                color = MaterialTheme.colorScheme.error
-            )
         } else {
             Card(
                 shape = RoundedCornerShape(20.dp),

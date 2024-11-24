@@ -65,10 +65,18 @@ class ProfileViewModel(
         }
     }
 
-    fun updateAlias(newAlias: String) = runOnViewModelScope(
-        { walletRepository.updateAlias(newAlias) },
-        { state, wallet -> state.copy(wallet = wallet) }
-    )
+    fun updateAlias(newAlias: String) = viewModelScope.launch {
+        try {
+            uiState = uiState.copy(isFetching = true, error = null)
+            val result = walletRepository.updateAlias(newAlias)
+            uiState = uiState.copy(wallet = result, isFetching = false)
+        } catch (e: Exception) {
+            uiState = uiState.copy(
+                isFetching = false,
+                error = handleError(e)
+            )
+        }
+    }
     
     fun logout() = runOnViewModelScope(
         { userRepository.logout() },
