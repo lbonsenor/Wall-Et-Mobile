@@ -228,6 +228,7 @@ fun BalanceCardLandscape(
             .background(MaterialTheme.colorScheme.primary)
 
     ) {
+        CustomTopAppBar(user ?: User(1, "test", "test", "test", "test"), onNavigateToProfile)
         Balance(
             wallet = wallet,
             isFetching = isFetching,
@@ -244,7 +245,7 @@ fun BalanceCardLandscape(
                 )
             }
             Box(modifier = Modifier.weight(1f)) {
-                CustomButton(stringResource(R.string.title_add_fund), R.drawable.receive, onClick = {})
+                CustomButton(stringResource(R.string.title_add_fund), R.drawable.receive, onClick = onNavigateToTopUp)
             }
             Box(modifier = Modifier.weight(1f)) {
                 CustomButton(
