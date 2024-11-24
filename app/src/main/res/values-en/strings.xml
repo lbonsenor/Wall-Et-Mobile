@@ -54,7 +54,7 @@
     <string name="search_contact">Search contact</string>
     <string name="continue_button">Continue</string>
     <string name="error">Error</string>
-    <string name="user_not_found">User not found, try again.</string>
+    <string name="user_not_found">User doesn\'t exist</string>
     <string name="max_amount">Max. amount:</string>
     <string name="wallet_balance">Wall-Et Balance</string>
     <string name="welcome">Welcome to Wall-Et!</string>
@@ -136,4 +136,6 @@
     <string name="insufficient_funds">Insufficient funds</string>
     <string name="invalid_credentials">Invalid credentials</string>
     <string name="unexpected_error">An unexpected error has ocurred</string>
+    <string name="email_exists">There already is an account with the entered email</string>
+    <string name="invalid_code">Incorrect code</string>
 </resources>

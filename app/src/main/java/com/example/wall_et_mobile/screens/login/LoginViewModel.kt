@@ -52,9 +52,13 @@ class LoginViewModel(
 
     private fun handleError(e: Throwable): Error {
         return if (e is DataSourceException) {
-            Error(e.message ?: "")
+            when (e.message) {
+                "User not found" -> Error("user_not_found")
+                "Invalid credentials" -> Error("invalid_credentials")
+                else -> Error("unexpected_error")
+            }
         } else {
-            Error(e.message ?: "")
+            Error("unexpected_error")
         }
     }
 

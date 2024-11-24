@@ -36,6 +36,7 @@ import com.example.wall_et_mobile.MyApplication
 import com.example.wall_et_mobile.R
 import com.example.wall_et_mobile.components.CustomTextField
 import com.example.wall_et_mobile.components.EndFormButton
+import com.example.wall_et_mobile.components.ErrorDialog
 import com.example.wall_et_mobile.components.PasswordField
 import com.example.wall_et_mobile.data.model.RegisterUser
 
@@ -83,6 +84,19 @@ fun SignupScreen(
                 validateEmail(user.email) &&
                 validatePassword(user.password) &&
                 user.password == confirmPassword
+    }
+
+    if (uiState.error != null) {
+        val errorMessage = when (uiState.error.message) {
+            "email_exists" -> stringResource(R.string.email_exists)
+            else -> stringResource(R.string.unexpected_error)
+        }
+    
+        ErrorDialog(
+            visible = true,
+            message = errorMessage,
+            onDismiss = { viewModel.clearError() }
+        )
     }
 
     if (isLandscape) {

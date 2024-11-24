@@ -1,19 +1,14 @@
 package com.example.wall_et_mobile.screens.signup
 
 import android.util.Log
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.wall_et_mobile.MyApplication
-import com.example.wall_et_mobile.SessionManager
 import com.example.wall_et_mobile.data.DataSourceException
 import com.example.wall_et_mobile.data.model.RegisterUser
-import com.example.wall_et_mobile.data.model.User
 import com.example.wall_et_mobile.data.repository.UserRepository
-import com.example.wall_et_mobile.screens.login.LoginUiState
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
@@ -50,10 +45,18 @@ class SignUpViewModel (
 
     private fun handleError(e: Throwable): Error {
         return if (e is DataSourceException) {
-            Error(e.message ?: "")
+            when (e.message) {
+                "The user's email is already present in the DB" -> Error("email_exists")
+                "Invalid code" -> Error("Invalid code")
+                else -> Error("unexpected_error")
+            }
         } else {
-            Error(e.message ?: "")
+            Error("unexpected_error")
         }
+    }
+
+    fun clearError() {
+        uiState = uiState.copy(error = null)
     }
 
     companion object {

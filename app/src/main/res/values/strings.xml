@@ -87,7 +87,7 @@
     <string name="search_contact">Buscar contacto</string>
     <string name="continue_button">Continuar</string>
     <string name="error">Error</string>
-    <string name="user_not_found">No se ha encontrado el usuario, intente de nuevo.</string>
+    <string name="user_not_found">El usuario ingresado es inexistente</string>
     <string name="max_amount">Monto máximo:</string>
     <string name="wallet_balance">Dinero de Wall-Et</string>
     <string name="recover_password">Recuperar contraseña</string>
@@ -155,5 +155,7 @@
     <string name="insufficient_funds">Saldo insuficiente</string>
     <string name="invalid_credentials">Credenciales inválidas</string>
     <string name="unexpected_error">Ocurrió un error</string>
+    <string name="email_exists">Ya existe una cuenta con el correo asociado</string>
+    <string name="invalid_code">Código incorrecto</string>
 
 </resources>

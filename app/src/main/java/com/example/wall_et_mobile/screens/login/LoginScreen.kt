@@ -68,9 +68,15 @@ fun LoginScreen(
     }
 
     if (uiState.error != null) {
+        val errorMessage = when (uiState.error.message) {
+            "user_not_found" -> stringResource(R.string.user_not_found)
+            "invalid_credentials" -> stringResource(R.string.invalid_credentials)
+            else -> stringResource(R.string.unexpected_error)
+        }
+        
         ErrorDialog(
             visible = true,
-            message = uiState.error.message ?: stringResource(R.string.error),
+            message = errorMessage,
             onDismiss = { viewModel.clearError() }
         )
     }

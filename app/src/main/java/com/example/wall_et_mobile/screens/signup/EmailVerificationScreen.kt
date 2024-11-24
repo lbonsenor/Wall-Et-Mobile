@@ -37,6 +37,7 @@ import com.example.wall_et_mobile.MyApplication
 import com.example.wall_et_mobile.R
 import com.example.wall_et_mobile.components.CustomTextField
 import com.example.wall_et_mobile.components.EndFormButton
+import com.example.wall_et_mobile.components.ErrorDialog
 
 @Composable
 fun EmailVerificationScreen(
@@ -54,6 +55,19 @@ fun EmailVerificationScreen(
         }
     }
 
+    if (uiState.error != null) {
+        val errorMessage = when (uiState.error.message) {
+            "Invalid code" -> stringResource(R.string.invalid_code)
+            else -> stringResource(R.string.unexpected_error)
+        }
+    
+        ErrorDialog(
+            visible = true,
+            message = errorMessage,
+            onDismiss = { viewModel.clearError() }
+        )
+    }
+
     if (isLandscape) {
         Row(
             modifier = Modifier
@@ -63,7 +77,6 @@ fun EmailVerificationScreen(
             horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Left side - Title section
             Column(
                 modifier = Modifier
                     .weight(0.4f)
@@ -87,7 +100,6 @@ fun EmailVerificationScreen(
                 )
             }
 
-            // Right side - Form section
             Card(
                 modifier = Modifier
                     .weight(0.6f, fill = false)
