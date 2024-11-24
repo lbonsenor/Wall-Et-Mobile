@@ -34,7 +34,8 @@ fun AppNavHost(
     innerPadding: PaddingValues,
     modifier: Modifier,
     navController: NavHostController,
-    startDestination: String = Screen.Login.route
+    startDestination: String = Screen.Login.route,
+    onThemeChanged: (ThemeMode) -> Unit
 ){
     NavHost(
         navController = navController,
@@ -95,7 +96,7 @@ fun AppNavHost(
             composable(Screen.SeeMore.route) {
                 SeeMoreScreen(
                     innerPadding = innerPadding,
-                    onThemeChanged = { /* TODO: Implement theme change */ },
+                    onThemeChanged = onThemeChanged,
                     onLanguageChanged = { /* TODO: Implement language change */ }
                 )
             }
@@ -167,7 +168,8 @@ fun LandscapeAppNavHost(
     innerPadding: PaddingValues,
     modifier: Modifier,
     navController: NavHostController,
-    startDestination: String = Screen.Login.route
+    startDestination: String = Screen.Login.route,
+    onThemeChanged: (ThemeMode) -> Unit
 ){
     NavHost(
         navController = navController,
@@ -229,7 +231,7 @@ fun LandscapeAppNavHost(
             composable(Screen.SeeMore.route) {
                 SeeMoreScreen(
                     innerPadding = innerPadding,
-                    onThemeChanged = { /* TODO: Implement theme change */ },
+                    onThemeChanged = onThemeChanged,
                     onLanguageChanged = { /* TODO: Implement language change */ }
                 )
             }
