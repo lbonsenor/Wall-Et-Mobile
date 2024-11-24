@@ -20,7 +20,8 @@ import com.example.wall_et_mobile.R
 fun SuccessDialog(
     visible: Boolean,
     message: String = stringResource(R.string.payment_success),
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    onConfirm: () -> Unit
 ) {
     if (visible) {
         AlertDialog(
@@ -49,7 +50,7 @@ fun SuccessDialog(
             },
             confirmButton = {
                 TextButton(
-                    onClick = onDismiss,
+                    onClick = onConfirm,
                     colors = ButtonDefaults.textButtonColors(
                         contentColor = MaterialTheme.colorScheme.onSecondary,
                         containerColor = MaterialTheme.colorScheme.secondary

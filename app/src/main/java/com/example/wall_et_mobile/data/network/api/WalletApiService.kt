@@ -1,6 +1,8 @@
 package com.example.wall_et_mobile.data.network.api
 
 
+import com.example.wall_et_mobile.data.model.RechargeRequest
+import com.example.wall_et_mobile.data.model.RechargeResponse
 import com.example.wall_et_mobile.data.network.model.NetworkAliasUpdate
 import com.example.wall_et_mobile.data.network.model.NetworkBalanceResponse
 import com.example.wall_et_mobile.data.network.model.NetworkCard
@@ -34,4 +36,7 @@ interface WalletApiService {
 
     @GET("wallet/details")
     suspend fun getWallet() : Response<NetworkWallet>
+
+    @POST("wallet/recharge")
+    suspend fun recharge(@Body request: RechargeRequest): Response<RechargeResponse>
 }

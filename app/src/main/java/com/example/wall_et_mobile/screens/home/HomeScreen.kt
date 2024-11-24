@@ -163,15 +163,10 @@ fun ActivityCard(onNavigateToActivity: () -> Unit, transactions : List<Transacti
             Text(
                 modifier = Modifier
                     .clickable(enabled = true, onClick = onNavigateToActivity)
-//                        navController.navigate(Screen.Activities.route){
-//                            popUpTo(navController.graph.findStartDestination().id) {saveState = true}
-//                            launchSingleTop = true
-//                            restoreState = true
-//                        }
                     ,
-                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                color = MaterialTheme.colorScheme.secondary,
                 style = MaterialTheme.typography.labelSmall,
-                text = stringResource(R.string.see_more)
+                text = stringResource(R.string.see_more),
             )
         }
         ActivityList(transactions.sortedByDescending { it.transactionId }.take(3))

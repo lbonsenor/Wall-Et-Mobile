@@ -34,9 +34,9 @@ fun AppNavHost(
     innerPadding: PaddingValues,
     modifier: Modifier,
     navController: NavHostController,
-    startDestination: String = Screen.Login.route,
     onThemeChanged: (ThemeMode) -> Unit,
-    onLanguageChanged: (String) -> Unit
+    onLanguageChanged: (String) -> Unit,
+    startDestination: String
 ){
     NavHost(
         navController = navController,
@@ -159,7 +159,11 @@ fun AppNavHost(
                     onEditAmount = { navigateTo(navController, "${Screen.SelectAmount.route}/${backStackEntry.arguments?.getString("email")}") }
                 )
             }
-            composable(route = Screen.TopUp.route){ TopUpScreen(innerPadding) }
+            composable(route = Screen.TopUp.route){
+                TopUpScreen(
+                    innerPadding = innerPadding,
+                    onConfirm = {navigateTo(navController, Screen.Home.route)}
+                ) }
         }
     )
 }
@@ -169,9 +173,9 @@ fun LandscapeAppNavHost(
     innerPadding: PaddingValues,
     modifier: Modifier,
     navController: NavHostController,
-    startDestination: String = Screen.Login.route,
     onThemeChanged: (ThemeMode) -> Unit,
-    onLanguageChanged: (String) -> Unit
+    onLanguageChanged: (String) -> Unit,
+    startDestination: String
 ){
     NavHost(
         navController = navController,
@@ -311,7 +315,9 @@ fun navigateTo(navController : NavHostController, route: String){
 
 fun navigateToLogin(navController: NavHostController) {
     navController.navigate(Screen.Login.route) {
-        popUpTo(0)
+        popUpTo(0) {
+            inclusive = true
+        }
         launchSingleTop = true
     }
 }
