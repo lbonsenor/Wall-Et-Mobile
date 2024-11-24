@@ -14,8 +14,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -46,7 +44,6 @@ import com.example.wall_et_mobile.data.model.BalancePayment
 import com.example.wall_et_mobile.data.model.CardPayment
 import com.example.wall_et_mobile.data.model.LinkPayment
 import com.example.wall_et_mobile.data.model.PaymentType
-import com.example.wall_et_mobile.data.model.Transaction
 import com.example.wall_et_mobile.data.model.TransactionLinkRequest
 import com.example.wall_et_mobile.data.model.TransactionRequest
 import com.example.wall_et_mobile.ui.theme.DarkerGrotesque
