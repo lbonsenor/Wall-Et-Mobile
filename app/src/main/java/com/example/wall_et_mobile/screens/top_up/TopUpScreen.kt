@@ -1,6 +1,8 @@
 package com.example.wall_et_mobile.screens.top_up
 
 
+import AmountTextField
+import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -24,6 +26,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -46,14 +49,17 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.wall_et_mobile.MyApplication
 import com.example.wall_et_mobile.R
 import com.example.wall_et_mobile.components.ErrorDialog
+import com.example.wall_et_mobile.components.SelectedOption
 import com.example.wall_et_mobile.components.SuccessDialog
 import com.example.wall_et_mobile.data.model.RechargeRequest
 import com.example.wall_et_mobile.screens.transfer.TransferViewModel
 import com.example.wall_et_mobile.ui.theme.DarkerGrotesque
 import com.example.wall_et_mobile.ui.theme.Gray
+import parseAmount
 import java.text.NumberFormat
 import java.util.Locale
 
+@SuppressLint("UnrememberedMutableState")
 @Composable
 fun TopUpScreen(
     innerPadding : PaddingValues,
@@ -63,8 +69,17 @@ fun TopUpScreen(
 {
     val uiState = viewModel.uiState
 
-    var amount by remember { mutableStateOf("") }
     var showSuccess by remember { mutableStateOf(false) }
+
+    var amount by remember { mutableStateOf("0") }
+    var cents by remember { mutableStateOf("00") }
+
+    val amountValue by derivedStateOf { parseAmount(amount, cents) }
+    val isEnabled = when {
+        amountValue <= 0.0 -> false
+        else -> true
+    }
+
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -75,71 +90,14 @@ fun TopUpScreen(
             .padding(16.dp)
             .verticalScroll(rememberScrollState())
     ) {
-        TextField(
-            supportingText = { Text("${stringResource(R.string.max_amount)} $6,000,000.00") },
-            value = amount,
-            onValueChange = {
-                if (it.length <= 12) amount = it
-            },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-            textStyle = TextStyle(
-                fontFamily = DarkerGrotesque,
-                fontWeight = FontWeight.SemiBold,
-                fontSize = 50.sp,
-            ),
-            colors = TextFieldDefaults.colors(
-                focusedIndicatorColor = MaterialTheme.colorScheme.secondary,  // bottom line color when focused
-                unfocusedIndicatorColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.3f), // bottom line color when not focused
-                cursorColor = Color.Transparent,
-                disabledIndicatorColor = Color.Transparent,
-                errorIndicatorColor = MaterialTheme.colorScheme.error,
-                focusedContainerColor = Color.Transparent,  // background color
-                unfocusedContainerColor = Color.Transparent,
-            ),
-            prefix = {
-                Text(
-                    text = "$ ",
-                    style = TextStyle(
-                        fontFamily = DarkerGrotesque,
-                        fontWeight = FontWeight.SemiBold,
-                        fontSize = 50.sp
-                    )
-                )
-            },
-            singleLine = true,
-            modifier = Modifier.padding(bottom = 8.dp),
-            visualTransformation = VisualTransformation { it ->
-                val formattedAmount = formatAmount(it.text)
 
-                val originalToTransformed = object : OffsetMapping {
-                    override fun originalToTransformed(offset: Int): Int {
-                        if (it.text.isEmpty()) return 0
-                        return formattedAmount.length
-                    }
-
-                    override fun transformedToOriginal(offset: Int): Int {
-                        if (formattedAmount.isEmpty()) return 0
-                        return it.text.length
-                    }
-                }
-                TransformedText(AnnotatedString(formattedAmount), originalToTransformed)
-            },
-        )
+        AmountTextField(amount, cents, { amount = it }, { cents = it })
 
         Button(
             onClick = {
-                try {
-                    val parsedAmount = amount.toDoubleOrNull()
-                    if (parsedAmount == null || parsedAmount <= 0) {
-                        throw IllegalArgumentException("Invalid amount")
-                    } else {
-                        viewModel.recharge(RechargeRequest(parsedAmount))
-                    }
-                } catch (e: Exception) {
-                    viewModel.handleError(e)
-                }
+                viewModel.recharge(RechargeRequest(amountValue))
             },
-            enabled = amount.isNotEmpty(),
+            enabled = isEnabled,
             colors = ButtonColors(
                 containerColor = MaterialTheme.colorScheme.secondary,
                 contentColor = MaterialTheme.colorScheme.onSecondary,

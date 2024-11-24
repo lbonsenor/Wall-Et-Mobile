@@ -1,5 +1,6 @@
 
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -27,6 +28,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -59,7 +61,14 @@ import com.example.wall_et_mobile.screens.transfer.TransferViewModel
 import com.example.wall_et_mobile.ui.theme.DarkerGrotesque
 import java.text.NumberFormat
 import java.util.Locale
+public fun parseAmount(amount: String, cents: String): Double {
+    val amountValue = amount.toDoubleOrNull() ?: 0.0
+    val centsValue = cents.toDoubleOrNull()?.div(100) ?: 0.0
+    Log.e("Amount", "$amountValue")
+    return amountValue + centsValue
+}
 
+@SuppressLint("UnrememberedMutableState")
 @Composable
 fun SelectAmountScreen(
     innerPadding : PaddingValues,
@@ -71,35 +80,26 @@ fun SelectAmountScreen(
 {
     val uiState = viewModel.uiState
 
-    var amount by remember { mutableStateOf("") }
+    var amount by remember { mutableStateOf("0") }
     var cents by remember { mutableStateOf("00") }
     var selectedPaymentMethod by remember { mutableStateOf<SelectedOption?>(null) }
 
-    val isEnabled = when {
-        amount.isEmpty() || selectedPaymentMethod == null -> false
-        selectedPaymentMethod is SelectedOption.WalletOption -> {
-            val balance = uiState.balance ?: 0.0
-            val amountValue = amount.toDoubleOrNull() ?: 0.0
-            amountValue > 0 && balance >= amountValue
-        }
-        else -> true
-    }
-    LaunchedEffect(Unit) {
-        amount = ""
-        cents = "00"
-        selectedPaymentMethod = null
-//        isEnabled = false
+    val amountValue by derivedStateOf { parseAmount(amount, cents) }
 
+    val isEnabled = when {
+        amountValue <= 0 -> false
+        selectedPaymentMethod is SelectedOption.WalletOption -> {
+            val walletBalance = uiState.balance ?: 0.0
+            walletBalance >= amountValue
+        }
+        selectedPaymentMethod is SelectedOption.CardOption -> true
+        else -> false
+    }
+
+    LaunchedEffect(Unit) {
         viewModel.getWallet()
         viewModel.getBalance()
         viewModel.getCards()
-    }
-
-    LaunchedEffect(email) {
-        amount = ""
-        cents = "00"
-        selectedPaymentMethod = null
-//        isEnabled = false
     }
 
     Column(
@@ -131,7 +131,7 @@ fun SelectAmountScreen(
         }
 
         Button(
-            enabled = amount.isNotEmpty() && selectedPaymentMethod != null && isEnabled,
+            enabled = isEnabled,
             onClick = {
                 var cardId: Int? = 0
                 var cardDigits: String = ""
@@ -154,9 +154,7 @@ fun SelectAmountScreen(
                     null -> return@Button
                 }
 
-                onNavigateToSelectPayment(email, amount, paymentType, cardId, cardDigits)
-                selectedPaymentMethod = null
-                amount = ""
+                onNavigateToSelectPayment(email, amountValue.toString(), paymentType, cardId, cardDigits)
             },
             colors = ButtonColors(
                 containerColor = MaterialTheme.colorScheme.secondary,
@@ -173,7 +171,7 @@ fun SelectAmountScreen(
         }
 
             if (selectedPaymentMethod is SelectedOption.WalletOption && amount.isNotEmpty()) {
-                if (uiState.balance!! < amount.toDouble() ) {
+                if (uiState.balance!! < amountValue ) {
                     Text(
                         text = stringResource(R.string.insufficient_funds),
                         color = MaterialTheme.colorScheme.error,
