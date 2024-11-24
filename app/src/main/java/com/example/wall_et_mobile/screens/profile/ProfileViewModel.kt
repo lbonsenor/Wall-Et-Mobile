@@ -91,6 +91,11 @@ class ProfileViewModel(
         }
     }
 
+    fun resetPassword(newPassword: String) = runOnViewModelScope(
+        block = { userRepository.resetPassword(newPassword) },
+        updateState = { state, _ -> state.copy(error = null) }
+    )
+
     private fun <R> runOnViewModelScope(
         block: suspend () -> R,
         updateState: (ProfileUiState, R) -> ProfileUiState
