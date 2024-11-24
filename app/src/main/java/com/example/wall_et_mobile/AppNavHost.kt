@@ -84,11 +84,10 @@ fun AppNavHost(
             }
             composable(Screen.Home.route){
                 HomeScreen(
-                    { navigateTo(navController, Screen.Transfer.route) },
-                    { navigateTo(navController, Screen.Activities.route) },
-                    { navigateTo(navController, Screen.Login.route) },
-                    { navigateTo(navController, Screen.TopUp.route) },
-                    { navigateTo(navController, Screen.Profile.route) }
+                    onNavigateToTransfer = { navigateTo(navController, Screen.Transfer.route) },
+                    onNavigateToActivity = { navigateTo(navController, Screen.Activities.route) },
+                    onNavigateToTopUp = { navigateTo(navController, Screen.TopUp.route) },
+                    onNavigateToProfile = { navigateTo(navController, Screen.Profile.route) }
                 )
             }
             composable(Screen.Cards.route){ CardsScreen(innerPadding) }
@@ -299,7 +298,8 @@ fun LandscapeAppNavHost(
 
 fun navigateTo(navController : NavHostController, route: String){
     navController.navigate(route){
-        popUpTo(navController.graph.findStartDestination().id) {saveState = true}
+        popUpTo(navController.graph.findStartDestination().id)
+        {saveState = true}
         launchSingleTop = true
         restoreState = true
     }
