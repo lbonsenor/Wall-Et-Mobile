@@ -157,15 +157,22 @@ fun ScaffoldPortrait(navController: NavHostController, qrScanner: QRScanner, onT
                 Screen.PasswordSuccess.route
             )
 
+            val navBarRoutes = listOf(
+                Screen.Home.route,
+                Screen.Cards.route,
+                Screen.Activities.route,
+                Screen.SeeMore.route
+            )
+
             if (!noTopBarRoutes.contains(route)) {
                 when (route) {
                     Cards.route -> SecondaryTopAppBar(
-                        canGoBack = true,
+                        canGoBack = false,
                         onBackClick = { navController.navigateUp() },
                         title = stringResource(R.string.title_cards)
                     )
                     Activities.route -> SecondaryTopAppBar(
-                        canGoBack = true,
+                        canGoBack = false,
                         onBackClick = { navController.navigateUp() },
                         title = stringResource(R.string.title_activity)
                     )
@@ -175,12 +182,12 @@ fun ScaffoldPortrait(navController: NavHostController, qrScanner: QRScanner, onT
                         title = stringResource(R.string.account)
                     )
                     SeeMore.route -> SecondaryTopAppBar(
-                        canGoBack = true,
+                        canGoBack = false,
                         onBackClick = { navController.navigateUp() },
                         title = stringResource(R.string.see_more)
                     )
                     else -> {
-                        val canGoBack = navController.previousBackStackEntry != null
+                        val canGoBack = navController.previousBackStackEntry != null && !navBarRoutes.contains(route)
 
                         SecondaryTopAppBar(
                             canGoBack = canGoBack,
