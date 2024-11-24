@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -202,7 +203,7 @@ class AmountTransformation : VisualTransformation {
 @Composable
 fun ContactCard(email: String, modifier : Modifier, onClick : () -> Unit) {
     Row(
-        horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterHorizontally),
+        horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier,
     ) {
@@ -331,5 +332,127 @@ fun formatAmount(amount: String): String {
         Log.e("Error on formatting string", e.toString())
         ""
     }
+
+}
+
+@Composable
+fun SelectAmountScreenLandscape(
+    innerPadding : PaddingValues,
+    email: String,
+    onChangeDestination: () -> Unit,
+    onNavigateToSelectPayment : (String, String, String, Int?) -> Unit, // email, amount, paymentType, cardId
+    viewModel: TransferViewModel = viewModel(factory = TransferViewModel.provideFactory(LocalContext.current.applicationContext as MyApplication))
+)
+{
+    val uiState = viewModel.uiState
+
+    var amount by remember { mutableStateOf("") }
+    var cents by remember { mutableStateOf("00") }
+    var selectedPaymentMethod by remember { mutableStateOf<SelectedOption?>(null) }
+
+    var isEnabled by remember { mutableStateOf(true) }
+
+    LaunchedEffect(Unit) {
+        viewModel.getWallet()
+        viewModel.getBalance()
+        viewModel.getCards()
+    }
+
+    Row {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceAround,
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxHeight()
+                .weight(0.4f)
+                .padding(16.dp)
+                .verticalScroll(rememberScrollState())
+        ) {
+            TransferProgress(1)
+            ContactCard(email,
+                Modifier.fillMaxWidth(),
+                onClick = onChangeDestination)
+            Button(
+                enabled = amount.isNotEmpty() && selectedPaymentMethod != null && isEnabled,
+                onClick = {
+                    var cardId: Int? = 0
+                    var paymentType: String
+                    when (selectedPaymentMethod) {
+                        is SelectedOption.WalletOption ->
+                        {
+                            paymentType = PaymentType.BALANCE.toString()
+
+                        }
+                        is SelectedOption.CardOption -> {
+                            cardId = (selectedPaymentMethod as SelectedOption.CardOption).card.cardId
+                            paymentType = PaymentType.CARD.toString()
+                        }
+                        is SelectedOption.LinkOption -> {
+                            paymentType = PaymentType.LINK.toString()
+                        }
+                        null -> return@Button
+                    }
+
+                    onNavigateToSelectPayment(email, amount, paymentType, cardId)
+                },
+                colors = ButtonColors(
+                    containerColor = MaterialTheme.colorScheme.secondary,
+                    contentColor = MaterialTheme.colorScheme.onSecondary,
+                    disabledContainerColor = Color.Gray.copy(0.7f),
+                    disabledContentColor = MaterialTheme.colorScheme.onBackground.copy(0.5f)
+                ),
+                shape = RoundedCornerShape(10.dp),
+                modifier = Modifier
+                    .fillMaxWidth(),
+                contentPadding = PaddingValues(16.dp),
+            ) {
+                Text(stringResource(R.string.continue_button))
+            }
+        }
+
+        Column (
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceAround,
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxHeight()
+                .weight(0.4f)
+                .padding(16.dp)
+                .verticalScroll(rememberScrollState())
+        ) {
+            AmountTextField(amount, cents, { amount = it }, { cents = it })
+
+            Box(
+                contentAlignment = Alignment.Center,
+            ) {
+
+                TransferCardSlider(
+                    cards = uiState.cards,
+                    balance = uiState.balance ?: 0.0, // this is literally so wrongviewModel.getBalance() ?: 0.0, // this is literally so wrong
+                    selectedOption = selectedPaymentMethod,
+                    onSelectionChange = { selectedPaymentMethod = it }
+                )
+
+
+                if (selectedPaymentMethod is SelectedOption.WalletOption && amount.isNotEmpty()) {
+                    if (uiState.balance!! < amount.toDouble() ) {
+                        isEnabled = false
+                        Text(
+                            text = stringResource(R.string.insufficient_funds),
+                            color = MaterialTheme.colorScheme.error,
+                            style = MaterialTheme.typography.labelMedium,
+                            modifier = Modifier.padding(vertical = 8.dp)
+                        )
+                    } else {
+                        isEnabled = true
+                    }
+                }
+            }
+        }
+    }
+
+
+
 
 }

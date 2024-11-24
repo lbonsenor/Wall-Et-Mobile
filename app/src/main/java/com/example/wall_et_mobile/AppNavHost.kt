@@ -2,6 +2,7 @@ package com.example.wall_et_mobile
 
 import SeeMoreScreen
 import SelectAmountScreen
+import SelectAmountScreenLandscape
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -27,7 +28,9 @@ import com.example.wall_et_mobile.screens.signup.SignupScreen
 import com.example.wall_et_mobile.screens.signup.SignupSuccessScreen
 import com.example.wall_et_mobile.screens.top_up.TopUpScreen
 import com.example.wall_et_mobile.screens.transfer.SelectDestinataryScreen
+import com.example.wall_et_mobile.screens.transfer.SelectDestinataryScreenLandscape
 import com.example.wall_et_mobile.screens.transfer.SelectPaymentScreen
+import com.example.wall_et_mobile.screens.transfer.SelectPaymentScreenLandscape
 
 @Composable
 fun AppNavHost(
@@ -247,7 +250,7 @@ fun LandscapeAppNavHost(
                 )
             }
             composable(Screen.Transfer.route) {
-                SelectDestinataryScreen(
+                SelectDestinataryScreenLandscape(
                     innerPadding = innerPadding,
                     onNavigateToSelectAmount = { email -> navigateTo(navController, "${Screen.SelectAmount.route}/${email}") }
                 )
@@ -260,7 +263,7 @@ fun LandscapeAppNavHost(
                     }
                 )
             ){ backStackEntry ->
-                SelectAmountScreen(
+                SelectAmountScreenLandscape(
                     innerPadding = innerPadding,
                     email = backStackEntry.arguments?.getString("email")!!,
                     onNavigateToSelectPayment = { email, amount, paymentType, cardId ->
@@ -288,7 +291,7 @@ fun LandscapeAppNavHost(
                     }
                 )
             ){ backStackEntry ->
-                SelectPaymentScreen(
+                SelectPaymentScreenLandscape(
                     innerPadding = innerPadding,
                     onPaymentComplete = { navigateTo(navController, Screen.Home.route) },
                     email = backStackEntry.arguments?.getString("email")!!,

@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -65,7 +66,6 @@ import com.example.wall_et_mobile.data.model.LinkPayment
 import com.example.wall_et_mobile.data.model.PaymentType
 import com.example.wall_et_mobile.data.model.TransactionRequest
 import com.example.wall_et_mobile.ui.theme.DarkerGrotesque
-import kotlinx.coroutines.delay
 import kotlin.math.roundToInt
 
 // should change name to last section screen or smth
@@ -96,13 +96,6 @@ fun SelectPaymentScreen(
             showSuccess = false
         }
     }
-
-//    LaunchedEffect(uiState.isFetching, uiState.error, showSuccess) {
-//        if (!uiState.isFetching && uiState.error == null && showSuccess) {
-//            delay(1500)
-//            onPaymentComplete()
-//        }
-//    }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -476,4 +469,152 @@ private fun createTransactionRequest(
             description = description
         )
     }
+}
+
+@Composable
+fun SelectPaymentScreenLandscape(
+    innerPadding: PaddingValues,
+    email: String,
+    amount: String,
+    paymentType: String,
+    cardId: Int?,
+    onPaymentComplete: () -> Unit = {},
+    onChangeDestination: () -> Unit = {},
+    onEditAmount: () -> Unit = {},
+    viewModel: TransferViewModel = viewModel(
+        factory = TransferViewModel.provideFactory(LocalContext.current.applicationContext as MyApplication))
+){
+    val uiState = viewModel.uiState
+    var note by remember { mutableStateOf("") }
+    var showSuccess by remember { mutableStateOf(false) }
+
+    LaunchedEffect(Unit) {
+        viewModel.getBalance()
+        viewModel.getCards()
+    }
+
+    LaunchedEffect(uiState.error) {
+        if (uiState.error != null) {
+            showSuccess = false
+        }
+    }
+
+    Row {
+        Column(
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.spacedBy(20.dp, Alignment.CenterVertically),
+            modifier = Modifier
+                .padding(innerPadding)
+                .padding(horizontal = 40.dp)
+                .weight(0.4f)
+                .verticalScroll(rememberScrollState())
+
+        ) {
+            TransferProgress(2)
+
+            Section(title = stringResource(R.string.transfer_to)) {
+                ContactCard((email), Modifier.fillMaxWidth(), onChangeDestination)
+            }
+
+            Section(title = stringResource(R.string.transfer_amount)) {
+                AmountDisplay(amount, onEditAmount)
+            }
+
+            Section(title = stringResource(R.string.payment_method)) {
+                PaymentMethodDisplay(PaymentType.valueOf(paymentType), cardId, uiState.balance)
+            }
+        }
+
+        Column (
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceAround,
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxHeight()
+                .weight(0.4f)
+        ) {
+            Section(title = "Message") {
+
+                OutlinedTextField(
+                    value = note,
+                    onValueChange = { note = it },
+                    placeholder = { Text(stringResource(R.string.add_note)) },
+                    shape = RoundedCornerShape(12.dp),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        unfocusedBorderColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.5f),
+                        focusedBorderColor = MaterialTheme.colorScheme.secondary
+                    ),
+                    modifier = Modifier.fillMaxWidth(),
+                    maxLines = 3
+                )
+            }
+            SwipeToSendButton(
+                onSwipeComplete = {
+                    if (!uiState.isFetching) {
+                        Log.d("SwipeToSendButton", "onSwipeComplete called")
+                        Log.d("SwipeToSendButton", "email: $email, amount: $amount, note: $note")
+                        try {
+                            val parsedAmount = amount.toDoubleOrNull()
+                            when {
+                                parsedAmount == null || parsedAmount <= 0 -> {
+                                    throw IllegalArgumentException("Invalid amount")
+                                }
+                                email.isEmpty() -> {
+                                    throw IllegalArgumentException("Receiver email is required")
+                                }
+                                else -> {
+                                    val transaction = createTransactionRequest(
+                                        paymentType = PaymentType.valueOf(paymentType),
+                                        amount = parsedAmount,
+                                        email = email,
+                                        note = note,
+                                        cardId = cardId
+                                    )
+                                    viewModel.makePayment(transaction)
+                                    showSuccess = true
+                                }
+                            }
+                        } catch (e: Exception) {
+                            viewModel.handleError(e)
+                        }
+                    }
+                },
+                isCompleted = showSuccess && !uiState.isFetching && uiState.error == null,
+                isLoading = uiState.isFetching,
+                modifier = Modifier
+                    .padding(horizontal = 24.dp)
+                    .padding(WindowInsets.navigationBars.asPaddingValues())
+                    .fillMaxWidth()
+            )
+        }
+    }
+
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        modifier = Modifier.fillMaxWidth().verticalScroll(rememberScrollState())
+    ) {
+        when {
+            uiState.error != null -> {
+                ErrorDialog(
+                    visible = true,
+                    message = uiState.error.message ?: "There has been an error in the transaction.",
+                    onDismiss = viewModel::clearError
+                )
+            }
+            showSuccess && !uiState.isFetching -> {
+                SuccessDialog(
+                    visible = true,
+                    message = stringResource(R.string.payment_success),
+                    onDismiss = { showSuccess = false },
+                    onConfirm = onPaymentComplete
+                )
+            }
+        }
+
+
+
+
+    }
+
 }
