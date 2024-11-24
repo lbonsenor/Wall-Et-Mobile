@@ -43,7 +43,9 @@ data class NetworkTransaction(
                 "CARD" -> PaymentType.CARD
                 else -> PaymentType.BALANCE
             },
-            transactionType = TransactionType.ONLINE_PAYMENT,
+            transactionType = if (linkUuid != null) TransactionType.ONLINE_PAYMENT
+                else if (balanceBefore > balanceAfter) TransactionType.TRANSFER_SENT
+                else TransactionType.TRANSFER_RECEIVED,
             card = card?.asModel(),
             createdAt = createdAt.let { dateFormat.parse(createdAt) },
             updatedAt = updatedAt.let { dateFormat.parse(updatedAt) },
