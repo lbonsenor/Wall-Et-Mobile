@@ -159,7 +159,11 @@ fun AppNavHost(
                     onEditAmount = { navigateTo(navController, "${Screen.SelectAmount.route}/${backStackEntry.arguments?.getString("email")}") }
                 )
             }
-            composable(route = Screen.TopUp.route){ TopUpScreen(innerPadding) }
+            composable(route = Screen.TopUp.route){
+                TopUpScreen(
+                    innerPadding = innerPadding,
+                    onConfirm = {navigateTo(navController, Screen.Home.route)}
+                ) }
         }
     )
 }

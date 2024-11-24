@@ -86,10 +86,6 @@ fun SelectPaymentScreen(
     var note by remember { mutableStateOf("") }
     var showSuccess by remember { mutableStateOf(false) }
 
-    LaunchedEffect(uiState.isFetching) {
-        Log.d("SelectPaymentScreen", "isFetching: ${uiState.isFetching}")
-    }
-
     LaunchedEffect(Unit) {
         viewModel.getBalance()
         viewModel.getCards()
@@ -101,12 +97,12 @@ fun SelectPaymentScreen(
         }
     }
 
-    LaunchedEffect(uiState.isFetching, uiState.error, showSuccess) {
-        if (!uiState.isFetching && uiState.error == null && showSuccess) {
-            delay(1500)
-            onPaymentComplete()
-        }
-    }
+//    LaunchedEffect(uiState.isFetching, uiState.error, showSuccess) {
+//        if (!uiState.isFetching && uiState.error == null && showSuccess) {
+//            delay(1500)
+//            onPaymentComplete()
+//        }
+//    }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -125,7 +121,8 @@ fun SelectPaymentScreen(
                 SuccessDialog(
                     visible = true,
                     message = stringResource(R.string.payment_success),
-                    onDismiss = { showSuccess = false }
+                    onDismiss = { showSuccess = false },
+                    onConfirm = onPaymentComplete
                 )
             }
         }

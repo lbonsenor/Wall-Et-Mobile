@@ -2,6 +2,8 @@ package com.example.wall_et_mobile.data.repository
 
 import android.util.Log
 import com.example.wall_et_mobile.data.model.Card
+import com.example.wall_et_mobile.data.model.RechargeRequest
+import com.example.wall_et_mobile.data.model.RechargeResponse
 import com.example.wall_et_mobile.data.model.Wallet
 import com.example.wall_et_mobile.data.network.WalletRemoteDataSource
 import com.example.wall_et_mobile.data.network.model.NetworkAliasUpdate
@@ -93,5 +95,9 @@ suspend fun getBalance(): Double {
             this.wallet = remoteDataSource.getWallet().asModel()
         }
         return this.wallet
+    }
+
+    suspend fun recharge(amount: RechargeRequest) : RechargeResponse {
+        return remoteDataSource.recharge(amount)
     }
 }
