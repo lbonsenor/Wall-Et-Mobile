@@ -272,12 +272,6 @@ fun LoginScreen(
                         enabled = isFormValid && !uiState.isFetching
                     )
 
-                    EndFormButton(
-                        textResourceId = R.string.fast_login,
-                        onClick = onNavigateToHome,
-                        enabled = !uiState.isFetching
-                    )
-
                     HorizontalDivider(
                         modifier = Modifier.padding(top = 16.dp)
                     )
