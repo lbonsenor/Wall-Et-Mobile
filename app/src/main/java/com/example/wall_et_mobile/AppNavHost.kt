@@ -34,9 +34,9 @@ fun AppNavHost(
     innerPadding: PaddingValues,
     modifier: Modifier,
     navController: NavHostController,
-    startDestination: String = Screen.Login.route,
     onThemeChanged: (ThemeMode) -> Unit,
-    onLanguageChanged: (String) -> Unit
+    onLanguageChanged: (String) -> Unit,
+    startDestination: String
 ){
     NavHost(
         navController = navController,
@@ -173,9 +173,9 @@ fun LandscapeAppNavHost(
     innerPadding: PaddingValues,
     modifier: Modifier,
     navController: NavHostController,
-    startDestination: String = Screen.Login.route,
     onThemeChanged: (ThemeMode) -> Unit,
-    onLanguageChanged: (String) -> Unit
+    onLanguageChanged: (String) -> Unit,
+    startDestination: String
 ){
     NavHost(
         navController = navController,
@@ -315,7 +315,9 @@ fun navigateTo(navController : NavHostController, route: String){
 
 fun navigateToLogin(navController: NavHostController) {
     navController.navigate(Screen.Login.route) {
-        popUpTo(0)
+        popUpTo(0) {
+            inclusive = true
+        }
         launchSingleTop = true
     }
 }
