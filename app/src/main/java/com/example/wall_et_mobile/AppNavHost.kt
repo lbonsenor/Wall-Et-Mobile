@@ -27,10 +27,10 @@ import com.example.wall_et_mobile.screens.signup.EmailVerificationScreen
 import com.example.wall_et_mobile.screens.signup.SignupScreen
 import com.example.wall_et_mobile.screens.signup.SignupSuccessScreen
 import com.example.wall_et_mobile.screens.top_up.TopUpScreen
+import com.example.wall_et_mobile.screens.transfer.ConfirmPaymentScreen
+import com.example.wall_et_mobile.screens.transfer.ConfirmPaymentScreenLandscape
 import com.example.wall_et_mobile.screens.transfer.SelectDestinataryScreen
 import com.example.wall_et_mobile.screens.transfer.SelectDestinataryScreenLandscape
-import com.example.wall_et_mobile.screens.transfer.SelectPaymentScreen
-import com.example.wall_et_mobile.screens.transfer.SelectPaymentScreenLandscape
 
 @Composable
 fun AppNavHost(
@@ -127,7 +127,7 @@ fun AppNavHost(
                     innerPadding = innerPadding,
                     email = backStackEntry.arguments?.getString("email")!!,
                     onNavigateToSelectPayment = { email, amount, paymentType, cardId ->
-                        navigateTo(navController, "${Screen.SelectPaymentMethod.route}/${email}/${amount}/${paymentType}/${cardId}")
+                        navigateTo(navController, "${Screen.ConfirmPaymentMethod.route}/${email}/${amount}/${paymentType}/${cardId}")
                     },
                     onChangeDestination = {
                         navigateTo(navController, Screen.Transfer.route)
@@ -135,7 +135,7 @@ fun AppNavHost(
                 )
             }
             composable(
-                route = "${Screen.SelectPaymentMethod.route}/{email}/{amount}/{paymentType}/{cardId}",
+                route = "${Screen.ConfirmPaymentMethod.route}/{email}/{amount}/{paymentType}/{cardId}",
                 arguments = listOf(
                     navArgument(name = "email"){
                         type = NavType.StringType
@@ -151,7 +151,7 @@ fun AppNavHost(
                     }
                 )
             ){ backStackEntry ->
-                SelectPaymentScreen(
+                ConfirmPaymentScreen(
                     innerPadding = innerPadding,
                     onPaymentComplete = { navigateTo(navController, Screen.Home.route) },
                     email = backStackEntry.arguments?.getString("email")!!,
@@ -267,7 +267,7 @@ fun LandscapeAppNavHost(
                     innerPadding = innerPadding,
                     email = backStackEntry.arguments?.getString("email")!!,
                     onNavigateToSelectPayment = { email, amount, paymentType, cardId ->
-                        navigateTo(navController, "${Screen.SelectPaymentMethod.route}/${email}/${amount}/${paymentType}/${cardId}")
+                        navigateTo(navController, "${Screen.ConfirmPaymentMethod.route}/${email}/${amount}/${paymentType}/${cardId}")
                     },
                     onChangeDestination = {
                         navigateTo(navController, Screen.Transfer.route)
@@ -275,7 +275,7 @@ fun LandscapeAppNavHost(
                 )
             }
             composable(
-                route = "${Screen.SelectPaymentMethod.route}/{email}/{amount}/{paymentType}/{cardId}",
+                route = "${Screen.ConfirmPaymentMethod.route}/{email}/{amount}/{paymentType}/{cardId}",
                 arguments = listOf(
                     navArgument(name = "email"){
                         type = NavType.StringType
@@ -291,7 +291,7 @@ fun LandscapeAppNavHost(
                     }
                 )
             ){ backStackEntry ->
-                SelectPaymentScreenLandscape(
+                ConfirmPaymentScreenLandscape(
                     innerPadding = innerPadding,
                     onPaymentComplete = { navigateTo(navController, Screen.Home.route) },
                     email = backStackEntry.arguments?.getString("email")!!,

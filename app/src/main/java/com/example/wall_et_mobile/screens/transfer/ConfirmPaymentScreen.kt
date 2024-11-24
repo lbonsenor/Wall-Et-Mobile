@@ -25,6 +25,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.PlayArrow
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
@@ -70,7 +71,7 @@ import kotlin.math.roundToInt
 
 // should change name to last section screen or smth
 @Composable
-fun SelectPaymentScreen(
+fun ConfirmPaymentScreen(
     innerPadding: PaddingValues,
     email: String,
     amount: String,
@@ -368,9 +369,12 @@ private fun AmountDisplay(amount: String, onEditAmount: () -> Unit) {
 
         FilledTonalButton(
             onClick = onEditAmount,
-            shape = CircleShape
+            shape = CircleShape,
+            colors = ButtonDefaults.filledTonalButtonColors(
+                containerColor = MaterialTheme.colorScheme.secondary
+            )
         ) {
-            Text("Edit")
+            Text(stringResource(R.string.change))
         }
     }
 }
@@ -473,7 +477,7 @@ private fun createTransactionRequest(
 }
 
 @Composable
-fun SelectPaymentScreenLandscape(
+fun ConfirmPaymentScreenLandscape(
     innerPadding: PaddingValues,
     email: String,
     amount: String,

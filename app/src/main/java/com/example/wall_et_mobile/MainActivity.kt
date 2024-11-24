@@ -29,6 +29,7 @@ import com.example.wall_et_mobile.data.model.Screen.Activities
 import com.example.wall_et_mobile.data.model.Screen.Cards
 import com.example.wall_et_mobile.data.model.Screen.Home
 import com.example.wall_et_mobile.data.model.Screen.SeeMore
+import com.example.wall_et_mobile.data.model.getScreen
 import com.example.wall_et_mobile.data.preferences.LanguagePreference
 import com.example.wall_et_mobile.data.preferences.ThemePreference
 import com.example.wall_et_mobile.ui.theme.WallEtTheme
@@ -56,7 +57,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             val startDestination = remember {
                 if (sessionManager.loadAuthToken() != null) {
-                    Screen.Home.route
+                    Home.route
                 } else {
                     Screen.Login.route
                 }
@@ -77,7 +78,7 @@ class MainActivity : ComponentActivity() {
 
             LaunchedEffect(qrResults.value) {
                 if (qrResults.value != null) {
-                    navigateTo(navController, Screen.SeeMore.route)
+                    navigateTo(navController, SeeMore.route)
                 }
             }
 
@@ -162,7 +163,7 @@ fun ScaffoldPortrait(
             val route = currentRoute(navController)?.split("/")?.first()
 
             val noTopBarRoutes = listOf(
-                Screen.Home.route,
+                Home.route,
                 Screen.Login.route,
                 Screen.Signup.route,
                 Screen.SignUpSuccess.route,
@@ -174,10 +175,10 @@ fun ScaffoldPortrait(
             )
 
             val navBarRoutes = listOf(
-                Screen.Home.route,
-                Screen.Cards.route,
-                Screen.Activities.route,
-                Screen.SeeMore.route
+                Home.route,
+                Cards.route,
+                Activities.route,
+                SeeMore.route
             )
 
             if (!noTopBarRoutes.contains(route)) {
@@ -208,13 +209,7 @@ fun ScaffoldPortrait(
                         SecondaryTopAppBar(
                             canGoBack = canGoBack,
                             onBackClick = { navController.navigateUp() },
-                            title = route?.split('_')
-                                ?.joinToString(" ") { word ->
-                                    word.replaceFirstChar {
-                                        if (it.isLowerCase()) it.titlecase(Locale.getDefault())
-                                        else it.toString()
-                                    }
-                                } ?: ""
+                            title = stringResource(getScreen(route ?: "").labelInt)
                         )
                     }
                 }
