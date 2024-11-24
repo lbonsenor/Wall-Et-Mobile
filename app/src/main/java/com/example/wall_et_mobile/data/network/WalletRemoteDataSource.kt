@@ -1,5 +1,7 @@
 package com.example.wall_et_mobile.data.network
 
+import com.example.wall_et_mobile.data.model.RechargeRequest
+import com.example.wall_et_mobile.data.model.RechargeResponse
 import com.example.wall_et_mobile.data.network.api.WalletApiService
 import com.example.wall_et_mobile.data.network.model.NetworkAliasUpdate
 import com.example.wall_et_mobile.data.network.model.NetworkBalanceResponse
@@ -53,6 +55,11 @@ class WalletRemoteDataSource(
     suspend fun getWallet() : NetworkWallet {
         return handleApiResponse { walletApiService.getWallet() }
     }
+
+    suspend fun recharge(amount: RechargeRequest) : RechargeResponse {
+        return handleApiResponse { walletApiService.recharge(amount) }
+    }
+
 
     companion object {
         const val DELAY : Long = 5000
