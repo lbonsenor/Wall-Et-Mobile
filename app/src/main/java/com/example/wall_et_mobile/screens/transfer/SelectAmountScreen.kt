@@ -43,13 +43,13 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.OffsetMapping
 import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.wall_et_mobile.MyApplication
 import com.example.wall_et_mobile.R
-import com.example.wall_et_mobile.components.ErrorDialog
 import com.example.wall_et_mobile.components.SelectedOption
 import com.example.wall_et_mobile.components.TransferCardSlider
 import com.example.wall_et_mobile.components.TransferProgress
@@ -93,9 +93,8 @@ fun SelectAmountScreen(
     ) {
         TransferProgress(1)
         ContactCard(email,
-            Modifier
-                .fillMaxWidth()
-                .padding(25.dp), onClick = onChangeDestination)
+            Modifier.fillMaxWidth(),
+            onClick = onChangeDestination)
 
         AmountTextField(amount, cents, { amount = it }, { cents = it })
 
@@ -203,28 +202,25 @@ class AmountTransformation : VisualTransformation {
 @Composable
 fun ContactCard(email: String, modifier : Modifier, onClick : () -> Unit) {
     Row(
-        horizontalArrangement = Arrangement.SpaceBetween,
+        horizontalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterHorizontally),
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier,
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(10.dp)
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.person),
-                tint = MaterialTheme.colorScheme.secondary,
-                contentDescription = "Profile Picture",
-                modifier = Modifier
-                    .border(2.dp, MaterialTheme.colorScheme.surfaceVariant, shape = CircleShape)
-                    .padding(10.dp)
-            )
-            Text(
-                text = email,
-                fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.onBackground
-            )
-        }
+        Icon(
+            painter = painterResource(R.drawable.person),
+            tint = MaterialTheme.colorScheme.secondary,
+            contentDescription = "Profile Picture",
+            modifier = Modifier
+                .border(2.dp, MaterialTheme.colorScheme.surfaceVariant, shape = CircleShape)
+                .padding(10.dp)
+        )
+        Text(
+            text = email,
+            fontWeight = FontWeight.SemiBold,
+            color = MaterialTheme.colorScheme.onBackground,
+            overflow = TextOverflow.Clip
+        )
+
         FilledTonalButton (
             onClick = onClick,
             shape = CircleShape,
@@ -232,9 +228,10 @@ fun ContactCard(email: String, modifier : Modifier, onClick : () -> Unit) {
                 contentColor = MaterialTheme.colorScheme.onSecondary,
                 containerColor = MaterialTheme.colorScheme.secondary.copy(0.8f),
             ),
+
             //border = BorderStroke(1.dp, MaterialTheme.colorScheme.secondary)
         ) {
-            Text(text = stringResource(R.string.change))
+            Text(text = stringResource(R.string.change), overflow = TextOverflow.Visible)
         }
     }
 }
