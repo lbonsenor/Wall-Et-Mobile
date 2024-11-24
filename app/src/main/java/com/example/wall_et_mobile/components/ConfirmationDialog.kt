@@ -42,7 +42,7 @@ fun ConfirmationDialog(
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text(dismissText, color = MaterialTheme.colorScheme.onBackground)
+                Text(dismissText, color = MaterialTheme.colorScheme.secondary)
             }
         }
     )
