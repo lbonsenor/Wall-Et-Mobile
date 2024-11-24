@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Wall-Et</string>
+    <string name="app_name" translatable="false">Wall · Et</string>
     <!--    Home    -->
     <string name="title_home">Inicio</string>
     <string name="action_send">Transferir</string>
@@ -54,7 +54,7 @@
     <string name="light_mode">Modo Claro</string>
 
     <!-- Registration and login -->
-    <string name="welcome">¡Bienvenido a Wall-Et!</string>
+    <string name="welcome">¡Bienvenido a Wall · Et!</string>
     <string name="email">Correo electrónico</string>
     <string name="password">Contraseña</string>
     <string name="log_in">Iniciar sesión</string>
@@ -89,7 +89,7 @@
     <string name="error">Error</string>
     <string name="user_not_found">El usuario ingresado es inexistente</string>
     <string name="max_amount">Monto máximo:</string>
-    <string name="wallet_balance">Dinero de Wall-Et</string>
+    <string name="wallet_balance">Dinero de Wall · Et</string>
     <string name="recover_password">Recuperar contraseña</string>
     <string name="send">Enviar</string>
     <string name="verification_code">Código de verificación recibido</string>

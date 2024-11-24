@@ -3,6 +3,7 @@ package com.example.wall_et_mobile.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -33,7 +34,8 @@ fun CustomButton(text: String, icon: Int, onClick: () -> Unit, enabled: Boolean?
             disabledContainerColor = MaterialTheme.colorScheme.surfaceContainer.copy(alpha = 0.5f),
             disabledContentColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.5f)
         ),
-        enabled = enabled ?: true,
+        enabled = enabled!!,
+        contentPadding = PaddingValues(1.dp),
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(20.dp))
@@ -45,7 +47,7 @@ fun CustomButton(text: String, icon: Int, onClick: () -> Unit, enabled: Boolean?
             verticalArrangement = Arrangement.SpaceEvenly,
         ) {
             Icon(painter = painterResource(icon), contentDescription = null)
-            Text(text = text, softWrap = false, textAlign = TextAlign.Center)
+            Text(text = text, textAlign = TextAlign.Center, maxLines = 1)
         }
 
     }

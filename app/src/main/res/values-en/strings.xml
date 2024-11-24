@@ -38,7 +38,7 @@
     <string name="last_week">Last week</string>
     <string name="last_month">Last month</string>
     <string name="online_payment">Online payment</string>
-    <string name="available_balance">Wall-Et balance</string>
+    <string name="available_balance">Wall · Et balance</string>
     <string name="remove">Remove</string>
     <string name="pause">Pause</string>
     <string name="action_send">Send</string>
@@ -56,8 +56,8 @@
     <string name="error">Error</string>
     <string name="user_not_found">User doesn\'t exist</string>
     <string name="max_amount">Max. amount:</string>
-    <string name="wallet_balance">Wall-Et Balance</string>
-    <string name="welcome">Welcome to Wall-Et!</string>
+    <string name="wallet_balance">Wall · Et Balance</string>
+    <string name="welcome">Welcome to Wall · Et!</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="log_in">Log in</string>
@@ -94,7 +94,7 @@
     <string name="verify_email">Verify Email</string>
     <string name="create_account">Create account</string>
     <string name="signup_to_continue">Sign up to continue</string>
-    <string name="welcome_back">Welcome back to Wall-Et!</string>
+    <string name="welcome_back">Welcome back to Wall · Et!</string>
     <string name="dont_have_account">Don\'t have an account?</string>
     <string name="no_worries">Enter the email associated with the account</string>
     <string name="send_code">Send code</string>
