@@ -166,5 +166,7 @@
     <string name="no_activities">No hay actividades disponibles</string>
     <string name="no_cards">No hay tarjetas disponibles</string>
     <string name="add_funds_success_title">¡Ingreso exitoso!</string>
+    <string name="copied_to_clipboard">copiado</string>
+    <string name="close">Cerrar</string>
 
 </resources>

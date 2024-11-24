@@ -1,5 +1,6 @@
 package com.example.wall_et_mobile
 
+import ThemeMode
 import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -11,12 +12,15 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material.FabPosition
 import androidx.compose.material.Scaffold
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
@@ -137,12 +141,18 @@ fun ScaffoldPortrait(
     val statusBarColor = MaterialTheme.colorScheme.primary
     val systemNavColor = MaterialTheme.colorScheme.primary
 
+    val scope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() }
+
     SideEffect {
         systemUiController.setStatusBarColor(statusBarColor)
         systemUiController.setNavigationBarColor(systemNavColor)
     }
     
     Scaffold (
+        snackbarHost = {
+            SnackbarHost(hostState = snackbarHostState)
+        },
         bottomBar = {
             when (currentRoute(navController)) {
                 Home.route -> CustomAppBar(navController)

@@ -28,11 +28,16 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -46,6 +51,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.tooling.preview.Preview
@@ -55,6 +61,9 @@ import com.example.wall_et_mobile.MyApplication
 import com.example.wall_et_mobile.R
 import com.example.wall_et_mobile.components.ConfirmationDialog
 import com.example.wall_et_mobile.components.PasswordField
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
 fun ProfileScreen(
@@ -71,141 +80,151 @@ fun ProfileScreen(
     var showResetPassword by remember { mutableStateOf(false) }
     val isLandscape = configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
+    val snackbarHostState = remember { SnackbarHostState() }
+
+
     LaunchedEffect(uiState.isAuthenticated) {
         if (!uiState.isAuthenticated) {
             onNavigateToLogin()
         }
     }
-
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surface)
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(200.dp)
-                .background(
-                    color = MaterialTheme.colorScheme.primary,
-                    shape = RoundedCornerShape(bottomStart = 100.dp, bottomEnd = 100.dp)
+    Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) },
+        content = { innerPadding ->
+            Box(
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.surface)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(200.dp)
+                        .background(
+                            color = MaterialTheme.colorScheme.primary,
+                            shape = RoundedCornerShape(bottomStart = 100.dp, bottomEnd = 100.dp)
+                        )
                 )
-        )
-
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .systemBarsPadding()
-                .padding(24.dp),
-                //.horizontalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(24.dp)
-        ) {
-            if (uiState.isFetching) {
-                CircularProgressIndicator(
-                    modifier = Modifier.align(Alignment.CenterHorizontally),
-                    color = MaterialTheme.colorScheme.primary
-                )
-            } else {
-                Card(
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(24.dp),
-                    colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.surface
-                    ),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(20.dp),
-                        verticalArrangement = Arrangement.spacedBy(20.dp)
-                    ) {
-                        ProfileField(
-                            label = stringResource(R.string.name),
-                            value = uiState.user?.name ?: "",
-                        )
-
-                        ProfileField(
-                            label = stringResource(R.string.last_name),
-                            value = uiState.user?.lastName ?: "",
-                        )
-
-                        ProfileField(
-                            label = stringResource(R.string.email),
-                            value = uiState.user?.email ?: "",
-                        )
-
-                        CbuField(
-                            cbu = uiState.wallet?.cbu ?: "",
-                        )
-                        HorizontalDivider(
-                            color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
-                        )
-                        AliasField(
-                            alias = uiState.wallet?.alias ?: "",
-                            onEditClick = {
-                                newAlias = uiState.wallet?.alias ?: ""
-                                showAliasDialog = true
-                            },
-                        )
-                    }
-                }
-
-                Spacer(modifier = Modifier.weight(1f))
 
                 Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalArrangement = Arrangement.spacedBy(12.dp)
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .systemBarsPadding()
+                        .padding(24.dp),
+                    //.horizontalScroll(rememberScrollState()),
+                    verticalArrangement = Arrangement.spacedBy(24.dp)
                 ) {
-                    Button(
-                        onClick = { showResetPassword = true },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(50.dp),
-                        shape = RoundedCornerShape(16.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.secondary
+                    if (uiState.isFetching) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.align(Alignment.CenterHorizontally),
+                            color = MaterialTheme.colorScheme.primary
                         )
-                    ) {
-                        Icon(
-                            Icons.Filled.Lock,
-                            contentDescription = null,
-                            modifier = Modifier.size(20.dp)
-                        )
-                        Spacer(Modifier.width(8.dp))
-                        Text(
-                            text = stringResource(R.string.reset_password),
-                            style = MaterialTheme.typography.bodyLarge
-                        )
-                    }
+                    } else {
+                        Card(
+                            modifier = Modifier.fillMaxWidth(),
+                            shape = RoundedCornerShape(24.dp),
+                            colors = CardDefaults.cardColors(
+                                containerColor = MaterialTheme.colorScheme.surface
+                            ),
+                            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+                        ) {
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(20.dp),
+                                verticalArrangement = Arrangement.spacedBy(20.dp)
+                            ) {
+                                ProfileField(
+                                    label = stringResource(R.string.name),
+                                    value = uiState.user?.name ?: "",
+                                )
 
-                    Button(
-                        onClick = { showLogoutDialog = true },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(50.dp),
-                        shape = RoundedCornerShape(16.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.surface,
-                            contentColor = MaterialTheme.colorScheme.error
-                        ),
-                        border = BorderStroke(1.dp, MaterialTheme.colorScheme.error)
-                    ) {
-                        Icon(
-                            Icons.Default.ArrowDropDown,
-                            contentDescription = null,
-                            modifier = Modifier.size(20.dp)
-                        )
-                        Spacer(Modifier.width(8.dp))
-                        Text(
-                            text = stringResource(R.string.log_out),
-                            style = MaterialTheme.typography.bodyLarge
-                        )
+                                ProfileField(
+                                    label = stringResource(R.string.last_name),
+                                    value = uiState.user?.lastName ?: "",
+                                )
+
+                                ProfileField(
+                                    label = stringResource(R.string.email),
+                                    value = uiState.user?.email ?: "",
+                                )
+
+                                CbuField(
+                                    uiState.wallet?.cbu ?: "",
+                                    snackbarHostState
+                                )
+                                HorizontalDivider(
+                                    color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
+                                )
+                                AliasField(
+                                    alias = uiState.wallet?.alias ?: "",
+                                    onEditClick = {
+                                        newAlias = uiState.wallet?.alias ?: ""
+                                        showAliasDialog = true
+                                    },
+                                    snackbarHostState = snackbarHostState
+                                )
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.weight(1f))
+
+                        Column(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
+                            Button(
+                                onClick = { showResetPassword = true },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(50.dp),
+                                shape = RoundedCornerShape(16.dp),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = MaterialTheme.colorScheme.secondary
+                                )
+                            ) {
+                                Icon(
+                                    Icons.Filled.Lock,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(20.dp)
+                                )
+                                Spacer(Modifier.width(8.dp))
+                                Text(
+                                    text = stringResource(R.string.reset_password),
+                                    style = MaterialTheme.typography.bodyLarge
+                                )
+                            }
+
+                            Button(
+                                onClick = { showLogoutDialog = true },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(50.dp),
+                                shape = RoundedCornerShape(16.dp),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = MaterialTheme.colorScheme.surface,
+                                    contentColor = MaterialTheme.colorScheme.error
+                                ),
+                                border = BorderStroke(1.dp, MaterialTheme.colorScheme.error)
+                            ) {
+                                Icon(
+                                    Icons.Default.ArrowDropDown,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(20.dp)
+                                )
+                                Spacer(Modifier.width(8.dp))
+                                Text(
+                                    text = stringResource(R.string.log_out),
+                                    style = MaterialTheme.typography.bodyLarge
+                                )
+                            }
+                        }
                     }
                 }
             }
         }
-    }
+        )
 
     if (showLogoutDialog) {
         ConfirmationDialog(
@@ -379,9 +398,8 @@ private fun ProfileField(
 @Composable
 private fun CbuField(
     cbu: String,
+    snackbarHostState: SnackbarHostState
 ) {
-    val clipboardManager = LocalClipboardManager.current
-
     Column(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(4.dp)
@@ -397,23 +415,9 @@ private fun CbuField(
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onBackground.copy(0.5f)
             )
-            IconButton(
-                onClick = { clipboardManager.setText(AnnotatedString(cbu)) },
-                modifier = Modifier
-                    .padding(start = 8.dp)
-                    .size(32.dp),
-            ) {
-                Icon(
-                    Icons.Default.CheckCircle, // change
-                    contentDescription = "Copy CBU",
-                    tint = MaterialTheme.colorScheme.secondary,
-                    modifier = Modifier
-                        .size(30.dp)
-                        .background(MaterialTheme.colorScheme.surfaceVariant, CircleShape)
-                        .padding(4.dp)
-
-                )
-            }
+            CopyButton(
+                cbu, snackbarHostState
+            )
         }
         Text(
             text = cbu,
@@ -427,9 +431,8 @@ private fun CbuField(
 private fun AliasField(
     alias: String,
     onEditClick: () -> Unit,
+    snackbarHostState: SnackbarHostState
 ) {
-    val clipboardManager = LocalClipboardManager.current
-
     Column(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(4.dp)
@@ -463,21 +466,7 @@ private fun AliasField(
                             .padding(4.dp)
                     )
                 }
-                IconButton(
-                    onClick = { clipboardManager.setText(AnnotatedString(alias)) },
-                    modifier = Modifier.size(32.dp)
-                ) {
-                    Icon(
-                        Icons.Default.CheckCircle,
-                        contentDescription = "Copy alias",
-                        tint = MaterialTheme.colorScheme.secondary,
-                        modifier = Modifier
-                            .size(30.dp)
-                            .background(MaterialTheme.colorScheme.surfaceVariant, CircleShape)
-                            .padding(4.dp)
-
-                    )
-                }
+                CopyButton(alias, snackbarHostState)
             }
         }
 
@@ -494,6 +483,39 @@ private fun AliasField(
 fun validatePassword(password: String): Boolean {
     val passwordPattern = "^(?=.*\\d)(?=.*[A-Z])(?=.*[@#$%^&+=!])[A-Za-z\\d@#$%^&+=!]{8,}$"
     return password.matches(passwordPattern.toRegex())
+}
+
+@Composable 
+fun CopyButton(
+    content: String,
+    snackbarHostState: SnackbarHostState
+) {
+    val clipboardManager = LocalClipboardManager.current
+    val message = "$content ${stringResource(R.string.copied_to_clipboard)}"
+    IconButton(
+        onClick = {
+            clipboardManager.setText(AnnotatedString(content))
+            CoroutineScope(Dispatchers.Main).launch {
+                snackbarHostState.showSnackbar(
+                    message = message,
+                    withDismissAction = true,
+                    duration = SnackbarDuration.Short
+                )
+            }
+                  },
+        modifier = Modifier.size(32.dp)
+    ) {
+        Icon(
+            painter = painterResource(R.drawable.copy),
+            contentDescription = "Copy alias",
+            tint = MaterialTheme.colorScheme.secondary,
+            modifier = Modifier
+                .size(30.dp)
+                .background(MaterialTheme.colorScheme.surfaceVariant, CircleShape)
+                .padding(4.dp)
+
+        )
+    }
 }
 //}
 

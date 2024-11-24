@@ -147,4 +147,6 @@
     <string name="no_activities">No activities available</string>
     <string name="no_cards">No cards available</string>
     <string name="add_funds_success_title">Success!</string>
+    <string name="copied_to_clipboard">copied</string>
+    <string name="close">Close</string>
 </resources>
