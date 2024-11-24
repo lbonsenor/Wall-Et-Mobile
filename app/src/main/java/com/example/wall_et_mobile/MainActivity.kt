@@ -98,7 +98,7 @@ class MainActivity : ComponentActivity() {
 fun ScaffoldPortrait(navController: NavHostController, qrScanner: QRScanner, onThemeChanged: (ThemeMode) -> Unit){
     val systemUiController = rememberSystemUiController()
 
-    val statusBarColor = MaterialTheme.colorScheme.background
+    val statusBarColor = MaterialTheme.colorScheme.primary
     val systemNavColor = MaterialTheme.colorScheme.primary
 
     SideEffect {
