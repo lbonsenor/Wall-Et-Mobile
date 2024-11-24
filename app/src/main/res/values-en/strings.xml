@@ -134,4 +134,6 @@
     <string name="cvv_error">CVV must be 3 digits</string>
     <string name="repeat">Repeat</string>
     <string name="insufficient_funds">Insufficient funds</string>
+    <string name="invalid_credentials">Invalid credentials</string>
+    <string name="unexpected_error">An unexpected error has ocurred</string>
 </resources>
