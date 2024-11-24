@@ -52,6 +52,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -370,11 +371,12 @@ private fun AmountDisplay(amount: String, onEditAmount: () -> Unit) {
         FilledTonalButton(
             onClick = onEditAmount,
             shape = CircleShape,
-            colors = ButtonDefaults.filledTonalButtonColors(
-                containerColor = MaterialTheme.colorScheme.secondary
-            )
+            colors = ButtonDefaults.outlinedButtonColors(
+                contentColor = MaterialTheme.colorScheme.onSecondary,
+                containerColor = MaterialTheme.colorScheme.secondary.copy(0.8f),
+            ),
         ) {
-            Text(stringResource(R.string.change))
+            Text(text = stringResource(R.string.change), overflow = TextOverflow.Visible)
         }
     }
 }
