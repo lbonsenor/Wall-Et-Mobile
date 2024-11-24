@@ -21,9 +21,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.Icon
@@ -33,7 +30,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.SwipeToDismissBox
 import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -61,7 +57,6 @@ import com.example.wall_et_mobile.ui.theme.TransparentGray
 import com.example.wall_et_mobile.ui.theme.White
 import kotlinx.coroutines.launch
 
-
 @Composable
 fun CardItem(card: Card, onDelete: () -> Unit) {
     var showDeleteDialog by remember { mutableStateOf(false) }
@@ -73,43 +68,22 @@ fun CardItem(card: Card, onDelete: () -> Unit) {
 
 
     if (showDeleteDialog) {
-        AlertDialog(
-            onDismissRequest = {
+        ConfirmationDialog(
+            title = stringResource(R.string.delete_card),
+            text = stringResource(R.string.delete_card_check),
+            onConfirm = {
+                visible = false
+                showDeleteDialog = false
+                onDelete()
+            },
+            onDismiss = {
                 showDeleteDialog = false
                 scope.launch { state.reset() }
             },
-            title = { Text(stringResource(R.string.delete_card)) },
-            text = { Text(
-                text = stringResource(R.string.delete_card_check),
-                color = MaterialTheme.colorScheme.onBackground
-            ) },
-            confirmButton = {
-                Button(
-                    onClick = {
-                        visible = false
-                        showDeleteDialog = false
-                        onDelete()
-                    },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.error
-                    )
-                ) {
-                    Text("Delete")
-                }
-            },
-            dismissButton = {
-                TextButton(
-                    onClick = {
-                        showDeleteDialog = false
-                        scope.launch { state.reset() }
-                    }
-                ) {
-                    Text("Cancel")
-                }
-            }
+            confirmText = stringResource(R.string.delete)
         )
     }
-
+    
     AnimatedVisibility(
         visible = visible,
         exit = shrinkHorizontally(animationSpec = tween(300)) + fadeOut()

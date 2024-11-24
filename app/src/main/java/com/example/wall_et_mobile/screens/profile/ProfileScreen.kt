@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.wall_et_mobile.MyApplication
 import com.example.wall_et_mobile.R
+import com.example.wall_et_mobile.components.ConfirmationDialog
 import com.example.wall_et_mobile.components.EndFormButton
 
 @Composable
@@ -176,45 +177,16 @@ fun ProfileScreen(
         }
 
         if (showLogoutDialog) {
-            AlertDialog(
-                onDismissRequest = { showLogoutDialog = false },
-                title = {
-                    Text(
-                        text = stringResource(R.string.log_out),
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
+            ConfirmationDialog(
+                title = stringResource(R.string.log_out),
+                text = stringResource(R.string.log_out_confirmation),
+                onConfirm = {
+                    viewModel.logout()
+                    onNavigateToLogin()
                 },
-                text = {
-                    Text(
-                        text = stringResource(R.string.log_out_confirmation),
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                },
-                confirmButton = {
-                    Button(
-                        onClick = {
-                            viewModel.logout()
-                            onNavigateToLogin()
-                        },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.error,
-                            contentColor = MaterialTheme.colorScheme.onError
-                        ),
-                        shape = RoundedCornerShape(10.dp)
-                    ) {
-                        Text(stringResource(R.string.exit))
-                    }
-                },
-                dismissButton = {
-                    TextButton(onClick = { showLogoutDialog = false }) {
-                        Text(
-                            stringResource(android.R.string.cancel),
-                            color = MaterialTheme.colorScheme.secondary
-                        )
-                    }
-                },
-                containerColor = MaterialTheme.colorScheme.surface,
-                shape = RoundedCornerShape(16.dp)
+                onDismiss = { showLogoutDialog = false },
+                confirmText = stringResource(R.string.exit),
+                dismissText = stringResource(android.R.string.cancel)
             )
         }
 
