@@ -110,6 +110,7 @@ fun SelectDestinataryScreen(
                 disabledContentColor = MaterialTheme.colorScheme.onPrimaryContainer
             ),
             shape = RoundedCornerShape(10.dp),
+            enabled = contactValue.isNotEmpty() && isValidEmail(contactValue),
             modifier = Modifier
                 .fillMaxWidth(),
             contentPadding = PaddingValues(16.dp)
@@ -234,6 +235,7 @@ fun SelectDestinataryScreenLandscape(
                         disabledContentColor = MaterialTheme.colorScheme.onPrimaryContainer
                     ),
                     shape = RoundedCornerShape(10.dp),
+                    enabled = contactValue.isNotEmpty() && isValidEmail(contactValue),
                     modifier = Modifier
                         .fillMaxWidth(),
                     contentPadding = PaddingValues(16.dp)

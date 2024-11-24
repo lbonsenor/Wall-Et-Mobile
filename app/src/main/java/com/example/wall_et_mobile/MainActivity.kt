@@ -14,15 +14,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.wall_et_mobile.data.model.Screen
@@ -36,7 +35,6 @@ import com.example.wall_et_mobile.ui.theme.WallEtTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import java.util.Locale
 import androidx.compose.material3.Scaffold as Scaffold2
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 class MainActivity : ComponentActivity() {
     private lateinit var themePreference: ThemePreference
@@ -265,11 +263,11 @@ fun ScaffoldLandscape(
         systemUiController.setNavigationBarColor(systemNavColor)
     }
 
-    Scaffold2()
-    {
-        innerPadding ->
-        Row()
-        {
+    Scaffold2(
+
+    )
+    { innerPadding ->
+        Row {
             when (currentRoute(navController)) {
                 Home.route -> NavBarLandscape(navController, qrScanner)
                 Cards.route -> NavBarLandscape(navController, qrScanner)
@@ -278,13 +276,14 @@ fun ScaffoldLandscape(
                 else -> {}
             }
             LandscapeAppNavHost(
-                innerPadding = innerPadding, 
-                modifier = Modifier, 
+                innerPadding = innerPadding,
+                modifier = Modifier,
                 navController = navController,
                 startDestination = startDestination,
-                onThemeChanged = onThemeChanged, 
+                onThemeChanged = onThemeChanged,
                 onLanguageChanged = onLanguageChanged
             )
+
         }
     }
 }

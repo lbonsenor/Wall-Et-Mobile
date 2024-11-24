@@ -215,6 +215,7 @@ fun BalanceCardLandscape(
 ){
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceAround,
         modifier = Modifier
             .padding(innerPadding)
             .fillMaxHeight()
@@ -245,7 +246,9 @@ fun BalanceCardLandscape(
                 CustomButton(
                     stringResource(R.string.invest),
                     R.drawable.invest,
-                    onClick = {})
+                    onClick = {},
+                    enabled = false
+                )
             }
         }
     }

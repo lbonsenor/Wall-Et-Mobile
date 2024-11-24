@@ -418,7 +418,8 @@ private fun PaymentMethodDisplay(paymentType: PaymentType, cardId: Int?, balance
                     PaymentType.CARD -> stringResource(R.string.card)
                     PaymentType.LINK -> stringResource(R.string.link)
                 },
-                style = MaterialTheme.typography.titleMedium
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onBackground
             )
 
             if (paymentType == PaymentType.CARD && cardId != null) {

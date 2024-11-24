@@ -72,7 +72,7 @@ fun ActivityItem(transaction: Transaction) {
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     Text(
-                        text = transaction.receiver.name,
+                        text = transaction.receiver.name + " " + transaction.receiver.lastName,
                         style = MaterialTheme.typography.titleSmall,
                         color = titleColor
                     )
