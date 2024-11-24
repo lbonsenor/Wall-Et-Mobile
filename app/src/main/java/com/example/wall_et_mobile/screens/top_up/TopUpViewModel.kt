@@ -14,7 +14,6 @@ import com.example.wall_et_mobile.data.model.RechargeRequest
 import com.example.wall_et_mobile.data.repository.WalletRepository
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-
 class TopUpViewModel (
     private val walletRepository: WalletRepository,
 ) : ViewModel() {
@@ -28,6 +27,7 @@ class TopUpViewModel (
         updateState = { state, result ->
             state.copy(
                 balance = result.newBalance,
+                success = true
             )
         }
     )

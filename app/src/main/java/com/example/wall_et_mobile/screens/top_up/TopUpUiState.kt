@@ -8,6 +8,7 @@ data class TopUpUiState(
     val balance: Double? = null,
     val isFetching: Boolean = false,
     val error: Error? = null,
+    val success: Boolean = false,
 )
 
 
