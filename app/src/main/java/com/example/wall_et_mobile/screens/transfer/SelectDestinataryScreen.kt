@@ -5,6 +5,8 @@ import android.util.Patterns
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -161,4 +163,119 @@ fun getRecentContacts(transactions: List<Transaction>) : List<User> {
     return recentContacts
 }
 
+@Composable
+fun SelectDestinataryScreenLandscape(
+    innerPadding : PaddingValues,
+    onNavigateToSelectAmount: (String) -> Unit,
+    viewModel: TransferViewModel = viewModel(factory = TransferViewModel.provideFactory(LocalContext.current.applicationContext as MyApplication))
+) {
+    val uiState = viewModel.uiState
+
+    LaunchedEffect(Unit) {
+        viewModel.getPayments(
+            page = 1,
+            direction = "DESC",
+            pending = null,
+            type = null,
+            range = null,
+            source = null,
+            cardId = null
+        )
+    }
+
+    var currentTab by remember { mutableIntStateOf(0) }
+    var favoriteUserIds by remember { mutableStateOf<List<Int>>(emptyList()) }
+    var contactValue by remember { mutableStateOf("") }
+    var showErrorDialog by remember { mutableStateOf(false) }
+
+    fun isValidEmail(email: String): Boolean {
+        return Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    }
+
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        modifier = Modifier
+            .padding(innerPadding)
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
+        Row (horizontalArrangement = Arrangement.SpaceBetween) {
+            Column (modifier = Modifier.weight(0.4f).fillMaxHeight(), verticalArrangement = Arrangement.SpaceEvenly) {
+                TransferProgress(0)
+                OutlinedTextField(
+                    value = contactValue,
+                    onValueChange = { contactValue = it  },
+                    isError = contactValue.isNotEmpty() && !isValidEmail(contactValue),
+                    placeholder = {
+                        Text(
+                            stringResource(R.string.transfer_to_1),
+                            color = MaterialTheme.colorScheme.onTertiary
+                        )
+                    },
+                    leadingIcon = {
+                        Icon(
+                            Icons.Filled.Face,
+                            contentDescription = stringResource(R.string.transfer_to_1),
+                            modifier = Modifier.padding(start = 15.dp)
+                        )
+                    },
+                    singleLine = true,
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Button (
+                    onClick = {
+                        onNavigateToSelectAmount(contactValue)
+                    },
+                    colors = ButtonColors(
+                        containerColor = MaterialTheme.colorScheme.secondary,
+                        contentColor = MaterialTheme.colorScheme.onSecondary,
+                        disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                        disabledContentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                    ),
+                    shape = RoundedCornerShape(10.dp),
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    contentPadding = PaddingValues(16.dp)
+                ) {
+                    Text(stringResource(R.string.continue_button))
+                }
+
+                if (showErrorDialog) {
+                    AlertDialog(
+                        onDismissRequest = { showErrorDialog = false },
+                        title = { Text(stringResource(R.string.error)) },
+                        text = { Text(stringResource(R.string.user_not_found)) },
+                        confirmButton = {
+                            Button(onClick = { showErrorDialog = false }) {
+                                Text("OK")
+                            }
+                        }
+                    )
+                }
+            }
+
+            Column (modifier = Modifier.weight(0.4f)) {
+                ContactsTabs(onTabSelected = { tabIndex -> currentTab = tabIndex }, initialTab = currentTab)
+                when (currentTab) {
+                    0 -> ContactListWithSearchBar(
+                        getRecentContacts(uiState.transactions),
+                        favoriteUserIds,
+                        { userId, isFavorite -> favoriteUserIds = if (isFavorite) { favoriteUserIds + userId } else { favoriteUserIds - userId } },
+                        onClick = onNavigateToSelectAmount
+                    )
+
+
+                    1 -> ContactListWithSearchBar(
+                        getRecentContacts(uiState.transactions).filter { it.id in favoriteUserIds },
+                        favoriteUserIds,
+                        { userId, isFavorite -> favoriteUserIds = if (isFavorite) { favoriteUserIds + userId } else { favoriteUserIds - userId }},
+                        onClick = onNavigateToSelectAmount
+                    )
+                }
+            }
+        }
+    }
+
+}
 
