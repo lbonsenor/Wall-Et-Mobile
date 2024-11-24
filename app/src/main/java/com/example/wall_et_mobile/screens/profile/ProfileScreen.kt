@@ -209,7 +209,7 @@ fun ProfileScreen(
                                 border = BorderStroke(1.dp, MaterialTheme.colorScheme.error)
                             ) {
                                 Icon(
-                                    Icons.Default.ArrowDropDown,
+                                    painter = painterResource(R.drawable.logout),
                                     contentDescription = null,
                                     modifier = Modifier.size(20.dp)
                                 )

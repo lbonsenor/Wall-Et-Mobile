@@ -10,7 +10,9 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.wall_et_mobile.R
@@ -34,13 +36,13 @@ fun SeeMoreScreen(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         SettingsItem(
-            icon = Icons.Outlined.Settings,
+            icon = painterResource(R.drawable.ic_launcher_foreground),
             title = stringResource(R.string.theme),
             onClick = { showThemeDialog = true }
         )
 
         SettingsItem(
-            icon = Icons.Outlined.Place,
+            icon = painterResource(R.drawable.language),
             title = stringResource(R.string.language),
             onClick = { showLanguageDialog = true }
         )
@@ -52,7 +54,7 @@ fun SeeMoreScreen(
             title = {
                 Text(
                     text = stringResource(R.string.theme),
-                    color = MaterialTheme.colorScheme.onSurface
+                    color = MaterialTheme.colorScheme.secondary
                 )
             },
             text = {
@@ -60,6 +62,7 @@ fun SeeMoreScreen(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     ThemeOption(
+                        icon = painterResource(R.drawable.light_mode),
                         text = stringResource(R.string.light_mode),
                         onClick = {
                             onThemeChanged(ThemeMode.LIGHT)
@@ -67,6 +70,7 @@ fun SeeMoreScreen(
                         }
                     )
                     ThemeOption(
+                        icon = painterResource(R.drawable.dark_mode),
                         text = stringResource(R.string.dark_mode),
                         onClick = {
                             onThemeChanged(ThemeMode.DARK)
@@ -74,6 +78,7 @@ fun SeeMoreScreen(
                         }
                     )
                     ThemeOption(
+                        icon = painterResource(R.drawable.ic_launcher_foreground),
                         text = stringResource(R.string.system_default),
                         onClick = {
                             onThemeChanged(ThemeMode.SYSTEM)
@@ -126,7 +131,7 @@ fun SeeMoreScreen(
 
 @Composable
 private fun SettingsItem(
-    icon: ImageVector,
+    icon: Painter,
     title: String,
     onClick: () -> Unit
 ) {
@@ -150,7 +155,7 @@ private fun SettingsItem(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
-                    imageVector = icon,
+                    painter = icon,
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.secondary
                 )
@@ -166,8 +171,9 @@ private fun SettingsItem(
 
 @Composable
 private fun ThemeOption(
+    icon: Painter,
     text: String,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     TextButton(
         onClick = onClick,
@@ -176,7 +182,21 @@ private fun ThemeOption(
             contentColor = MaterialTheme.colorScheme.onBackground
         )
     ) {
-        Text(text = text)
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                painter = icon,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.secondary
+            )
+            Text(
+                text = text,
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.secondary
+            )
+        }
     }
 }
 
