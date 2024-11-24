@@ -107,6 +107,7 @@ fun SeeMoreScreen(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     LanguageOption(
+                        icon = painterResource(R.drawable.ic_flag_us),
                         text = "English",
                         onClick = {
                             onLanguageChanged("en")
@@ -114,6 +115,7 @@ fun SeeMoreScreen(
                         }
                     )
                     LanguageOption(
+                        icon = painterResource(R.drawable.ic_flag_es),
                         text = "Español",
                         onClick = {
                             onLanguageChanged("es")
@@ -194,7 +196,7 @@ private fun ThemeOption(
             Text(
                 text = text,
                 style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onBackground
+                color = MaterialTheme.colorScheme.secondary
             )
         }
     }
@@ -202,6 +204,7 @@ private fun ThemeOption(
 
 @Composable
 private fun LanguageOption(
+    icon: Painter,
     text: String,
     onClick: () -> Unit
 ) {
@@ -212,7 +215,21 @@ private fun LanguageOption(
             contentColor = MaterialTheme.colorScheme.onBackground
         )
     ) {
-        Text(text = text)
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                painter = icon,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.secondary
+            )
+            Text(
+                text = text,
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.secondary
+            )
+        }
     }
 }
 
