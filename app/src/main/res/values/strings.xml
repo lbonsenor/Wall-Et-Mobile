@@ -112,9 +112,9 @@
     <string name="verify_email">Verificar email</string>
     <string name="create_account">Crear cuenta</string>
     <string name="signup_to_continue">Registrarse para continuar</string>
-    <string name="already_have_account">¿Ya tienes una cuenta?</string>
+    <string name="already_have_account">¿Ya tiene una cuenta?</string>
     <string name="welcome_back">¡Bienvenido de vuelta a Wall-Et!</string>
-    <string name="dont_have_account">¿No estas registrado?</string>
+    <string name="dont_have_account">¿No está registrado?</string>
     <string name="no_worries">Ingresá el correo asociado a la cuenta</string>
     <string name="send_code">Enviar código</string>
     <string name="back_to_login">¿Volver a iniciar sesión?</string>
