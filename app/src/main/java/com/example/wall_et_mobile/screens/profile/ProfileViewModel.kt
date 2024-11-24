@@ -91,10 +91,17 @@ class ProfileViewModel(
 
     private fun handleError(e: Throwable): Error {
         return if (e is DataSourceException) {
-            Error(e.message ?: "")
+            when (e.message) {
+                "Missing dot in between words" -> Error("Missing dot in between words")
+                else -> Error("unexpected_error")
+            }
         } else {
-            Error(e.message ?: "")
+            Error("unexpected_error")
         }
+    }
+
+    fun clearError() {
+        uiState = uiState.copy(error = null)
     }
 
     override fun onCleared() {

@@ -157,5 +157,6 @@
     <string name="unexpected_error">Ocurrió un error</string>
     <string name="email_exists">Ya existe una cuenta con el correo asociado</string>
     <string name="invalid_code">Código incorrecto</string>
+    <string name="invalid_alias">Alias inválido</string>
 
 </resources>

@@ -138,4 +138,5 @@
     <string name="unexpected_error">An unexpected error has ocurred</string>
     <string name="email_exists">There already is an account with the entered email</string>
     <string name="invalid_code">Incorrect code</string>
+    <string name="invalid_alias">Invalid alias</string>
 </resources>

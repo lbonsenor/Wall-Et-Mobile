@@ -20,6 +20,7 @@ import com.example.wall_et_mobile.MyApplication
 import com.example.wall_et_mobile.R
 import com.example.wall_et_mobile.components.ConfirmationDialog
 import com.example.wall_et_mobile.components.EndFormButton
+import com.example.wall_et_mobile.components.ErrorDialog
 
 @Composable
 fun ProfileScreen(
@@ -35,6 +36,19 @@ fun ProfileScreen(
         if (!uiState.isAuthenticated) {
             onNavigateToLogin()
         }
+    }
+
+    if (uiState.error != null) {
+        val errorMessage = when (uiState.error.message) {
+            "Missing dot in between words" -> stringResource(R.string.invalid_alias)
+            else -> stringResource(R.string.unexpected_error)
+        }
+    
+        ErrorDialog(
+            visible = true,
+            message = errorMessage,
+            onDismiss = { viewModel.clearError() }
+        )
     }
 
     Column(
