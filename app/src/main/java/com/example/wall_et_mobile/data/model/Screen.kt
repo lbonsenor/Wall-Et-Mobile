@@ -7,6 +7,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import com.example.wall_et_mobile.R
 import com.example.wall_et_mobile.data.model.Screen.Activities
 import com.example.wall_et_mobile.data.model.Screen.Cards
+import com.example.wall_et_mobile.data.model.Screen.ConfirmLinkPayment
 import com.example.wall_et_mobile.data.model.Screen.ConfirmPaymentMethod
 import com.example.wall_et_mobile.data.model.Screen.EmailVerification
 import com.example.wall_et_mobile.data.model.Screen.ForgotPassword
@@ -50,6 +51,7 @@ sealed class Screen(
     object ConfirmPaymentMethod : Screen(route = "confirm_payment_method", labelInt = R.string.title_transfer)
     object TopUp : Screen(route = "top_up", labelInt = R.string.title_add_fund)
     object Profile : Screen(route = "profile", labelInt = R.string.account)
+    object ConfirmLinkPayment : Screen(route = "confirm_link_payment", labelInt = R.string.title_transfer)
 }
 
 fun getScreen(route: String) : Screen {
@@ -71,6 +73,7 @@ fun getScreen(route: String) : Screen {
         "confirm_payment_method" -> return ConfirmPaymentMethod
         "top_up" -> return TopUp
         "profile" -> return Profile
+        "confirm_link_payment" -> return ConfirmLinkPayment
         else -> return Home
     }
 }

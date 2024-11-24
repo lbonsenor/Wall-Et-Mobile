@@ -4,7 +4,7 @@ import com.example.wall_et_mobile.data.network.model.NetworkTransactionLinkReque
 
 class TransactionLinkRequest(
     val type : String,
-    val cardId: String?
+    val cardId: String? = null
 ) {
     fun asNetworkModel() : NetworkTransactionLinkRequest {
         return NetworkTransactionLinkRequest(

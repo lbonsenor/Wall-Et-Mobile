@@ -21,7 +21,6 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.wall_et_mobile.data.model.Screen
@@ -74,13 +73,7 @@ class MainActivity : ComponentActivity() {
             }
 
             var qrScanner = QRScanner(appContext = applicationContext)
-            var qrResults = qrScanner.barCodeResults.collectAsStateWithLifecycle()
 
-            LaunchedEffect(qrResults.value) {
-                if (qrResults.value != null) {
-                    navigateTo(navController, SeeMore.route)
-                }
-            }
 
             WallEtTheme(
                 darkTheme = when (currentTheme.value) {
@@ -235,7 +228,8 @@ fun ScaffoldPortrait(
             navController = navController,
             startDestination = startDestination,
             onThemeChanged = onThemeChanged, 
-            onLanguageChanged = onLanguageChanged
+            onLanguageChanged = onLanguageChanged,
+            qrScanner = qrScanner
         )
     }
 }
@@ -276,7 +270,8 @@ fun ScaffoldLandscape(
                 navController = navController,
                 startDestination = startDestination,
                 onThemeChanged = onThemeChanged,
-                onLanguageChanged = onLanguageChanged
+                onLanguageChanged = onLanguageChanged,
+                qrScanner = qrScanner
             )
 
         }

@@ -5,7 +5,9 @@ import SelectAmountScreen
 import SelectAmountScreenLandscape
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -27,6 +29,8 @@ import com.example.wall_et_mobile.screens.signup.EmailVerificationScreen
 import com.example.wall_et_mobile.screens.signup.SignupScreen
 import com.example.wall_et_mobile.screens.signup.SignupSuccessScreen
 import com.example.wall_et_mobile.screens.top_up.TopUpScreen
+import com.example.wall_et_mobile.screens.transfer.ConfirmLinkPaymentScreen
+import com.example.wall_et_mobile.screens.transfer.ConfirmLinkPaymentScreenLandscape
 import com.example.wall_et_mobile.screens.transfer.ConfirmPaymentScreen
 import com.example.wall_et_mobile.screens.transfer.ConfirmPaymentScreenLandscape
 import com.example.wall_et_mobile.screens.transfer.SelectDestinataryScreen
@@ -39,8 +43,11 @@ fun AppNavHost(
     navController: NavHostController,
     onThemeChanged: (ThemeMode) -> Unit,
     onLanguageChanged: (String) -> Unit,
-    startDestination: String
+    startDestination: String,
+    qrScanner: QRScanner
 ){
+    var qrResults = qrScanner.barCodeResults.collectAsStateWithLifecycle()
+
     NavHost(
         navController = navController,
         startDestination = startDestination,
@@ -167,8 +174,26 @@ fun AppNavHost(
                     innerPadding = innerPadding,
                     onConfirm = {navigateTo(navController, Screen.Home.route)}
                 ) }
+            composable(route = "${Screen.ConfirmLinkPayment.route}/{link}",
+                arguments = listOf(
+                    navArgument(name = "link"){
+                        type = NavType.StringType
+                    }
+                )
+            ) { backStackEntry ->
+                ConfirmLinkPaymentScreen(
+                    innerPadding = innerPadding,
+                    onPaymentComplete = {},
+                    link = backStackEntry.arguments?.getString("link")!!,
+                )
+            }
         }
     )
+    LaunchedEffect(qrResults.value) {
+        if (qrResults.value != null) {
+            navigateTo(navController, "${Screen.ConfirmLinkPayment.route}/${qrResults.value}")
+        }
+    }
 }
 
 @Composable
@@ -178,8 +203,10 @@ fun LandscapeAppNavHost(
     navController: NavHostController,
     onThemeChanged: (ThemeMode) -> Unit,
     onLanguageChanged: (String) -> Unit,
-    startDestination: String
+    startDestination: String,
+    qrScanner: QRScanner
 ){
+    var qrResults = qrScanner.barCodeResults.collectAsStateWithLifecycle()
     NavHost(
         navController = navController,
         startDestination = startDestination,
@@ -303,8 +330,26 @@ fun LandscapeAppNavHost(
                 )
             }
             composable(route = Screen.TopUp.route){ TopUpScreen(innerPadding) }
+            composable(route = "${Screen.ConfirmLinkPayment.route}/{link}",
+                arguments = listOf(
+                    navArgument(name = "link"){
+                        type = NavType.StringType
+                    }
+                )
+            ) { backStackEntry ->
+                ConfirmLinkPaymentScreenLandscape(
+                    innerPadding = innerPadding,
+                    onPaymentComplete = {},
+                    link = backStackEntry.arguments?.getString("link")!!,
+                )
+            }
         }
     )
+    LaunchedEffect(qrResults.value) {
+        if (qrResults.value != null) {
+            navigateTo(navController, "${Screen.ConfirmLinkPayment.route}/${qrResults.value}")
+        }
+    }
 }
 
 fun navigateTo(navController : NavHostController, route: String){
