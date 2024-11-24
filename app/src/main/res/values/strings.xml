@@ -150,8 +150,10 @@
     <string name="card_number_error">El número de la tarjeta debe tener 16 dígitos</string>
     <string name="card_holder_error">Ingrese el nombre completo</string>
     <string name="expiration_date_error">Fecha de expiración inválida</string>
-    <string name="cvv_error">El CVV debe tener tres dígitos</string>
+    <string name="cvv_error">El CVV debe tener 3 dígitos</string>
     <string name="repeat">Repetir</string>
     <string name="insufficient_funds">Saldo insuficiente</string>
+    <string name="invalid_credentials">Credenciales inválidas</string>
+    <string name="unexpected_error">Ocurrió un error</string>
 
 </resources>

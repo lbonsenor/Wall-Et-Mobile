@@ -37,8 +37,8 @@ import com.example.wall_et_mobile.MyApplication
 import com.example.wall_et_mobile.R
 import com.example.wall_et_mobile.components.CustomTextField
 import com.example.wall_et_mobile.components.EndFormButton
+import com.example.wall_et_mobile.components.ErrorDialog
 import com.example.wall_et_mobile.components.PasswordField
-import com.example.wall_et_mobile.screens.home.HomeViewModel
 
 @Composable
 fun LoginScreen(
@@ -65,6 +65,14 @@ fun LoginScreen(
 
     val isFormValid = remember(email, password) {
         validateEmail(email) && password.isNotEmpty()
+    }
+
+    if (uiState.error != null) {
+        ErrorDialog(
+            visible = true,
+            message = uiState.error.message ?: stringResource(R.string.error),
+            onDismiss = { viewModel.clearError() }
+        )
     }
 
     if (isLandscape) {
