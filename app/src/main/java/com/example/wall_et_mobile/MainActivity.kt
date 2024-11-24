@@ -1,13 +1,12 @@
 package com.example.wall_et_mobile
 
 //noinspection UsingMaterialAndMaterial3Libraries
-import androidx.compose.foundation.isSystemInDarkTheme
 //noinspection UsingMaterialAndMaterial3Libraries
 import android.content.res.Configuration
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material.FabPosition
@@ -31,6 +30,7 @@ import com.example.wall_et_mobile.data.model.Screen.Activities
 import com.example.wall_et_mobile.data.model.Screen.Cards
 import com.example.wall_et_mobile.data.model.Screen.Home
 import com.example.wall_et_mobile.data.model.Screen.SeeMore
+import com.example.wall_et_mobile.data.preferences.ThemePreference
 import com.example.wall_et_mobile.ui.theme.WallEtTheme
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import java.util.Locale
@@ -47,7 +47,7 @@ class MainActivity : ComponentActivity() {
             val (orientation, setOrientation) = remember { mutableIntStateOf(Configuration.ORIENTATION_PORTRAIT) }
             val configuration = LocalConfiguration.current
             val navController = rememberNavController()
-            var currentTheme by remember { mutableStateOf(themePreference.getThemeMode()) }
+            var currentTheme = remember { mutableStateOf(themePreference.getThemeMode()) }
 
             LaunchedEffect(configuration) {
                 snapshotFlow { configuration.orientation }
@@ -64,10 +64,11 @@ class MainActivity : ComponentActivity() {
             }
 
             WallEtTheme(
-                darkTheme = when (currentTheme) {
+                darkTheme = when (currentTheme.value) {
                     ThemeMode.LIGHT -> false
                     ThemeMode.DARK -> true
                     ThemeMode.SYSTEM -> isSystemInDarkTheme()
+                    else -> isSystemInDarkTheme()
                 }
             ) {
                 when (orientation) {
@@ -76,7 +77,7 @@ class MainActivity : ComponentActivity() {
                         qrScanner = qrScanner,
                         onThemeChanged = { newTheme ->
                             themePreference.setThemeMode(newTheme)
-                            currentTheme = newTheme
+                            currentTheme.value = newTheme
                         }
                     )
                     else -> ScaffoldLandscape(
@@ -84,7 +85,7 @@ class MainActivity : ComponentActivity() {
                         qrScanner = qrScanner,
                         onThemeChanged = { newTheme ->
                             themePreference.setThemeMode(newTheme)
-                            currentTheme = newTheme
+                            currentTheme.value = newTheme
                         }
                     )
                 }
