@@ -85,7 +85,6 @@ fun ProfileScreen(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.spacedBy(24.dp)
                         ) {
-                            // Name
                             Column(modifier = Modifier.weight(1f)) {
                                 Text(
                                     text = stringResource(R.string.name),
@@ -99,7 +98,6 @@ fun ProfileScreen(
                                 )
                             }
                 
-                            // Last Name
                             Column(modifier = Modifier.weight(1f)) {
                                 Text(
                                     text = stringResource(R.string.last_name),
