@@ -264,7 +264,6 @@ fun SwipeToSendButton(
                 color = MaterialTheme.colorScheme.onSecondary.copy(alpha = 0.9f)
             )
 
-            // Swipe handle
             Box(
                 modifier = Modifier
                     .offset { IntOffset(offsetX.roundToInt(), 0) }
@@ -514,13 +513,15 @@ fun ConfirmPaymentScreenLandscape(
         }
     }
 
-    Row {
+    Row(
+        modifier = Modifier.padding(WindowInsets.navigationBars.asPaddingValues()).padding(16.dp),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
         Column(
             horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.spacedBy(20.dp, Alignment.CenterVertically),
             modifier = Modifier
                 .padding(innerPadding)
-                .padding(horizontal = 40.dp)
                 .weight(0.4f)
                 .verticalScroll(rememberScrollState())
 
@@ -597,9 +598,7 @@ fun ConfirmPaymentScreenLandscape(
                 isCompleted = showSuccess && !uiState.isFetching && uiState.error == null,
                 isLoading = uiState.isFetching,
                 modifier = Modifier
-                    .padding(horizontal = 24.dp)
-                    .padding(WindowInsets.navigationBars.asPaddingValues())
-                    .fillMaxWidth()
+                    .fillMaxWidth().align(Alignment.CenterHorizontally)
             )
         }
     }

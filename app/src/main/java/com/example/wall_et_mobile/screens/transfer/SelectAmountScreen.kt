@@ -349,7 +349,7 @@ fun SelectAmountScreenLandscape(
     innerPadding : PaddingValues,
     email: String,
     onChangeDestination: () -> Unit,
-    onNavigateToSelectPayment : (String, String, String, Int?) -> Unit, // email, amount, paymentType, cardId
+    onNavigateToSelectPayment : (String, String, String, Int?, String?) -> Unit, // email, amount, paymentType, cardId
     viewModel: TransferViewModel = viewModel(factory = TransferViewModel.provideFactory(LocalContext.current.applicationContext as MyApplication))
 )
 {
@@ -375,7 +375,8 @@ fun SelectAmountScreenLandscape(
                 .padding(innerPadding)
                 .fillMaxHeight()
                 .weight(0.4f)
-                .padding(16.dp)
+                .padding(vertical = 16.dp)
+                .padding(start = 16.dp)
                 .verticalScroll(rememberScrollState())
         ) {
             TransferProgress(1)
@@ -386,6 +387,7 @@ fun SelectAmountScreenLandscape(
                 enabled = amount.isNotEmpty() && selectedPaymentMethod != null && isEnabled,
                 onClick = {
                     var cardId: Int? = 0
+                    var cardDigits: String = ""
                     var paymentType: String
                     when (selectedPaymentMethod) {
                         is SelectedOption.WalletOption ->
@@ -395,12 +397,13 @@ fun SelectAmountScreenLandscape(
                         }
                         is SelectedOption.CardOption -> {
                             cardId = (selectedPaymentMethod as SelectedOption.CardOption).card.cardId
+                            cardDigits = (selectedPaymentMethod as SelectedOption.CardOption).card.cardNumber.takeLast(4).toString()
                             paymentType = PaymentType.CARD.toString()
                         }
                         null -> return@Button
                     }
 
-                    onNavigateToSelectPayment(email, amount, paymentType, cardId)
+                    onNavigateToSelectPayment(email, amount, paymentType, cardId, cardDigits)
                 },
                 colors = ButtonColors(
                     containerColor = MaterialTheme.colorScheme.secondary,
@@ -424,7 +427,8 @@ fun SelectAmountScreenLandscape(
                 .padding(innerPadding)
                 .fillMaxHeight()
                 .weight(0.4f)
-                .padding(16.dp)
+                .padding(vertical = 16.dp)
+                .padding(end = 16.dp)
                 .verticalScroll(rememberScrollState())
         ) {
             AmountTextField(amount, cents, { amount = it }, { cents = it })
