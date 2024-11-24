@@ -174,7 +174,7 @@ fun ActivityCard(onNavigateToActivity: () -> Unit, transactions : List<Transacti
                 text = stringResource(R.string.see_more)
             )
         }
-        ActivityList(transactions.take(3))
+        ActivityList(transactions.sortedByDescending { it.transactionId }.take(3))
     }
 }
 

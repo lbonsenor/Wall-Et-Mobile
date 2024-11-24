@@ -1,9 +1,6 @@
 package com.example.wall_et_mobile.data.repository
 
 
-import com.example.wall_et_mobile.data.model.BalancePayment
-import com.example.wall_et_mobile.data.model.CardPayment
-import com.example.wall_et_mobile.data.model.LinkPayment
 import com.example.wall_et_mobile.data.model.Transaction
 import com.example.wall_et_mobile.data.model.TransactionLinkRequest
 import com.example.wall_et_mobile.data.model.TransactionRequest
@@ -36,13 +33,36 @@ class TransactionRepository(
         source : String? = null,
         cardId : Int? = null
     ): List<Transaction> {
-            if (refresh || transactions.isEmpty()) {
-                val result = remoteDataSource.getPayments(page,direction,pending,type,range,source,cardId)
-                // Thread-safe write to payments
-                transMutex.withLock {
-                    this.transactions = result.asModel()
+        if (refresh || transactions.isEmpty()) {
+            when (source) {
+                "RECEIVER" -> {
+                    val result = remoteDataSource.getPayments(page,direction,pending,type,range,source,cardId)
+                    // Thread-safe write to payments
+                    transMutex.withLock {
+                        this.transactions = result.asModelSwitched()
+                    }
                 }
+
+                "PAYER" -> {
+                    val result = remoteDataSource.getPayments(page,direction,pending,type,range,source,cardId)
+                    // Thread-safe write to payments
+                    transMutex.withLock {
+                        this.transactions = result.asModel()
+                    }
+                }
+
+                else -> {
+                    val result = remoteDataSource.getPayments(page,direction,pending,type,range, source="PAYER",cardId)
+                    val result2 = remoteDataSource.getPayments(page,direction,pending,type,range,source="RECEIVER",cardId)
+
+                    transMutex.withLock {
+                        this.transactions = result2.asModelSwitched() + result.asModel()
+                    }
+                }
+
             }
+
+        }
 
         return transMutex.withLock { this.transactions }
     }

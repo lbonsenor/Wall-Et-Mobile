@@ -33,7 +33,6 @@ class HomeViewModel (
         observeWalletStream()
         observePaymentsStream()
         fetchUserData()
-
     }
 
     private fun fetchUserData() {

@@ -15,18 +15,29 @@ class TransactionRemoteDataSource (private val transactionApiService: Transactio
 
     val paymentsStream: Flow<NetworkTransactionList> = flow {
         while (true) {
-            val payments = handleApiResponse {
+            val paidPayments = handleApiResponse {
                 transactionApiService.getPayments(
                     page = 1,
                     direction = "DESC",
                     pending = null,
                     type = null,
                     range = null,
-                    source = null,
+                    source = "PAYER",
                     cardId = null
                 )
             }
-            emit(payments)
+            val receivedPayments = handleApiResponse {
+                transactionApiService.getPayments(
+                    page = 1,
+                    direction = "DESC",
+                    pending = null,
+                    type = null,
+                    range = null,
+                    source = "RECEIVER",
+                    cardId = null
+                )
+            }.switched()
+            emit(NetworkTransactionList(payments = paidPayments.payments + receivedPayments.payments))
             delay(DELAY)
         }
     }
@@ -41,6 +52,7 @@ class TransactionRemoteDataSource (private val transactionApiService: Transactio
                             pending : Boolean?, type : String?,
                             range : String?, source : String?,
                             cardId: Int?) : NetworkTransactionList {
+
         return handleApiResponse {
             transactionApiService.getPayments(page,direction,
                 pending,type,range,source,cardId)

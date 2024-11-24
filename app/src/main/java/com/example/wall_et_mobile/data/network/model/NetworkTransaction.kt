@@ -17,6 +17,14 @@ data class NetworkTransactionList(
     fun asModel(): List<Transaction>{
         return payments.map { netTransaction -> netTransaction.asModel() }
     }
+
+    fun asModelSwitched(): List<Transaction>{
+        return payments.map { netTransaction -> netTransaction.asModelSwitched() }
+    }
+
+    fun switched(): NetworkTransactionList{
+        return NetworkTransactionList(payments.map { netTransaction -> netTransaction.switched() })
+    }
 }
 
 @Serializable
@@ -26,6 +34,8 @@ data class NetworkTransaction(
     var amount: Double,
     var balanceBefore: Float,
     var balanceAfter : Float,
+    var receiverBalanceBefore : Float,
+    var receiverBalanceAfter : Float,
     var pending: Boolean,
     var linkUuid: String?,
     var createdAt: String, /* turn to local date afterwards*/
@@ -34,8 +44,28 @@ data class NetworkTransaction(
     var payer : NetworkUser,
     var receiver : NetworkUser
 ){
+    fun switched(): NetworkTransaction{
+        return NetworkTransaction(
+            id = id,
+            type = type,
+            amount = amount,
+            balanceBefore = receiverBalanceBefore,
+            balanceAfter = receiverBalanceAfter,
+            receiverBalanceBefore = balanceBefore,
+            receiverBalanceAfter = balanceAfter,
+            pending = pending,
+            linkUuid = linkUuid,
+            createdAt = createdAt,
+            updatedAt = updatedAt,
+            card = card,
+            payer = receiver,
+            receiver = payer
+        )
+    }
+
     fun asModel(): Transaction{
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault(Locale.Category.FORMAT))
+
         return Transaction(
             transactionId = id,
             amount = CurrencyAmount(amount, Currency.getInstance("ARS")),
@@ -55,6 +85,29 @@ data class NetworkTransaction(
             linkUuid = linkUuid,
             payer = payer.asModel(),
             receiver = receiver.asModel()
+        )
+    }
+
+    fun asModelSwitched(): Transaction{
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault(Locale.Category.FORMAT))
+
+        return Transaction(
+            transactionId = id,
+            amount = CurrencyAmount(amount, Currency.getInstance("ARS")),
+            paymentType = when (type) {
+                "CARD" -> PaymentType.CARD
+                else -> PaymentType.BALANCE
+            },
+            transactionType = TransactionType.TRANSFER_RECEIVED,
+            card = card?.asModel(),
+            createdAt = createdAt.let { dateFormat.parse(createdAt) },
+            updatedAt = updatedAt.let { dateFormat.parse(updatedAt) },
+            balanceBefore = receiverBalanceBefore,
+            balanceAfter = receiverBalanceAfter,
+            pending = pending,
+            linkUuid = linkUuid,
+            payer = receiver.asModel(),
+            receiver = payer.asModel()
         )
     }
 }

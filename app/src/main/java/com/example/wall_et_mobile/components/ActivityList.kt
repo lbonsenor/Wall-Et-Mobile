@@ -34,13 +34,14 @@ fun ActivityListWithDates(activities: List<Transaction>){
         modifier = Modifier.verticalScroll(rememberScrollState())
     ) {
         groupedActivities.forEach { (date, activities) ->
+            val sortedActivities = activities.sortedByDescending { it.transactionId }
             val dateStr =
                 date.toString().split(" ")[1] + " " +
                 date.toString().split(" ")[2] + " "
 
             DateSeparator(dateStr)
             Column() {
-                activities.forEach { activity ->
+                sortedActivities.forEach { activity ->
                     ActivityItem(transaction = activity)
                 }
             }

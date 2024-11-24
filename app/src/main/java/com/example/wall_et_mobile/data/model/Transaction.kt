@@ -33,7 +33,9 @@ data class Transaction(
             createdAt = createdAt.toString(),
             updatedAt = updatedAt.toString(),
             payer = payer.asNetworkModel(),
-            receiver = receiver.asNetworkModel()
+            receiver = receiver.asNetworkModel(),
+            receiverBalanceBefore = 0f,
+            receiverBalanceAfter = 0f
         )
     }
 }

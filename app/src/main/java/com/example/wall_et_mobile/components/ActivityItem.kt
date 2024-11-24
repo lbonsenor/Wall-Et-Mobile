@@ -56,14 +56,14 @@ fun ActivityItem(transaction: Transaction) {
                     modifier = Modifier
                         .clip(RoundedCornerShape(10.dp))
                         .background(
-                            color = MaterialTheme.colorScheme.surfaceVariant,
+                            color = if (transaction.transactionType == TransactionType.TRANSFER_RECEIVED) Green.copy(0.1f) else MaterialTheme.colorScheme.surfaceVariant,
                             shape = RectangleShape
                         )
                 ) {
                     Icon(
                         painter = painterResource(transaction.transactionType.iconInt),
                         contentDescription = "ActivityImage",
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        tint = if (transaction.transactionType == TransactionType.TRANSFER_RECEIVED) Green else MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(10.dp)
                     )
                 }
