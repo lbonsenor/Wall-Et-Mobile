@@ -75,28 +75,22 @@ fun TopUpScreen(
             .padding(16.dp)
             .verticalScroll(rememberScrollState())
     ) {
-        AnimatedVisibility(
-            visible = uiState.error != null,
-            enter = fadeIn(),
-            exit = fadeOut()
-        ) {
-            ErrorDialog(
-                visible = true,
-                message = uiState.error?.message ?: "There has been an error in the top up.",
-                onDismiss = viewModel::clearError
-            )
-        }
-        AnimatedVisibility(
-            visible = showSuccess && !uiState.isFetching,
-            enter = fadeIn(),
-            exit = fadeOut()
-        ) {
-            SuccessDialog(
-                visible = true,
-                message = stringResource(R.string.add_funds_success),
-                onDismiss = { showSuccess = false },
-                onConfirm = onConfirm
-            )
+        when {
+            uiState.error != null -> {
+                ErrorDialog(
+                    visible = true,
+                    message = uiState.error.message ?: "There has been an error in the top up.",
+                    onDismiss = viewModel::clearError
+                )
+            }
+            showSuccess && !uiState.isFetching -> {
+                SuccessDialog(
+                    visible = true,
+                    message = stringResource(R.string.add_funds_success),
+                    onDismiss = { showSuccess = false },
+                    onConfirm = onConfirm
+                )
+            }
         }
 
         TextField(
