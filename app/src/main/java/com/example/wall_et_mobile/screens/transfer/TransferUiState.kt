@@ -1,5 +1,6 @@
 package com.example.wall_et_mobile.screens.transfer
 
+import com.example.wall_et_mobile.components.SelectedOption
 import com.example.wall_et_mobile.data.model.Card
 import com.example.wall_et_mobile.data.model.Transaction
 import com.example.wall_et_mobile.data.model.Wallet
@@ -13,7 +14,8 @@ data class TransferUiState(
     val isFetching: Boolean = true,
     val error: Error? = null,
     val transactions: List<Transaction> = emptyList(),
-    val linkPaymentInfo: Transaction? = null
+    val linkPaymentInfo: Transaction? = null,
+    val paymentState: PaymentState = PaymentState.Idle,
 )
 
 

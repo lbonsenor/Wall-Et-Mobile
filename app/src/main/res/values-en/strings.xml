@@ -146,4 +146,5 @@
     <string name="swipe_to_delete_card">Swipe card to right to delete</string>
     <string name="no_activities">No activities available</string>
     <string name="no_cards">No cards available</string>
+    <string name="add_funds_success_title">Success!</string>
 </resources>

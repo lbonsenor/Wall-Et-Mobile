@@ -3,6 +3,7 @@ package com.example.wall_et_mobile.screens.transfer
 import ContactCard
 import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -78,6 +79,7 @@ fun ConfirmPaymentScreen(
     amount: String,
     paymentType: String,
     cardId: Int?,
+    cardDigits: String?,
     onPaymentComplete: () -> Unit = {},
     onChangeDestination: () -> Unit = {},
     onEditAmount: () -> Unit = {},
@@ -86,41 +88,19 @@ fun ConfirmPaymentScreen(
 ){
     val uiState = viewModel.uiState
     var note by remember { mutableStateOf("") }
-    var showSuccess by remember { mutableStateOf(false) }
+    var string by remember { mutableStateOf("") }
 
     LaunchedEffect(Unit) {
         viewModel.getBalance()
         viewModel.getCards()
+        string ="${email}, ${amount}, ${paymentType}," + (cardId ?: "null")
+        Log.d("ConfirmPaymentScreen", string)
     }
-
-    LaunchedEffect(uiState.error) {
-        if (uiState.error != null) {
-            showSuccess = false
-        }
-    }
-
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp),
         modifier = Modifier.fillMaxWidth().verticalScroll(rememberScrollState())
     ) {
-        when {
-            uiState.error != null -> {
-                ErrorDialog(
-                    visible = true,
-                    message = uiState.error.message ?: "There has been an error in the transaction.",
-                    onDismiss = viewModel::clearError
-                )
-            }
-            showSuccess && !uiState.isFetching -> {
-                SuccessDialog(
-                    visible = true,
-                    message = stringResource(R.string.payment_success),
-                    onDismiss = { showSuccess = false },
-                    onConfirm = onPaymentComplete
-                )
-            }
-        }
 
         Column(
             horizontalAlignment = Alignment.Start,
@@ -140,7 +120,7 @@ fun ConfirmPaymentScreen(
             }
 
             Section(title = stringResource(R.string.payment_method)) {
-                PaymentMethodDisplay(PaymentType.valueOf(paymentType), cardId, uiState.balance)
+                PaymentMethodDisplay(PaymentType.valueOf(paymentType), cardDigits, uiState.balance)
             }
 
             Section(title = "Message") {
@@ -162,7 +142,7 @@ fun ConfirmPaymentScreen(
 
         SwipeToSendButton(
             onSwipeComplete = {
-                if (!uiState.isFetching) {
+                if (!uiState.isFetching && uiState.paymentState == PaymentState.Idle) {
                     Log.d("SwipeToSendButton", "onSwipeComplete called")
                     Log.d("SwipeToSendButton", "email: $email, amount: $amount, note: $note")
                     try {
@@ -183,7 +163,7 @@ fun ConfirmPaymentScreen(
                                     cardId = cardId
                                 )
                                 viewModel.makePayment(transaction)
-                                showSuccess = true
+                                note = ""
                             }
                         }
                     } catch (e: Exception) {
@@ -191,13 +171,36 @@ fun ConfirmPaymentScreen(
                     }
                 }
                  },
-            isCompleted = showSuccess && !uiState.isFetching && uiState.error == null,
-            isLoading = uiState.isFetching,
+            isCompleted = uiState.paymentState == PaymentState.Success,
+            isLoading = uiState.paymentState == PaymentState.Loading,
             modifier = Modifier
                 .padding(horizontal = 24.dp)
                 .padding(WindowInsets.navigationBars.asPaddingValues())
                 .fillMaxWidth()
         )
+
+        when (uiState.paymentState) {
+            is PaymentState.Success -> {
+                SuccessDialog(
+                    visible = true,
+                    title = stringResource(R.string.success),
+                    message = stringResource(R.string.payment_success),
+                    onDismiss = { viewModel.resetPaymentState() },
+                    onConfirm = {
+                        viewModel.resetPaymentState()
+                        onPaymentComplete()
+                    }
+                )
+            }
+            is PaymentState.Error -> {
+                ErrorDialog(
+                    visible = true,
+                    message = (uiState.paymentState as PaymentState.Error).message,
+                    onDismiss = viewModel::resetPaymentState
+                )
+            }
+            else -> {}
+        }
     }
 }
 
@@ -373,7 +376,7 @@ private fun AmountDisplay(amount: String, onEditAmount: () -> Unit) {
             shape = CircleShape,
             colors = ButtonDefaults.outlinedButtonColors(
                 contentColor = MaterialTheme.colorScheme.onSecondary,
-                containerColor = MaterialTheme.colorScheme.secondary.copy(0.8f),
+                containerColor = MaterialTheme.colorScheme.secondary,
             ),
         ) {
             Text(text = stringResource(R.string.change), overflow = TextOverflow.Visible)
@@ -402,19 +405,22 @@ private fun Section(
 
 
 @Composable
-private fun PaymentMethodDisplay(paymentType: PaymentType, cardId: Int?, balance: Double? = null) {
+private fun PaymentMethodDisplay(paymentType: PaymentType, cardDigits: String?, balance: Double? = null) {
     Row(
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
             painter = when (paymentType) {
-                PaymentType.BALANCE -> painterResource(R.drawable.person)
+                PaymentType.BALANCE -> painterResource(R.drawable.logo)
                 PaymentType.CARD -> painterResource(R.drawable.credit_card)
-                PaymentType.LINK -> painterResource(R.drawable.transfer)
+                PaymentType.LINK -> painterResource(R.drawable.link)
             },
             contentDescription = null,
-            tint = MaterialTheme.colorScheme.secondary
+            tint = MaterialTheme.colorScheme.secondary,
+            modifier = Modifier
+                .border(2.dp, MaterialTheme.colorScheme.surfaceVariant, shape = CircleShape)
+                .padding(10.dp)
         )
 
         Column {
@@ -428,9 +434,9 @@ private fun PaymentMethodDisplay(paymentType: PaymentType, cardId: Int?, balance
                 color = MaterialTheme.colorScheme.onBackground
             )
 
-            if (paymentType == PaymentType.CARD && cardId != null) {
+            if (paymentType == PaymentType.CARD && cardDigits != null) {
                 Text(
-                    text = stringResource(R.string.card_number, cardId.toString()),
+                    text = "${stringResource(R.string.card_number_finish)} cardDigits",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -467,7 +473,7 @@ private fun createTransactionRequest(
             CardPayment(
                 amount = amount,
                 description = description,
-                cardId = cardId.toLong(),
+                cardId = cardId,
                 receiverEmail = email
             )
         }
@@ -485,6 +491,7 @@ fun ConfirmPaymentScreenLandscape(
     amount: String,
     paymentType: String,
     cardId: Int?,
+    cardDigits: String?,
     onPaymentComplete: () -> Unit = {},
     onChangeDestination: () -> Unit = {},
     onEditAmount: () -> Unit = {},
@@ -498,6 +505,7 @@ fun ConfirmPaymentScreenLandscape(
     LaunchedEffect(Unit) {
         viewModel.getBalance()
         viewModel.getCards()
+
     }
 
     LaunchedEffect(uiState.error) {
@@ -528,7 +536,7 @@ fun ConfirmPaymentScreenLandscape(
             }
 
             Section(title = stringResource(R.string.payment_method)) {
-                PaymentMethodDisplay(PaymentType.valueOf(paymentType), cardId, uiState.balance)
+                PaymentMethodDisplay(PaymentType.valueOf(paymentType), cardDigits, uiState.balance)
             }
         }
 
@@ -612,15 +620,13 @@ fun ConfirmPaymentScreenLandscape(
             showSuccess && !uiState.isFetching -> {
                 SuccessDialog(
                     visible = true,
+                    title = stringResource(R.string.success),
                     message = stringResource(R.string.payment_success),
                     onDismiss = { showSuccess = false },
                     onConfirm = onPaymentComplete
                 )
             }
         }
-
-
-
 
     }
 

@@ -65,7 +65,7 @@ fun SelectAmountScreen(
     innerPadding : PaddingValues,
     email: String,
     onChangeDestination: () -> Unit,
-    onNavigateToSelectPayment : (String, String, String, Int?) -> Unit, // email, amount, paymentType, cardId
+    onNavigateToSelectPayment : (String, String, String, Int?, String?) -> Unit, // email, amount, paymentType, cardId
     viewModel: TransferViewModel = viewModel(factory = TransferViewModel.provideFactory(LocalContext.current.applicationContext as MyApplication))
 )
 {
@@ -75,12 +75,31 @@ fun SelectAmountScreen(
     var cents by remember { mutableStateOf("00") }
     var selectedPaymentMethod by remember { mutableStateOf<SelectedOption?>(null) }
 
-    var isEnabled by remember { mutableStateOf(true) }
-
+    val isEnabled = when {
+        amount.isEmpty() || selectedPaymentMethod == null -> false
+        selectedPaymentMethod is SelectedOption.WalletOption -> {
+            val balance = uiState.balance ?: 0.0
+            val amountValue = amount.toDoubleOrNull() ?: 0.0
+            amountValue > 0 && balance >= amountValue
+        }
+        else -> true
+    }
     LaunchedEffect(Unit) {
+        amount = ""
+        cents = "00"
+        selectedPaymentMethod = null
+//        isEnabled = false
+
         viewModel.getWallet()
         viewModel.getBalance()
         viewModel.getCards()
+    }
+
+    LaunchedEffect(email) {
+        amount = ""
+        cents = "00"
+        selectedPaymentMethod = null
+//        isEnabled = false
     }
 
     Column(
@@ -109,20 +128,13 @@ fun SelectAmountScreen(
                 selectedOption = selectedPaymentMethod,
                 onSelectionChange = { selectedPaymentMethod = it }
             )
-//            paymentMethod = when (selectedPaymentMethod) {
-//                is SelectedOption.Wallet -> PaymentType.BALANCE.toString()
-//                is SelectedOption.Card -> {
-//                    cardId = SelectedOption
-//                    PaymentType.CARD.toString()
-//                }
-//                else -> throw IllegalStateException("Unexpected payment method: $selectedPaymentMethod")
-//            }
         }
 
         Button(
             enabled = amount.isNotEmpty() && selectedPaymentMethod != null && isEnabled,
             onClick = {
                 var cardId: Int? = 0
+                var cardDigits: String = ""
                 var paymentType: String
                 when (selectedPaymentMethod) {
                     is SelectedOption.WalletOption ->
@@ -132,7 +144,9 @@ fun SelectAmountScreen(
                     }
                     is SelectedOption.CardOption -> {
                         cardId = (selectedPaymentMethod as SelectedOption.CardOption).card.cardId
+                        cardDigits = (selectedPaymentMethod as SelectedOption.CardOption).card.cardNumber.takeLast(4).toString()
                         paymentType = PaymentType.CARD.toString()
+                        Log.e("CardId", "$cardId")
                     }
                     is SelectedOption.LinkOption -> {
                         paymentType = PaymentType.LINK.toString()
@@ -140,7 +154,9 @@ fun SelectAmountScreen(
                     null -> return@Button
                 }
 
-                onNavigateToSelectPayment(email, amount, paymentType, cardId)
+                onNavigateToSelectPayment(email, amount, paymentType, cardId, cardDigits)
+                selectedPaymentMethod = null
+                amount = ""
             },
             colors = ButtonColors(
                 containerColor = MaterialTheme.colorScheme.secondary,
@@ -156,19 +172,17 @@ fun SelectAmountScreen(
             Text(stringResource(R.string.continue_button))
         }
 
-        if (selectedPaymentMethod is SelectedOption.WalletOption && amount.isNotEmpty()) {
-            if (uiState.balance!! < amount.toDouble() ) {
-                isEnabled = false
-                Text(
-                    text = stringResource(R.string.insufficient_funds),
-                    color = MaterialTheme.colorScheme.error,
-                    style = MaterialTheme.typography.labelMedium,
-                    modifier = Modifier.padding(vertical = 8.dp)
-                )
-            } else {
-                isEnabled = true
+            if (selectedPaymentMethod is SelectedOption.WalletOption && amount.isNotEmpty()) {
+                if (uiState.balance!! < amount.toDouble() ) {
+                    Text(
+                        text = stringResource(R.string.insufficient_funds),
+                        color = MaterialTheme.colorScheme.error,
+                        style = MaterialTheme.typography.labelMedium,
+                        modifier = Modifier.padding(vertical = 8.dp)
+                    )
+                }
             }
-        }
+
     }
 
 }
@@ -227,7 +241,7 @@ fun ContactCard(email: String, modifier : Modifier, onClick : () -> Unit) {
             shape = CircleShape,
             colors = ButtonDefaults.outlinedButtonColors(
                 contentColor = MaterialTheme.colorScheme.onSecondary,
-                containerColor = MaterialTheme.colorScheme.secondary.copy(0.8f),
+                containerColor = MaterialTheme.colorScheme.secondary,
             ),
 
             //border = BorderStroke(1.dp, MaterialTheme.colorScheme.secondary)

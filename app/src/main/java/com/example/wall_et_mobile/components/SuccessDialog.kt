@@ -19,6 +19,7 @@ import com.example.wall_et_mobile.R
 @Composable
 fun SuccessDialog(
     visible: Boolean,
+    title : String,
     message: String = stringResource(R.string.payment_success),
     onDismiss: () -> Unit,
     onConfirm: () -> Unit
@@ -36,7 +37,7 @@ fun SuccessDialog(
             },
             title = {
                 Text(
-                    text = stringResource(R.string.success),
+                    text = title,
                     style = MaterialTheme.typography.headlineSmall,
                     color = MaterialTheme.colorScheme.secondary
                 )

@@ -22,8 +22,8 @@ data class NetworkCard(
     val expirationDate: String,
     val fullName: String,
     val type: String,
-    val createdAt: String,
-    val updatedAt: String
+    val createdAt: String? = null,
+    val updatedAt: String? = null,
 )  {
     fun asModel(): Card {
         val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault(Locale.Category.FORMAT))
@@ -34,8 +34,8 @@ data class NetworkCard(
             cardHolder = fullName,
             cardType = when (type) { "DEBIT" -> CardType.DEBIT_CARD else -> CardType.CREDIT_CARD },
             cardCvv = null,
-            createdAt = runCatching { dateFormat.parse(createdAt) }.getOrNull(),
-            updatedAt = runCatching { dateFormat.parse(updatedAt) }.getOrNull()
+            createdAt = createdAt?.let { runCatching { dateFormat.parse(it) }.getOrNull() },
+            updatedAt = updatedAt?.let { runCatching { dateFormat.parse(it) }.getOrNull() }
         )
     }
 }

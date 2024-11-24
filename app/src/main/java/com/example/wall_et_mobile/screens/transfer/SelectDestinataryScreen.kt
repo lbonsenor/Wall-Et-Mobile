@@ -102,6 +102,7 @@ fun SelectDestinataryScreen(
         Button (
             onClick = {
                     onNavigateToSelectAmount(contactValue)
+                contactValue = ""
             },
             colors = ButtonColors(
                 containerColor = MaterialTheme.colorScheme.secondary,

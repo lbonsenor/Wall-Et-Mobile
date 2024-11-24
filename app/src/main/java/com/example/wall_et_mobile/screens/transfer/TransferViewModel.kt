@@ -8,13 +8,24 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.wall_et_mobile.MyApplication
+import com.example.wall_et_mobile.components.SelectedOption
 import com.example.wall_et_mobile.data.DataSourceException
+import com.example.wall_et_mobile.data.model.LinkPayment
+import com.example.wall_et_mobile.data.model.Transaction
 import com.example.wall_et_mobile.data.model.TransactionLinkRequest
 import com.example.wall_et_mobile.data.model.TransactionRequest
+import com.example.wall_et_mobile.data.model.asNetworkModel
 import com.example.wall_et_mobile.data.repository.TransactionRepository
 import com.example.wall_et_mobile.data.repository.WalletRepository
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+
+sealed class PaymentState {
+    object Idle : PaymentState()
+    object Loading : PaymentState()
+    object Success : PaymentState()
+    data class Error(val message: String) : PaymentState()
+}
 
 class TransferViewModel (
     private val walletRepository: WalletRepository,
@@ -41,8 +52,47 @@ class TransferViewModel (
     )
 
     fun makePayment(payment: TransactionRequest) = runOnViewModelScope(
-        { transactionRepository.makePayment(payment) },
-        { state, _ -> state.copy() }
+        {
+            uiState = uiState.copy(paymentState = PaymentState.Loading)
+            transactionRepository.makePayment(payment)
+            getPayments(
+                page = 1,
+                direction = "desc",
+                pending = null,
+                type = null,
+                range = null,
+                source = null,
+                cardId = null
+            )
+
+            when (payment) {
+                is LinkPayment -> {
+                    val linkInfo = transactionRepository.getPayments(refresh = true)
+                    linkInfo.firstOrNull() ?: throw IllegalStateException("Link payment info not found")
+                }
+                else -> {
+                    walletRepository.getBalance()
+                }
+            }
+        },
+        { state, response ->
+            when (payment) {
+                is LinkPayment -> {
+                    state.copy(
+                        transactions = listOf(response as Transaction),
+                        paymentState = PaymentState.Success,
+                        isFetching = false
+                    )
+                }
+                else -> {
+                    state.copy(
+                        balance = response as Double,
+                        paymentState = PaymentState.Success,
+                        isFetching = false
+                    )
+                }
+            }
+        }
     )
 
     fun getPaymentLinkInfo(linkUuid : String) = runOnViewModelScope(
@@ -97,7 +147,14 @@ class TransferViewModel (
     }
 
     fun clearError() {
-        uiState = uiState.copy(error = null)
+        uiState = uiState.copy(
+            error = null,
+            paymentState = PaymentState.Idle
+        )
+    }
+
+    fun resetPaymentState() {
+        uiState = uiState.copy(paymentState = PaymentState.Idle)
     }
 
     companion object {

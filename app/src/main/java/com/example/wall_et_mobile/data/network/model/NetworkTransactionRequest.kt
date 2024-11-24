@@ -1,7 +1,5 @@
 package com.example.wall_et_mobile.data.network.model
 
-import android.icu.util.Currency
-import android.icu.util.CurrencyAmount
 import com.example.wall_et_mobile.data.model.BalancePayment
 import com.example.wall_et_mobile.data.model.CardPayment
 import com.example.wall_et_mobile.data.model.LinkPayment
@@ -32,7 +30,7 @@ data class NetworkBalancePayment(
 data class NetworkCardPayment(
     override val amount: Double,
     override val description: String,
-    val cardId: Long,
+    val cardId: Int,
     val receiverEmail: String,
     override val paymentType: PaymentType = PaymentType.CARD
 ) : NetworkTransactionRequest()

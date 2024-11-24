@@ -238,7 +238,7 @@ private fun createTransactionRequest(
             CardPayment(
                 amount = amount,
                 description = description,
-                cardId = cardId.toLong(),
+                cardId = cardId,
                 receiverEmail = email
             )
         }

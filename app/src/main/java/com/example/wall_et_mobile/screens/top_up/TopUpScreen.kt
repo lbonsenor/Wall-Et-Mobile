@@ -50,6 +50,7 @@ import com.example.wall_et_mobile.components.SuccessDialog
 import com.example.wall_et_mobile.data.model.RechargeRequest
 import com.example.wall_et_mobile.screens.transfer.TransferViewModel
 import com.example.wall_et_mobile.ui.theme.DarkerGrotesque
+import com.example.wall_et_mobile.ui.theme.Gray
 import java.text.NumberFormat
 import java.util.Locale
 
@@ -65,7 +66,6 @@ fun TopUpScreen(
     var amount by remember { mutableStateOf("") }
     var showSuccess by remember { mutableStateOf(false) }
 
-
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -75,24 +75,6 @@ fun TopUpScreen(
             .padding(16.dp)
             .verticalScroll(rememberScrollState())
     ) {
-        when {
-            uiState.error != null -> {
-                ErrorDialog(
-                    visible = true,
-                    message = uiState.error.message ?: "There has been an error in the top up.",
-                    onDismiss = viewModel::clearError
-                )
-            }
-            showSuccess && !uiState.isFetching -> {
-                SuccessDialog(
-                    visible = true,
-                    message = stringResource(R.string.add_funds_success),
-                    onDismiss = { showSuccess = false },
-                    onConfirm = onConfirm
-                )
-            }
-        }
-
         TextField(
             supportingText = { Text("${stringResource(R.string.max_amount)} $6,000,000.00") },
             value = amount,
@@ -148,40 +130,57 @@ fun TopUpScreen(
             onClick = {
                 try {
                     val parsedAmount = amount.toDoubleOrNull()
-                    if (parsedAmount != null && parsedAmount > 0) {
-                        viewModel.recharge(RechargeRequest(parsedAmount))
-                        showSuccess = true
+                    if (parsedAmount == null || parsedAmount <= 0) {
+                        throw IllegalArgumentException("Invalid amount")
                     } else {
-                        viewModel.handleError(IllegalArgumentException("Invalid amount"))
+                        viewModel.recharge(RechargeRequest(parsedAmount))
                     }
                 } catch (e: Exception) {
                     viewModel.handleError(e)
                 }
             },
-            enabled = !uiState.isFetching && amount.isNotEmpty(),
+            enabled = amount.isNotEmpty(),
             colors = ButtonColors(
                 containerColor = MaterialTheme.colorScheme.secondary,
                 contentColor = MaterialTheme.colorScheme.onSecondary,
-                disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant,
-                disabledContentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                disabledContainerColor = Gray.copy(0.1f),
+                disabledContentColor = MaterialTheme.colorScheme.onBackground.copy(0.5f)
             ),
             shape = RoundedCornerShape(10.dp),
             modifier = Modifier
                 .fillMaxWidth(),
             contentPadding = PaddingValues(16.dp),
         ) {
-            if (uiState.isFetching) {
-                CircularProgressIndicator(
-                    modifier = Modifier
-                        .size(24.dp),
-                    color = MaterialTheme.colorScheme.onSecondary,
-                    strokeWidth = 2.dp
-                )
-            } else {
-                Text(stringResource(R.string.continue_button))
+            when {
+                uiState.isFetching -> {
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .size(24.dp),
+                        color = MaterialTheme.colorScheme.onSecondary,
+                        strokeWidth = 2.dp)
+                }
+                uiState.error != null -> {
+                    ErrorDialog(
+                        visible = true,
+                        message = uiState.error.message ?: "There has been an error in the top up.",
+                        onDismiss = viewModel::clearError
+                    )
+                }
+                uiState.success && !uiState.isFetching -> {
+                    SuccessDialog(
+                        visible = true,
+                        title = stringResource(R.string.add_funds_success_title),
+                        message = stringResource(R.string.add_funds_success),
+                        onDismiss = { showSuccess = false },
+                        onConfirm = onConfirm
+                    )
+                }
+                else -> {
+                    Text(stringResource(R.string.continue_button))
+                }
             }
-        }
 
+        }
     }
 
 }

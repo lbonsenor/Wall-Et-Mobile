@@ -165,5 +165,6 @@
     <string name="swipe_to_delete_card">Desliza la tarjeta a la derecha para eliminarla</string>
     <string name="no_activities">No hay actividades disponibles</string>
     <string name="no_cards">No hay tarjetas disponibles</string>
+    <string name="add_funds_success_title">¡Ingreso exitoso!</string>
 
 </resources>
