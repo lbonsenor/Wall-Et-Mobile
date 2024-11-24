@@ -27,7 +27,7 @@ class WalletRepository(
         remoteDataSource.walletStream
             .map { it.asModel() }
 
-    suspend fun getCards(refresh: Boolean = false): List<Card> {
+    suspend fun getCards(refresh: Boolean = true): List<Card> {
         if (refresh || cards.isEmpty()) {
             val result = remoteDataSource.getCards()
             // Thread-safe write to sports

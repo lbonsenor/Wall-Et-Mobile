@@ -139,4 +139,8 @@
     <string name="email_exists">There already is an account with the entered email</string>
     <string name="invalid_code">Incorrect code</string>
     <string name="invalid_alias">Invalid alias</string>
+    <string name="credit_card">Credit Card</string>
+    <string name="debit_card">Debit Card</string>
+    <string name="your_name">YOUR NAME</string>
+    <string name="expires">Expires</string>
 </resources>

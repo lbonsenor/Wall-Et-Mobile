@@ -135,7 +135,7 @@ fun CardIndividualItem(card: Card) {
     val maskedNumber = if (isNumberVisible) {
         card.cardNumber
     } else {
-        card.cardNumber.replace(Regex(".{14}(.{4})"), "**** **** **** $1")
+        "************${card.cardNumber.takeLast(4)}"
     }
 
     Card(

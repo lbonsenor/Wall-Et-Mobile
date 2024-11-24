@@ -1,4 +1,4 @@
-package com.example.wall_et_mobile.screens.transfer
+package com.example.wall_et_mobile.screens.cards
 
 import android.util.Log
 import androidx.compose.runtime.getValue
@@ -9,70 +9,36 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.wall_et_mobile.MyApplication
 import com.example.wall_et_mobile.data.DataSourceException
-import com.example.wall_et_mobile.data.model.TransactionLinkRequest
-import com.example.wall_et_mobile.data.model.TransactionRequest
-import com.example.wall_et_mobile.data.repository.TransactionRepository
+import com.example.wall_et_mobile.data.model.Card
 import com.example.wall_et_mobile.data.repository.WalletRepository
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
-class TransferViewModel (
+class CardsViewModel (
     private val walletRepository: WalletRepository,
-    private val transactionRepository: TransactionRepository
 ) : ViewModel() {
-    var uiState by mutableStateOf(TransferUiState())
+    var uiState by mutableStateOf(CardsUiState())
         private set
 
-    fun getBalance() = runOnViewModelScope(
-        block = { walletRepository.getBalance() },
-        updateState = { state, balance ->
-            state.copy(balance = balance)
-        },
-    )
-
     fun getCards() = runOnViewModelScope(
-        block = {
-            walletRepository.getCards()
-            walletRepository.getCards(refresh = true)
-        },
+        block = { walletRepository.getCards() },
         updateState = { state, cards ->
             state.copy(cards = cards)
         }
     )
 
-    fun makePayment(payment: TransactionRequest) = runOnViewModelScope(
-        { transactionRepository.makePayment(payment) },
+    fun addCard(card : Card) = runOnViewModelScope(
+        { walletRepository.addCard(card) },
         { state, _ -> state.copy() }
     )
 
-    fun getPaymentLinkInfo(linkUuid : String) = runOnViewModelScope(
-        { transactionRepository.getPaymentLinkInfo(linkUuid) },
+    fun deleteCard(cardId : Int) = runOnViewModelScope(
+        { walletRepository.deleteCard(cardId) },
         { state, _ -> state.copy() }
     )
-
-    fun settlePaymentLink(linkUuid: String, requestBody : TransactionLinkRequest) = runOnViewModelScope(
-        { transactionRepository.settlePaymentLink(linkUuid,requestBody) },
-        { state, _ -> state.copy() }
-    )
-
-    fun getWallet() = runOnViewModelScope(
-        { walletRepository.getWallet() },
-        { state, _ -> state.copy() }
-    )
-
-    fun getPayment(paymentId : Int) = runOnViewModelScope(
-        { transactionRepository.getPayment(false, paymentId) },
-        { state, _ -> state.copy() }
-    )
-
-    fun getPayments(page: Int, direction : String, pending : Boolean?, type : String?, range : String?, source : String?, cardId : Int?) = runOnViewModelScope(
-        { transactionRepository.getPayments(false, page,direction,pending,type,range,source,cardId) },
-        { state, payments -> state.copy(transactions = payments)  }
-    )
-
     private fun <R> runOnViewModelScope(
         block: suspend () -> R,
-        updateState: (TransferUiState, R) -> TransferUiState
+        updateState: (CardsUiState, R) -> CardsUiState
     ): Job = viewModelScope.launch {
         Log.d("TransferViewModel", "Starting operation: ${block.toString()}")
         uiState = uiState.copy(isFetching = true, error = null)
@@ -101,16 +67,15 @@ class TransferViewModel (
     }
 
     companion object {
-        const val TAG = "TransferViewModel"
+        const val TAG = "CardsViewModel"
 
         fun provideFactory(
             application: MyApplication
         ) : ViewModelProvider.Factory = object : ViewModelProvider.Factory {
             @Suppress("UNCHECKED_CAST")
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                return TransferViewModel(
+                return CardsViewModel(
                     application.walletRepository,
-                    application.transactionRepository
                 ) as T
             }
         }
