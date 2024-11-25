@@ -1,5 +1,6 @@
 package com.example.wall_et_mobile.screens.profile
 
+import android.annotation.SuppressLint
 import android.content.res.Configuration
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -95,7 +96,7 @@ fun ProfileScreen(
         content = { innerPadding ->
             Box(
                 modifier = Modifier
-                    .padding(innerPadding)
+                    .padding()
                     .fillMaxSize()
                     //.verticalScroll(rememberScrollState())
                     .background(MaterialTheme.colorScheme.surface)

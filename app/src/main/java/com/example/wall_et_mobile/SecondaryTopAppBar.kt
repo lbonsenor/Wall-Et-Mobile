@@ -1,5 +1,8 @@
 package com.example.wall_et_mobile
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -92,10 +95,6 @@ fun SecondaryTopAppBarLandscape(
                 }
             }
         },
-        modifier = Modifier.shadow(
-            elevation = 4.dp,
-            spotColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f),
-            ambientColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.1f),
-        ).height(60.dp),
+        modifier = Modifier.height(60.dp),
     )
 }
